@@ -11,9 +11,8 @@
 {
   imports = [
     ./hardware-configuration.nix
+    ../../modules/defaults.nix
     ../../modules/autopull.nix
-    ../../modules/i18n.nix
-    ../../modules/sshd.nix
   ];
 
   # Use the extlinux boot loader. (NixOS wants to enable GRUB by default)

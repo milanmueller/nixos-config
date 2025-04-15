@@ -15,10 +15,7 @@
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
     # Include global modules (shared between machines)
-    ../../modules/i18n.nix
-    ../../modules/zerotier.nix
-    ../../modules/nix-settings.nix
-    ../../modules/network/wireguard.nix
+    ../../modules/defaults.nix
   ];
 
   # Networking
@@ -64,12 +61,6 @@
     ];
     shell = pkgs.nushell;
   };
-
-  # Home Manager Settings
-  home-manager.backupFileExtension = "backup";
-  home-manager.useGlobalPkgs = true;
-  home-manager.useUserPackages = true;
-  home-manager.extraSpecialArgs.flake-inputs = inputs;
 
   # Enable Bluetooth
   hardware.bluetooth.enable = true;

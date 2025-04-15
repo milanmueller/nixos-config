@@ -11,12 +11,8 @@
 {
   imports = [
     ./hardware-configuration.nix
+    ../../modules/defaults.nix
     ../../modules/autopull.nix
-    ../../modules/i18n.nix
-    ../../modules/sshd.nix
-    ../../modules/zerotier.nix
-    ../../modules/nix-settings.nix
-    ../../modules/network/wireguard.nix
   ];
 
   # Use the extlinux boot loader. (NixOS wants to enable GRUB by default)
@@ -37,24 +33,6 @@
     extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
     shell = pkgs.nushell;
   };
-
-  # Configure keymap in X11
-  services.xserver.xkb.layout = "us";
-  services.xserver.xkb.options = "eurosign:e,caps:escape";
-
-  # Enable Flakes globally
-  nix = {
-    package = pkgs.nix;
-    settings.experimental-features = [
-      "nix-command"
-      "flakes"
-    ];
-  };
-
-  # Home Manager Settings
-  home-manager.backupFileExtension = "backup";
-  home-manager.useGlobalPkgs = true;
-  home-manager.useUserPackages = true;
 
   # Enable ZFS for mirroring hdds
   # Taken from https://openzfs.github.io/openzfs-docs/Getting%20Started/NixOS/

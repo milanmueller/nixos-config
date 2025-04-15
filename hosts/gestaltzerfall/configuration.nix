@@ -11,11 +11,8 @@
 {
   imports = [
     ./hardware-configuration.nix
+    ../../modules/defaults.nix
     ../../modules/autopull.nix
-    ../../modules/i18n.nix
-    ../../modules/zerotier.nix
-    ../../modules/nix-settings.nix
-    ../../modules/network/wireguard.nix
   ];
 
   # Use the extlinux boot loader. (NixOS wants to enable GRUB by default)
@@ -27,9 +24,6 @@
   networking.hostName = "gestaltzerfall"; # Define your hostname.
   networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
   networking.hostId = "2cf18810";
-
-  # Allow unfree packages (required for zerotier)
-  nixpkgs.config.allowUnfree = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.milan = {
@@ -45,35 +39,6 @@
     shell = pkgs.nushell;
   };
 
-  # Configure keymap in X11
-  services.xserver.xkb.layout = "us";
-  services.xserver.xkb.options = "eurosign:e,caps:escape";
-
-  # Enable Flakes globally
-  nix = {
-    package = pkgs.nix;
-    settings.experimental-features = [
-      "nix-command"
-      "flakes"
-    ];
-  };
-
-  # Home Manager Settings
-  home-manager.backupFileExtension = "backup";
-  home-manager.useGlobalPkgs = true;
-  home-manager.useUserPackages = true;
-
-  # Configuration of sshd (enable remote connections)
-  services.openssh = {
-    enable = true;
-    settings = {
-      PasswordAuthentication = false;
-      AllowUsers = [ "milan" ];
-      UseDns = true;
-      PermitRootLogin = "no";
-      AcceptEnv = "LANG LC_* COLORTERM";
-    };
-  };
   # Enable fail2ban for gestaltzerfall, since it is publicly reachable
   services.fail2ban.enable = true;
 
