@@ -1,0 +1,5 @@
+result
+.DS_Store
+.nix-defexpr
+.nix-gcroots
+.direnv
