@@ -20,17 +20,6 @@
   # Enables the generation of /boot/extlinux/extlinux.conf
   boot.loader.generic-extlinux-compatible.enable = true;
 
-  networking.hostName = "odessa"; # Define your hostname.
-  networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
-
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.milan = {
-    isNormalUser = true;
-    description = "Milan Müller";
-    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
-    shell = pkgs.nushell;
-  };
-
   # Enable ZFS for external drives
   boot.supportedFilesystems = [ "zfs" ];
   boot.zfs.forceImportRoot = false;

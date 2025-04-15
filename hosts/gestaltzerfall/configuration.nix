@@ -21,23 +21,7 @@
     device = "/dev/vda";
   };
 
-  networking.hostName = "gestaltzerfall"; # Define your hostname.
-  networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
-  networking.hostId = "2cf18810";
-
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.milan = {
-    isNormalUser = true;
-    description = "Milan Müller";
-    extraGroups = [
-      "wheel"
-      "podman"
-    ]; # Enable ‘sudo’ for the user.
-    openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN7kzswyDXmBSUT/jwDXXGT+ZWnouuqvauXDIxQxcRhT development@milanmueller.de"
-    ];
-    shell = pkgs.nushell;
-  };
+  networking.hostId = "2cf18810"; # required for zfs
 
   # Enable fail2ban for gestaltzerfall, since it is publicly reachable
   services.fail2ban.enable = true;

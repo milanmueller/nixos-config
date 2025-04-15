@@ -5,8 +5,7 @@
 {
   config,
   pkgs,
-  inputs,
-  nix-colors,
+  userConfig,
   ...
 }:
 
@@ -17,10 +16,6 @@
     # Include global modules (shared between machines)
     ../../modules/defaults.nix
   ];
-
-  # Networking
-  networking.hostName = "red-miso";
-  networking.networkmanager.enable = true;
 
   # Audio
   services.pulseaudio.enable = false;
@@ -51,16 +46,11 @@
   nixpkgs.config.allowUnfree = true;
 
   # Default User
-  users.users.milan = {
-    isNormalUser = true;
-    description = "Milan Müller";
-    extraGroups = [
-      "networkmanager"
-      "wheel"
-      "docker"
-    ];
-    shell = pkgs.nushell;
-  };
+  users.users.${userConfig.username}.extraGroups = [
+    "networkmanager"
+    "wheel"
+    "docker"
+  ];
 
   # Enable Bluetooth
   hardware.bluetooth.enable = true;

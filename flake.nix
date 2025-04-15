@@ -88,6 +88,7 @@
             sops-nix.nixosModules.sops
             secrets.nixosModules.default
             {
+              networking.hostName = "${name}";
               home-manager.users.${userConfig.username}.imports = [
                 hosts/${name}/home.nix
                 nix-colors.homeManagerModules.default

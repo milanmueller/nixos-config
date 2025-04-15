@@ -20,20 +20,6 @@
   # Enables the generation of /boot/extlinux/extlinux.conf
   boot.loader.generic-extlinux-compatible.enable = true;
 
-  networking.hostName = "monomyth"; # Define your hostname.
-  networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
-
-  # Allow unfree packages (required for zerotier)
-  nixpkgs.config.allowUnfree = true;
-
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.milan = {
-    isNormalUser = true;
-    description = "Milan Müller";
-    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
-    shell = pkgs.nushell;
-  };
-
   # Enable ZFS for mirroring hdds
   # Taken from https://openzfs.github.io/openzfs-docs/Getting%20Started/NixOS/
   boot.supportedFilesystems = [ "zfs" ];
