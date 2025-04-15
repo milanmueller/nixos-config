@@ -1,15 +1,12 @@
 {
   config,
   pkgs,
-  inputs,
-  nix-colors,
+  userConfig,
   ...
 }:
 {
   imports = [
-    ../../modules/home/helix.nix
-    ../../modules/home/nushell.nix
-    ../../modules/home/git.nix
+    ../../modules/home/defaults.nix
     # ../../lib/cosmic-config.nix
   ];
 
@@ -18,10 +15,6 @@
   #   enable = true;
   #   fontSize = 16;
   # };
-
-  # Basics
-  home.username = "milan";
-  home.homeDirectory = "/home/milan";
 
   # direnv #TODO: move out of here
   programs.direnv = {
@@ -32,26 +25,18 @@
 
   home.stateVersion = "24.05";
 
-  # Let home Manager install and manage itself
-  programs.home-manager.enable = true;
-
   # Install Packages
   home.packages = with pkgs; [
     thunderbird
     distrobox
-    zoom-us
-    ranger
     sioyek
-    helix-gpt
   ];
 
   # Install and configure programs
-  programs = {
-    sioyek = {
-      enable = true;
-      config = {
-        "should_launch_new_window" = "1";
-      };
+  programs.sioyek = {
+    enable = true;
+    config = {
+      "should_launch_new_window" = "1";
     };
   };
 
@@ -71,18 +56,4 @@
       "x-scheme-handler/http" = "firefox.desktop";
     };
   };
-
-  # Flatpaks
-  # services.flatpak.packages = [
-  #   "com.logseq.Logseq"
-  #   "net.nokyan.Resources"
-  #   "page.codeberg.libre_menu_editor.LibreMenuEditor"
-  #   "org.gnome.Fractal"
-  #   "org.gnome.Papers"
-  #   "com.anydesk.Anydesk"
-  #   "org.keepassxc.KeePassXC"
-  #   "org.gnome.gitlab.somas.Apostrophe"
-  #   "org.gnome.gitlab.somas.Apostrophe.Plugin.TexLive"
-  # ];
-
 }
