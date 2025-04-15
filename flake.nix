@@ -12,13 +12,11 @@
       url = "github:lilyinstarlight/nixos-cosmic";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    secrets = {
-      url = "git+ssh://git@github.com/milanmueller/nixos-secrets.git";
-    };
+    secrets.url = "git+ssh://git@github.com/milanmueller/nixos-secrets.git";
     # cosmic-themes-base16 = {
-    # url = "github:milanmueller/cosmic-themes-base16";
-    # url = "path:/home/milan/git/cosmic-themes-base16";
-    # inputs.nixpkgs.follows = "nixpkgs";
+    #   url = "github:milanmueller/cosmic-themes-base16";
+    #   url = "path:/home/milan/git/cosmic-themes-base16";
+    #   inputs.nixpkgs.follows = "nixpkgs";
     # };
     sops-nix = {
       url = "github:Mic92/sops-nix";
@@ -37,8 +35,70 @@
       secrets,
       # cosmic-themes-base16,
       ...
-    }:
+    }@inputs:
     let
+      userConfig = {
+        username = "milan";
+        homeDir = "/home/milan";
+      };
+      # Host metadata
+      hosts = {
+        red-miso = {
+          inherit userConfig;
+          system = "x86_64-linux";
+          extraModules = [
+            nixos-cosmic.nixosModules.default
+          ];
+          extraInputs = { inherit nixos-cosmic nix-colors; };
+        };
+        monomyth = {
+          inherit userConfig;
+          system = "aarch64-linux";
+          extraModules = [ ];
+          extraInputs = { inherit nix-colors; };
+        };
+        odessa = {
+          inherit userConfig;
+          system = "aarch64-linux";
+          extraModules = [ ];
+          extraInputs = { inherit nix-colors; };
+        };
+        gestaltzerfall = {
+          inherit userConfig;
+          system = "x86_64-linux";
+          extraModules = [ ];
+          extraInputs = { inherit nix-colors; };
+        };
+      };
+      mkHost =
+        name:
+        {
+          system,
+          extraModules,
+          extraInputs,
+          userConfig,
+        }:
+        # "Template for host config"
+        nixpkgs.lib.nixosSystem {
+          inherit system;
+          modules = [
+            # common modules
+            hosts/${name}/configuration.nix
+            home-manager.nixosModules.home-manager
+            sops-nix.nixosModules.sops
+            secrets.nixosModules.default
+            {
+              home-manager.users.${userConfig.username}.imports = [
+                hosts/${name}/home.nix
+                nix-colors.homeManagerModules.default
+              ];
+              home-manager.extraSpecialArgs = { inherit nix-colors userConfig; };
+            }
+          ] ++ extraModules;
+          specialArgs = {
+            inherit userConfig;
+          } // extraInputs;
+        };
       supportedSystems = [
         "x86_64-linux"
         "aarch64-linux"
@@ -53,64 +113,9 @@
             };
           }
         );
-      userConfig = {
-        username = "milan";
-        homeDir = "/home/milan";
-      };
     in
     {
-      nixosConfigurations = {
-        "red-miso" = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          modules = [
-            hosts/red-miso/configuration.nix
-            home-manager.nixosModules.home-manager
-            sops-nix.nixosModules.sops
-            nixos-cosmic.nixosModules.default
-            secrets.nixosModules.default
-            {
-              home-manager.users.${userConfig.username}.imports = [
-                hosts/red-miso/home.nix
-                nix-colors.homeManagerModules.default
-              ];
-              home-manager.extraSpecialArgs = {
-                inherit nix-colors userConfig;
-              };
-            }
-          ];
-          specialArgs = { inherit userConfig; };
-        };
-        "monomyth" = import ./hosts/monomyth {
-          inherit
-            nixpkgs
-            nix-colors
-            home-manager
-            sops-nix
-            secrets
-            ;
-          system = "aarch64-linux";
-        };
-        "gestaltzerfall" = import ./hosts/gestaltzerfall {
-          inherit
-            nixpkgs
-            nix-colors
-            home-manager
-            sops-nix
-            secrets
-            ;
-          system = "x86_64-linux";
-        };
-        "odessa" = import ./hosts/odessa {
-          inherit
-            nixpkgs
-            nix-colors
-            home-manager
-            sops-nix
-            secrets
-            ;
-          system = "aarch64-linux";
-        };
-      };
+      nixosConfigurations = nixpkgs.lib.mapAttrs mkHost hosts;
       devShells = forEachSupportedSystem (
         { pkgs }:
         {
