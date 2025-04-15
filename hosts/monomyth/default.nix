@@ -4,6 +4,7 @@
   nix-colors,
   sops-nix,
   system,
+  secrets,
   ...
 }:
 nixpkgs.lib.nixosSystem {
