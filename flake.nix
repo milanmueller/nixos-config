@@ -53,21 +53,32 @@
             };
           }
         );
+      userConfig = {
+        username = "milan";
+        homeDir = "/home/milan";
+      };
     in
     {
       nixosConfigurations = {
-        "red-miso" = import ./hosts/red-miso {
-          inherit
-            nixpkgs
-            home-manager
-            nixos-cosmic
-            flatpaks
-            nix-colors
-            sops-nix
-            secrets
-            # cosmic-themes-base16
-            ;
+        "red-miso" = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
+          modules = [
+            hosts/red-miso/configuration.nix
+            home-manager.nixosModules.home-manager
+            sops-nix.nixosModules.sops
+            nixos-cosmic.nixosModules.default
+            secrets.nixosModules.default
+            {
+              home-manager.users.${userConfig.username}.imports = [
+                hosts/red-miso/home.nix
+                nix-colors.homeManagerModules.default
+              ];
+              home-manager.extraSpecialArgs = {
+                inherit nix-colors userConfig;
+              };
+            }
+          ];
+          specialArgs = { inherit userConfig; };
         };
         "monomyth" = import ./hosts/monomyth {
           inherit
