@@ -15,6 +15,7 @@
     ./hardware-configuration.nix
     # Include global modules (shared between machines)
     ../../modules/defaults.nix
+    ../../modules/sshd.nix
   ];
 
   # Audio

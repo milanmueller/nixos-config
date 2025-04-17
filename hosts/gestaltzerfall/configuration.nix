@@ -13,6 +13,7 @@
     ./hardware-configuration.nix
     ../../modules/defaults.nix
     ../../modules/autopull.nix
+    # ./web.nix
   ];
 
   # Use the extlinux boot loader. (NixOS wants to enable GRUB by default)
@@ -22,6 +23,18 @@
   };
 
   networking.hostId = "2cf18810"; # required for zfs
+
+  # Configuration of sshd (enable remote connections)
+  services.openssh = {
+    enable = true;
+    settings = {
+      PasswordAuthentication = false;
+      AllowUsers = [ "milan" ];
+      UseDns = true;
+      PermitRootLogin = "no";
+      AcceptEnv = "LANG LC_* COLORTERM";
+    };
+  };
 
   # Enable fail2ban for gestaltzerfall, since it is publicly reachable
   services.fail2ban.enable = true;

@@ -11,7 +11,7 @@
     ./network/wireguard.nix
     ./home-manager.nix
     ./nix-settings.nix
-    ./sshd.nix
+    # ./sshd.nix
   ];
   # Networking
   networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
