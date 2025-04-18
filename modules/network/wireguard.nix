@@ -33,6 +33,8 @@ in
   # WireGuard configuration
   networking.wg-quick.interfaces.wg0 = {
     address = [ "${currentHost.wireguardIp}/24" ];
+    # Suggested by LLM to fix ssh authentication issues
+    mtu = 1280;
     privateKeyFile = config.sops.secrets."wireguard/${hostName}/private_key".path;
     # Set listenPort for contral nodes only
     listenPort = lib.mkIf currentHost.isCentral currentHost.listenPort;
