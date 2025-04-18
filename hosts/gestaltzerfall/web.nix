@@ -9,7 +9,7 @@
         web = {
           address = ":80";
           asDefault = true;
-          http.recirections.entrypoint = {
+          http.redirections.entrypoint = {
             to = "websecure";
             scheme = "https";
           };
@@ -37,5 +37,11 @@
       http.routers = { };
       http.services = { };
     };
+  };
+  ## ttyd (Terminal in Browser)
+  services.ttyd = {
+    enable = true;
+    user = "milan";
+    writeable = true;
   };
 }
