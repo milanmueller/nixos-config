@@ -33,6 +33,12 @@
     anytype
   ];
 
+  # Additional syiokey keybindings
+  programs.sioyek.bindings = {
+    "next_page" = "J";
+    "previous_page" = "K";
+  };
+
   # Install and configure programs
   programs.sioyek = {
     enable = true;
