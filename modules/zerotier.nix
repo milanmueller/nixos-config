@@ -9,8 +9,7 @@
   # Run zerotier with network id from secrets
   systemd.services.zerotierone-join = {
     description = "Join ZeroTier network with secret";
-    after = [ "zerotierone.service" ];
-    wants = [ "zerotierone.service" ];
+    wants = [ "network.service" ];
     wantedBy = [ "multi-user.target" ];
     serviceConfig = {
       Type = "oneshot";
