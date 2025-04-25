@@ -1,9 +1,19 @@
 {
   config,
+  lib,
   pkgs,
   userConfig,
   ...
 }:
+let
+  helixLanguages = map (
+    option:
+    option
+    // {
+      language-servers = option.language-servers ++ [ "gpt" ];
+    }
+  ) (import ../../modules/home/helix-languages.nix { inherit lib pkgs; }).languages;
+in
 {
   imports = [
     ../../modules/home/defaults.nix
@@ -31,7 +41,17 @@
     distrobox
     sioyek
     anytype
+    helix-gpt
+    sops
+    anydesk
   ];
+  # systemd.user.services.helix-gpt = {
+  #   enable = true;
+  #   after = [ "network.target" ];
+  #   wantedBy = [ "default.target" ];
+  #   description = "Set Copilot API Key as Environment Variable";
+
+  # };
 
   # Additional syiokey keybindings
   programs.sioyek.bindings = {
@@ -47,11 +67,26 @@
     };
   };
 
-  # Install and configure services
-  # services = {
-  #   nextcloud-client = {
-  #     enable = true;
-  #     startInBackground = true;
+  # Configure helix-gpt using copilot api key from sops secrets (set in configuration.nix)
+  programs.helix.languages = {
+    language-server.gpt = (import ./home/helix-gpt-wrapper.nix { inherit pkgs; }).helix_lsp;
+    language = helixLanguages;
+  };
+  # Write copilot key to environment variable from secret
+  # systemd.user.services.sops-copilot-env = {
+  #   Unit = {
+  #     Description = "Set COPILOT_API_KEY from SOPS secret";
+  #   };
+  #   Install = {
+  #     After = [ "network.target" ];
+  #     WantedBy = [ "default.target" ];
+  #   };
+  #   Service = {
+  #     ExecStart = ''
+  #       ${pkgs.bash}/bin/bash -c \
+  #       key=$(${pkgs.coreutils}/bin/cat /run/secrets/helix_gpt_copilot_key) \
+  #       systemctl --user set-environment COPILOT_API_KEY="$key"
+  #     '';
   #   };
   # };
 

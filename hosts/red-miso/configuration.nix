@@ -67,6 +67,7 @@
     vim
     git
     podman-compose
+    nil
   ];
 
   # System fonts
@@ -98,6 +99,12 @@
       enable = true;
       setSocketVariable = true;
     };
+  };
+
+  # Read Copilot API Key from sops secrets and set it to environment variable
+  sops.secrets.helix_gpt_copilot_key = {
+    mode = "0400";
+    owner = userConfig.username;
   };
 
   # DO NOT CHANGE

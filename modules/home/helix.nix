@@ -1,5 +1,6 @@
 {
   config,
+  lib,
   pkgs,
   nix-colors,
   ...
@@ -11,6 +12,7 @@
   home.sessionVariables = {
     EDITOR = "hx";
   };
+
   programs.helix = {
     enable = true;
     settings = {
@@ -28,7 +30,7 @@
         };
       };
       # theme = "base16_custom";
-      theme = "catppuccin_latte";
+      theme = "nord";
     };
     languages = {
       language-server = {
@@ -39,39 +41,7 @@
         };
       };
       # Language Config
-      language = [
-        {
-          name = "nix";
-          auto-format = true;
-          formatter.command = "${pkgs.nixfmt-rfc-style}/bin/nixfmt";
-        }
-        {
-          name = "rust";
-          auto-format = true;
-        }
-        {
-          name = "haskell";
-          auto-format = true;
-          language-servers = [
-            "haskell-language-server"
-          ];
-        }
-        {
-          name = "python";
-          language-servers = [
-            "pyright"
-            "ruff"
-          ];
-          formatter = {
-            command = "ruff";
-            args = [
-              "format"
-              "-"
-            ];
-            auto-format = true;
-          };
-        }
-      ];
+      language = lib.mkDefault (import ./helix-languages.nix { inherit lib pkgs; }).languages;
     };
     # Base16 Theme
     themes = {
