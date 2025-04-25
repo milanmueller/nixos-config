@@ -5,6 +5,7 @@
   config,
   lib,
   pkgs,
+  userConfig,
   ...
 }:
 
@@ -13,7 +14,8 @@
     ./hardware-configuration.nix
     ../../modules/defaults.nix
     ../../modules/autopull.nix
-    ./web.nix
+    # ./web.nix
+    ./web
   ];
 
   # Use the extlinux boot loader. (NixOS wants to enable GRUB by default)
@@ -47,7 +49,10 @@
       dockerCompat = true;
       defaultNetwork.settings.dns_enabled = true;
     };
+    oci-containers.backend = "podman";
   };
+  # Allow default user to access podman
+  users.groups.podman.members = [ userConfig.username ];
 
   # DO NOT CHANGE For more information, see `man configuration.nix` or
   # https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
