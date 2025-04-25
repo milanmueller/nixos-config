@@ -56,6 +56,21 @@
             "haskell-language-server"
           ];
         }
+        {
+          name = "python";
+          language-servers = [
+            "pyright"
+            "ruff"
+          ];
+          formatter = {
+            command = "ruff";
+            args = [
+              "format"
+              "-"
+            ];
+            auto-format = true;
+          };
+        }
       ];
     };
     # Base16 Theme
