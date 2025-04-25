@@ -48,12 +48,12 @@
   };
 
   # Install and configure services
-  services = {
-    nextcloud-client = {
-      enable = true;
-      startInBackground = true;
-    };
-  };
+  # services = {
+  #   nextcloud-client = {
+  #     enable = true;
+  #     startInBackground = true;
+  #   };
+  # };
 
   # Set default applications
   xdg.mimeApps = {
