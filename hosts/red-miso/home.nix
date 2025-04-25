@@ -30,6 +30,7 @@
     thunderbird
     distrobox
     sioyek
+    anytype
   ];
 
   # Install and configure programs
