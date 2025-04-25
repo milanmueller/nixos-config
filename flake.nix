@@ -22,6 +22,10 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    crowdsec = {
+      url = "git+https://codeberg.org/kampka/nix-flake-crowdsec.git";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -33,6 +37,7 @@
       nix-colors,
       sops-nix,
       secrets,
+      crowdsec,
       # cosmic-themes-base16,
       ...
     }@inputs:
@@ -66,7 +71,7 @@
         gestaltzerfall = {
           inherit userConfig;
           system = "x86_64-linux";
-          extraModules = [ ];
+          extraModules = [ crowdsec.nixosModules.crowdsec ];
           extraInputs = { inherit nix-colors; };
         };
       };

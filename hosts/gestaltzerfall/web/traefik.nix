@@ -59,7 +59,7 @@ in
             tls.certResolver = "letsencrypt";
           };
           dashboard = {
-            rule = "Host(`traefik.milanmueller.de`) && PathPrefix(`/dashboard`)";
+            rule = "Host(`traefik.milanmueller.de`)";
             service = "api@internal";
             entryPoints = [ "websecure" ];
             tls.certResolver = "letsencrypt";
@@ -91,5 +91,4 @@ in
       };
     };
   };
-
 }

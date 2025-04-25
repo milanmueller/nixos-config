@@ -10,6 +10,7 @@ in
     ./traefik.nix
     ./authelia.nix
     ./ttyd.nix
+    ./crowdsec.nix
   ];
 
   # Open required firewall ports (include ssh here!)
