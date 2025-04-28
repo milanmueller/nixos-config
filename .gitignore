@@ -3,3 +3,4 @@ result
 .nix-defexpr
 .nix-gcroots
 .direnv
+.aider*

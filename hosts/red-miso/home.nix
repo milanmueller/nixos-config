@@ -1,8 +1,6 @@
 {
-  config,
   lib,
   pkgs,
-  userConfig,
   ...
 }:
 let
@@ -19,6 +17,30 @@ in
     ../../modules/home/defaults.nix
     # ../../lib/cosmic-config.nix
   ];
+
+  # Cosmic Testing
+  # programs.cosmic-themes-base16 = {
+  #   enable = true;
+  #   theme = {
+  #     mode = "dark"; # or "light"
+  #     base00 = "#181818"; # Background
+  #     base01 = "#282828"; # Lighter background
+  #     base02 = "#383838"; # Selection background
+  #     base03 = "#585858"; # Comments, invisibles
+  #     base04 = "#b8b8b8"; # Dark foreground
+  #     base05 = "#d8d8d8"; # Default foreground
+  #     base06 = "#e8e8e8"; # Light foreground
+  #     base07 = "#f8f8f8"; # Light background
+  #     base08 = "#ab4642"; # Red
+  #     base09 = "#dc9656"; # Orange
+  #     base0A = "#f7ca88"; # Yellow
+  #     base0B = "#a1b56c"; # Green
+  #     base0C = "#86c1b9"; # Cyan
+  #     base0D = "#7cafc2"; # Blue
+  #     base0E = "#ba8baf"; # Purple
+  #     base0F = "#a16946"; # Brown
+  #   };
+  # };
 
   ## Custom Cosmic Module (Just for testing for now)
   # cosmicTerm = {
@@ -44,14 +66,9 @@ in
     helix-gpt
     sops
     anydesk
+    claude-code
+    aider-chat
   ];
-  # systemd.user.services.helix-gpt = {
-  #   enable = true;
-  #   after = [ "network.target" ];
-  #   wantedBy = [ "default.target" ];
-  #   description = "Set Copilot API Key as Environment Variable";
-
-  # };
 
   # Additional syiokey keybindings
   programs.sioyek.bindings = {
@@ -72,23 +89,6 @@ in
     language-server.gpt = (import ./home/helix-gpt-wrapper.nix { inherit pkgs; }).helix_lsp;
     language = helixLanguages;
   };
-  # Write copilot key to environment variable from secret
-  # systemd.user.services.sops-copilot-env = {
-  #   Unit = {
-  #     Description = "Set COPILOT_API_KEY from SOPS secret";
-  #   };
-  #   Install = {
-  #     After = [ "network.target" ];
-  #     WantedBy = [ "default.target" ];
-  #   };
-  #   Service = {
-  #     ExecStart = ''
-  #       ${pkgs.bash}/bin/bash -c \
-  #       key=$(${pkgs.coreutils}/bin/cat /run/secrets/helix_gpt_copilot_key) \
-  #       systemctl --user set-environment COPILOT_API_KEY="$key"
-  #     '';
-  #   };
-  # };
 
   # Set default applications
   xdg.mimeApps = {

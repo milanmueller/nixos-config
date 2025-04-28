@@ -22,9 +22,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     cosmic-themes-base16 = {
-      # Use a local path relative to this flake.nix file
-      # Adjust the path if your local flake is located elsewhere.
-      url = "path:../cosmic-themes-base16";
+      url = "git+ssh://git@github.com/milanmueller/cosmic-themes-base16.git";
     };
   };
 

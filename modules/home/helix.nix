@@ -30,7 +30,7 @@
         };
       };
       # theme = "base16_custom";
-      theme = "nord";
+      theme = "catppuccin_latte";
     };
     languages = {
       language-server = {
