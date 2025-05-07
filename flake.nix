@@ -64,7 +64,7 @@
           extraModules = [ ];
           extraInputs = { inherit nix-colors; };
           hmModules = [ ];
-          hmExtraSpecialArgs = [ ];
+          hmExtraSpecialArgs = { };
         };
         odessa = {
           inherit userConfig;
@@ -72,7 +72,7 @@
           extraModules = [ ];
           extraInputs = { inherit nix-colors; };
           hmModules = [ ];
-          hmExtraSpecialArgs = [ ];
+          hmExtraSpecialArgs = { };
         };
         gestaltzerfall = {
           inherit userConfig;
@@ -80,7 +80,7 @@
           extraModules = [ crowdsec.nixosModules.crowdsec ];
           extraInputs = { inherit nix-colors; };
           hmModules = [ ];
-          hmExtraSpecialArgs = [ ];
+          hmExtraSpecialArgs = { };
         };
       };
       mkHost =
