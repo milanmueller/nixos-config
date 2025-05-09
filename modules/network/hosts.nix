@@ -21,4 +21,9 @@
     publicKey = "slv/TRkNYE1JVzwnXKslfI6h4T9uc352avOfVGbKnS8=";
     wireguardIp = "10.0.0.4";
   };
+  cafo = {
+    isCentral = true;
+    publicKey = "AP+XA3gLfC1Pt3X0MvrlL1SqTmC6fanOkMUVjlybC3Y=";
+    wireguardIp = "10.0.0.5";
+  };
 }

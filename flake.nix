@@ -82,6 +82,14 @@
           hmModules = [ ];
           hmExtraSpecialArgs = { };
         };
+        cafo = {
+          inherit userConfig;
+          system = "aarch64-linux";
+          extraModules = [ crowdsec.nixosModules.crowdsec ];
+          extraInputs = { inherit nix-colors; };
+          hmModules = [ ];
+          hmExtraSpecialArgs = { };
+        };
       };
       mkHost =
         name:
