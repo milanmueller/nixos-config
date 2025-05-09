@@ -23,6 +23,7 @@
     };
     cosmic-themes-base16 = {
       url = "git+ssh://git@github.com/milanmueller/cosmic-themes-base16.git";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
@@ -53,9 +54,8 @@
             nixos-cosmic.nixosModules.default
           ];
           extraInputs = { inherit nixos-cosmic nix-colors; };
-          hmModules = [ ];
+          hmModules = [ cosmic-themes-base16.homeManagerModules.default ];
           hmExtraSpecialArgs = {
-            cosmic-themes-base16 = cosmic-themes-base16.packages."x86_64-linux".cosmic-themes-base16;
           };
         };
         monomyth = {

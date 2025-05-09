@@ -15,12 +15,14 @@ in
 {
   imports = [
     ../../modules/home/defaults.nix
+    ./home/aider-wrapper.nix
+    ./home/aichat.nix
     # ../../lib/cosmic-config.nix
   ];
 
   # Cosmic Testing
   # programs.cosmic-themes-base16 = {
-  #   enable = true;
+  # enable = true;
   #   theme = {
   #     mode = "dark"; # or "light"
   #     base00 = "#181818"; # Background
@@ -63,11 +65,14 @@ in
     distrobox
     sioyek
     anytype
-    helix-gpt
+    # helix-gpt
     sops
     anydesk
     claude-code
     aider-chat
+    adwaita-fonts
+    lmstudio
+    aichat
   ];
 
   # Additional syiokey keybindings
@@ -85,10 +90,10 @@ in
   };
 
   # Configure helix-gpt using copilot api key from sops secrets (set in configuration.nix)
-  programs.helix.languages = {
-    language-server.gpt = (import ./home/helix-gpt-wrapper.nix { inherit pkgs; }).helix_lsp;
-    language = helixLanguages;
-  };
+  # programs.helix.languages = {
+  #   language-server.gpt = (import ./home/helix-gpt-wrapper.nix { inherit pkgs; }).helix_lsp;
+  #   language = helixLanguages;
+  # };
 
   # Set default applications
   xdg.mimeApps = {

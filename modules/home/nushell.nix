@@ -8,6 +8,7 @@
   programs.nushell = {
     enable = true;
     extraConfig = ''
+      $env.EDITOR = "hx"
       $env.config = {
         edit_mode: "vi",
         show_banner: false,
