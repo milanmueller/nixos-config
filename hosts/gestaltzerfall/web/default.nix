@@ -9,7 +9,7 @@ in
   imports = [
     ./traefik.nix
     ./authelia.nix
-    ./ttyd.nix
+    ../../../modules/web/ttyd.nix
     ./crowdsec.nix
   ];
 
