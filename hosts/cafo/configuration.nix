@@ -12,18 +12,22 @@
 {
   imports = [
     ./hardware-configuration.nix
+    ./disko.nix
     ../../modules/defaults.nix
     ../../modules/autopull.nix
     # ./web
   ];
 
-  # Use the extlinux boot loader. (NixOS wants to enable GRUB by default)
-  boot.loader.grub = {
-    enable = true;
-    device = "/dev/vda";
-  };
+  # Use the systemd-boot EFI boot loader.
+  boot.loader.grub.enable = false;
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.generic-extlinux-compatible.enable = true;
 
-  networking.hostId = "todo"; # required for zfs
+  # Enable ZFS for bootloader
+  boot.supportedFilesystems = [ "zfs" ];
+  boot.zfs.forceImportRoot = false;
+  networking.hostId = "8425e349"; # required for zfs
 
   # Configuration of sshd (enable remote connections)
   services.openssh = {
