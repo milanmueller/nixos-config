@@ -25,5 +25,7 @@
     isCentral = true;
     publicKey = "AP+XA3gLfC1Pt3X0MvrlL1SqTmC6fanOkMUVjlybC3Y=";
     wireguardIp = "10.0.0.5";
+    listenPort = 51821;
+    endpoint = "cafo.milanmueller.de:51821";
   };
 }
