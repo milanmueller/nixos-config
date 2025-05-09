@@ -13,6 +13,54 @@
   boot.kernelModules = [ ];
   boot.extraModulePackages = [ ];
 
+  fileSystems."/" =
+    { device = "zpool01/nixos/empty";
+      fsType = "zfs";
+    };
+
+  fileSystems."/boot" =
+    { device = "/dev/disk/by-uuid/A010-9FA9";
+      fsType = "vfat";
+      options = [ "fmask=0077" "dmask=0077" ];
+    };
+
+  fileSystems."/etc/nixos" =
+    { device = "zpool01/nixos/config";
+      fsType = "zfs";
+    };
+
+  fileSystems."/home" =
+    { device = "zpool01/nixos/home";
+      fsType = "zfs";
+    };
+
+  fileSystems."/mnt/user" =
+    { device = "zpool01/nixos/data";
+      fsType = "zfs";
+    };
+
+  fileSystems."/nix" =
+    { device = "zpool01/nixos/nix";
+      fsType = "zfs";
+    };
+
+  fileSystems."/persist" =
+    { device = "zpool01/nixos/persist";
+      fsType = "zfs";
+    };
+
+  fileSystems."/var/lib" =
+    { device = "zpool01/nixos/var/lib";
+      fsType = "zfs";
+    };
+
+  fileSystems."/var/log" =
+    { device = "zpool01/nixos/var/log";
+      fsType = "zfs";
+    };
+
+  swapDevices = [ ];
+
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
   # still possible to use this option, but it's recommended to use it in conjunction
