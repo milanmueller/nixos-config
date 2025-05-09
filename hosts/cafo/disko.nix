@@ -57,7 +57,7 @@
             type = "zfs_fs";
             options.mountpoint = "legacy";
             mountpoint = "/";
-            postCreateHook = "zfs snapshot rpool/nixos/empty@start";
+            postCreateHook = "zfs snapshot zpool01/nixos/empty@start";
           };
           "nixos/home" = {
             type = "zfs_fs";
