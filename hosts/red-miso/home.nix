@@ -3,15 +3,15 @@
   pkgs,
   ...
 }:
-let
-  helixLanguages = map (
-    option:
-    option
-    // {
-      language-servers = option.language-servers ++ [ "gpt" ];
-    }
-  ) (import ../../modules/home/helix-languages.nix { inherit lib pkgs; }).languages;
-in
+# let
+#   helixLanguages = map (
+#     option:
+#     option
+#     // {
+#       language-servers = option.language-servers ++ [ "gpt" ];
+#     }
+#   ) (import ../../modules/home/helix-languages.nix { inherit lib pkgs; }).languages;
+# in
 {
   imports = [
     ../../modules/home/defaults.nix
