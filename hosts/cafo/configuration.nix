@@ -57,6 +57,12 @@
   # Allow default user to access podman
   users.groups.podman.members = [ userConfig.username ];
 
+  # Rollback to initial root snapshot, based on https://grahamc.com/blog/erase-your-darlings/
+  # and https://notthebe.ee/blog/nixos-ephemeral-zfs-root/ (ephemeral root)
+  boot.initrd.postDeviceCommands = lib.mkAfter ''
+    zfs rollback -r zpool01/nixos/empty@start
+  '';
+
   # DO NOT CHANGE For more information, see `man configuration.nix` or
   # https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
   system.stateVersion = "24.11"; # Did you read the comment?

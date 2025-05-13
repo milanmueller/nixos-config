@@ -18,12 +18,19 @@ let
     presharedKeyFile = config.sops.secrets."wireguard/psk".path;
     allowedIPs = [ "${host.wireguardIp}/32" ];
   };
+  mkCentralPeer = host: {
+    publicKey = host.publicKey;
+    presharedKeyFile = config.sops.secrets."wireguard/psk".path;
+    allowedIPs = [ subnet ];
+    endpoint = host.endpoint;
+    persistentKeepalive = 25;
+  };
 
   # Central node peer list (all other hosts)
   centralPeers = lib.filterAttrs (name: host: name != hostName && !host.isCentral) hosts;
 
   # Client peer configuration (only the central node)
-  centralNode = lib.findFirst (host: host.isCentral) null (lib.attrValues hosts);
+  centralNodes = lib.filterAttrs (name: host: name != hostName && host.isCentral) hosts;
 in
 {
   # SOPS secrets
@@ -44,16 +51,17 @@ in
         # Central node: peers are all clients
         map mkPeer (lib.attrValues centralPeers)
       else
-        # Client: peer is the central node
-        [
-          {
-            publicKey = centralNode.publicKey;
-            presharedKeyFile = config.sops.secrets."wireguard/psk".path;
-            allowedIPs = [ subnet ];
-            endpoint = centralNode.endpoint;
-            persistentKeepalive = 25;
-          }
-        ];
+        map mkCentralPeer (lib.attrValues centralNodes);
+    # Client: peer is the central node
+    # [
+    #   {
+    #     publicKey = centralNode.publicKey;
+    #     presharedKeyFile = config.sops.secrets."wireguard/psk".path;
+    #     allowedIPs = [ subnet ];
+    #     endpoint = centralNode.endpoint;
+    #     persistentKeepalive = 25;
+    #   }
+    # ];
   };
 
   # Central node specific settings
