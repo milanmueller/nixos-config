@@ -20,9 +20,9 @@
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.grub.enable = false;
-  # boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.generic-extlinux-compatible.enable = true;
+  # boot.loader.generic-extlinux-compatible.enable = true;
 
   # Enable ZFS for bootloader
   boot.supportedFilesystems = [ "zfs" ];
