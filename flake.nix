@@ -25,10 +25,10 @@
       url = "git+ssh://git@github.com/milanmueller/cosmic-themes-base16.git";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    disko = {
-      url = "github:nix-community/disko/latest";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # disko = {
+    #   url = "github:nix-community/disko/latest";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
   };
 
   outputs =
@@ -42,7 +42,7 @@
       secrets,
       crowdsec,
       cosmic-themes-base16,
-      disko,
+      # disko,
       ...
     }:
     let
@@ -90,9 +90,9 @@
         cafo = {
           inherit userConfig;
           system = "aarch64-linux";
-          extraModules = [ 
-            crowdsec.nixosModules.crowdsec 
-            disko.nixosModules.disko
+          extraModules = [
+            crowdsec.nixosModules.crowdsec
+            # disko.nixosModules.disko
           ];
           extraInputs = { inherit nix-colors; };
           hmModules = [ ];

@@ -12,7 +12,7 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ./disko.nix
+    # ./disko.nix
     ../../modules/defaults.nix
     ../../modules/autopull.nix
     # ./web
