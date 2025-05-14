@@ -2,14 +2,14 @@
   config,
   pkgs,
   lib,
-  params,
+  webParams,
   ...
 }:
 {
   ## ttyd (Terminal in Browser)
   services.ttyd = {
     enable = true;
-    port = params.internalPorts.ttyd;
+    port = webParams.internalPorts.ttyd;
     interface = "0.0.0.0";
     writeable = true;
     enableIPv6 = true;

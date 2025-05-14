@@ -3,14 +3,14 @@
   pkgs,
   webdata,
   internalPorts,
-  params,
+  webParams,
   ...
 }:
 {
   # Traefik Config
   services.traefik = {
     enable = true;
-    dataDir = "${params.webdata}/traefik";
+    dataDir = "${webParams.webdata}/traefik";
     staticConfigOptions = {
       global = {
         checkNewVersion = false;
@@ -66,16 +66,18 @@
         };
         services = {
           ttyd = {
-            loadBalancer.servers = [ { url = "http://localhost:${toString params.internalPorts.ttyd}"; } ];
+            loadBalancer.servers = [ { url = "http://localhost:${toString webParams.internalPorts.ttyd}"; } ];
           };
           authelia = {
-            loadBalancer.servers = [ { url = "http://localhost:${toString params.internalPorts.authelia}"; } ];
+            loadBalancer.servers = [
+              { url = "http://localhost:${toString webParams.internalPorts.authelia}"; }
+            ];
           };
         };
         middlewares = {
           authelia = {
             forwardAuth = {
-              address = "http://localhost:${toString params.internalPorts.authelia}/api/verify?rd=https://auth.milanmueller.de";
+              address = "http://localhost:${toString webParams.internalPorts.authelia}/api/verify?rd=https://auth.milanmueller.de";
               trustForwardHeader = true;
               authResponseHeaders = [
                 "Remote-User"

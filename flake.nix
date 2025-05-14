@@ -83,7 +83,10 @@
           inherit userConfig;
           system = "x86_64-linux";
           extraModules = [ crowdsec.nixosModules.crowdsec ];
-          extraInputs = { inherit nix-colors; };
+          extraInputs = {
+            inherit nix-colors;
+            webParams = import hosts/gestaltzerfall/web/parameters.nix;
+          };
           hmModules = [ ];
           hmExtraSpecialArgs = { };
         };
@@ -94,7 +97,10 @@
             crowdsec.nixosModules.crowdsec
             # disko.nixosModules.disko
           ];
-          extraInputs = { inherit nix-colors; };
+          extraInputs = {
+            inherit nix-colors;
+            webParams = import hosts/cafo/web/parameters.nix;
+          };
           hmModules = [ ];
           hmExtraSpecialArgs = { };
         };

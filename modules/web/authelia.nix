@@ -3,17 +3,20 @@
   config,
   pkgs,
   lib,
-  params,
+  webParams,
   ...
 }:
+let
+  autheliaSysUser = "authelia";
+in
 {
   # Sops secrets
   sops.secrets."authelia/jwt_secret" = {
-    owner = params.autheliaSysUser;
+    owner = autheliaSysUser;
     mode = "0400";
   };
   sops.secrets."authelia/storage_secret" = {
-    owner = params.autheliaSysUser;
+    owner = autheliaSysUser;
     mode = "0400";
   };
   sops.secrets."authelia/admin_pw" = { };
@@ -24,20 +27,20 @@
   sops.secrets."authelia/duo/api_hostname" = { };
   sops.secrets."authelia/duo/integration_key" = { };
   sops.secrets."authelia/duo/secret_key" = { };
-  users.groups.${params.webdataSysGroup} = { };
-  users.users.${params.autheliaSysUser} = {
+  users.groups.${webParams.webdataSysGroup} = { };
+  users.users.${autheliaSysUser} = {
     isSystemUser = true;
-    group = params.webdataSysGroup;
+    group = webParams.webdataSysGroup;
   };
   # Authelia Container
   virtualisation.oci-containers.containers."authelia" = {
     image = "authelia/authelia:latest";
     # user = "${autheliaSysUser}:${webdataSysGroup}";
     ports = [
-      "${toString params.internalPorts.authelia}:${toString params.internalPorts.authelia}"
+      "${toString webParams.internalPorts.authelia}:${toString webParams.internalPorts.authelia}"
     ];
     volumes = [
-      "${params.webdata}/authelia/data:/data"
+      "${webParams.webdata}/authelia/data:/data"
       "/etc/authelia/:/config"
       "${config.sops.secrets."authelia/jwt_secret".path}:/secrets/JWT_SECRET:ro"
       "${config.sops.secrets."authelia/storage_secret".path}:/secrets/STORAGE_SECRET:ro"
@@ -79,7 +82,7 @@
                 groups: []
             EOF
             chmod 0400 /etc/authelia/users_database.yml
-            chown ${params.autheliaSysUser}:${params.webdataSysGroup} /etc/authelia/users_database.yml
+            chown ${autheliaSysUser}:${webParams.webdataSysGroup} /etc/authelia/users_database.yml
           '';
         in
         "${pkgs.bash}/bin/bash ${script}";
@@ -109,7 +112,7 @@
             cat <<EOF > /etc/authelia/configuration.yml
             server:
               address:
-                'tcp://:${toString params.internalPorts.authelia}'
+                'tcp://:${toString webParams.internalPorts.authelia}'
             log:
               level: 'debug'
             authentication_backend:
@@ -142,7 +145,7 @@
               enable_self_enrollment: false                  
             EOF
             chmod 0400 /etc/authelia/configuration.yml
-            chown ${params.autheliaSysUser}:${params.webdataSysGroup} /etc/authelia/configuration.yml
+            chown ${autheliaSysUser}:${webParams.webdataSysGroup} /etc/authelia/configuration.yml
           '';
         in
         "${pkgs.bash}/bin/bash ${script}";
