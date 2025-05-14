@@ -2,11 +2,9 @@
   config,
   pkgs,
   lib,
+  params,
   ...
 }:
-let
-  params = import ./parameters.nix;
-in
 {
   ## ttyd (Terminal in Browser)
   services.ttyd = {

@@ -3,11 +3,9 @@
   config,
   pkgs,
   lib,
+  params,
   ...
 }:
-let
-  params = import ./parameters.nix;
-in
 {
   # Sops secrets
   sops.secrets."authelia/jwt_secret" = {

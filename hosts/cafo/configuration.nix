@@ -15,7 +15,7 @@
     # ./disko.nix
     ../../modules/defaults.nix
     ../../modules/autopull.nix
-    # ./web
+    ./web
   ];
 
   # Use the systemd-boot EFI boot loader.

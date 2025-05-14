@@ -3,11 +3,9 @@
   pkgs,
   webdata,
   internalPorts,
+  params,
   ...
 }:
-let
-  params = import ./parameters.nix;
-in
 {
   # Traefik Config
   services.traefik = {

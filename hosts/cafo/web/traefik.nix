@@ -6,7 +6,7 @@
   ...
 }:
 let
-  params = import ./parameters.nix;
+  params = import ../../../modules/web/parameters.nix;
 in
 {
   # Traefik Config
