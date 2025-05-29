@@ -7,10 +7,10 @@ let
 in
 {
   imports = [
-    ./traefik.nix
-    ./authelia.nix
+    ../../../modules/web/traefik.nix
+    ../../../modules/web/authelia.nix
     ../../../modules/web/ttyd.nix
-    ./crowdsec.nix
+    # ../../../modules/web/crowdsec.nix
   ];
 
   # Open required firewall ports (include ssh here!)

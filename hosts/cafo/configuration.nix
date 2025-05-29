@@ -15,7 +15,7 @@
     # ./disko.nix
     ../../modules/defaults.nix
     ../../modules/autopull.nix
-    ./web
+    # ./web
   ];
 
   # Use the systemd-boot EFI boot loader.
@@ -28,6 +28,7 @@
   boot.supportedFilesystems = [ "zfs" ];
   boot.zfs.forceImportRoot = false;
   networking.hostId = "8425e349"; # required for zfs
+  # networking.interfaces.ensp1s0.useDHCP = true;
 
   # Configuration of sshd (enable remote connections)
   services.openssh = {
@@ -62,6 +63,31 @@
   boot.initrd.postDeviceCommands = lib.mkAfter ''
     zfs rollback -r zpool01/nixos/empty@start
   '';
+
+  # Apparently, Public IPv6 address needs to be set manually on hetzner servers
+  # networking.interfaces.enp1s0 = {
+  #   ipv4.addresses = [
+  #     {
+  #       address = "142.132.225.102";
+  #       prefixLength = 32;
+  #     }
+  #   ];
+  #   ipv6.addresses = [
+  #     {
+  #       address = "2a01:4f8:c012:d3ef::1";
+  #       prefixLength = 64;
+  #     }
+  #   ];
+  # };
+  # networking.defaultGateway = "172.31.1.1";
+  # networking.nameservers = [
+  #   "185.12.64.2"
+  #   "185.12.64.1"
+  # ];
+  # networking.defaultGateway6 = {
+  #   address = "fe80::1";
+  #   interface = "enp1s0";
+  # };
 
   # DO NOT CHANGE For more information, see `man configuration.nix` or
   # https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
