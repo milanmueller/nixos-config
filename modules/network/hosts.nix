@@ -1,11 +1,11 @@
 {
-  gestaltzerfall = {
-    isCentral = true;
-    publicKey = "ncqC+A6mI3xgCAL2qaRyh9TaegOdR+79IXinVZI92zU=";
-    wireguardIp = "10.0.0.1";
-    listenPort = 51820;
-    endpoint = "gestaltzerfall.milanmueller.de:51820";
-  };
+  # gestaltzerfall = {
+  #   isCentral = true;
+  #   publicKey = "ncqC+A6mI3xgCAL2qaRyh9TaegOdR+79IXinVZI92zU=";
+  #   wireguardIp = "10.0.0.1";
+  #   listenPort = 51820;
+  #   endpoint = "gestaltzerfall.milanmueller.de:51820";
+  # };
   red-miso = {
     isCentral = false;
     publicKey = "Ldjrlw8bcEPZ+QCD0NpRnLk8676oHL1qgb/mXaEO7nI=";

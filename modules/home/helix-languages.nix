@@ -22,7 +22,7 @@
     {
       name = "python";
       language-servers = [
-        "pyright"
+        "pylsp"
         "ruff"
       ];
       formatter = {
@@ -35,4 +35,11 @@
       };
     }
   ];
+  language-server = {
+    pylsp.config.pylsp.plugins.pylsp_mypy = {
+      enabled = true;
+      live_mode = true;
+      strict = true;
+    };
+  };
 }

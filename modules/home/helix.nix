@@ -34,15 +34,9 @@
       theme = "catppuccin_latte";
     };
     languages = {
-      language-server = {
-        # Language Servers
-        haskell-language-server = {
-          command = "haskell-language-server-wrapper";
-          args = [ "--lsp" ];
-        };
-      };
       # Language Config
       language = lib.mkDefault (import ./helix-languages.nix { inherit lib pkgs; }).languages;
+      language-server = (import ./helix-languages.nix { inherit lib pkgs; }).language-server;
     };
     # Base16 Theme
     themes = {

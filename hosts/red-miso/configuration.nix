@@ -17,6 +17,9 @@
     ../../modules/sshd.nix
   ];
 
+  # Thunderbolt
+  services.hardware.bolt.enable = true;
+
   # Audio
   services.pulseaudio.enable = false;
   security.rtkit.enable = true;

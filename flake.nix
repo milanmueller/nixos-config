@@ -8,10 +8,6 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nixos-cosmic = {
-      url = "github:lilyinstarlight/nixos-cosmic";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     secrets.url = "git+ssh://git@github.com/milanmueller/nixos-secrets.git";
     sops-nix = {
       url = "github:Mic92/sops-nix";
@@ -22,27 +18,20 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     cosmic-themes-base16 = {
-      url = "git+ssh://git@github.com/milanmueller/cosmic-themes-base16.git";
+      url = "github:milanmueller/cosmic-themes-base16";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # disko = {
-    #   url = "github:nix-community/disko/latest";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
   };
 
   outputs =
     {
       nixpkgs,
       home-manager,
-      nixos-cosmic,
-      # flatpaks,
       nix-colors,
       sops-nix,
       secrets,
       crowdsec,
       cosmic-themes-base16,
-      # disko,
       ...
     }:
     let
@@ -55,11 +44,11 @@
         red-miso = {
           inherit userConfig;
           system = "x86_64-linux";
-          extraModules = [
-            nixos-cosmic.nixosModules.default
+          extraModules = [ ];
+          extraInputs = { inherit nix-colors; };
+          hmModules = [
+            cosmic-themes-base16.homeManagerModules.default
           ];
-          extraInputs = { inherit nixos-cosmic nix-colors; };
-          hmModules = [ cosmic-themes-base16.homeManagerModules.default ];
           hmExtraSpecialArgs = {
           };
         };

@@ -3,26 +3,15 @@
   pkgs,
   ...
 }:
-# let
-#   helixLanguages = map (
-#     option:
-#     option
-#     // {
-#       language-servers = option.language-servers ++ [ "gpt" ];
-#     }
-#   ) (import ../../modules/home/helix-languages.nix { inherit lib pkgs; }).languages;
-# in
 {
   imports = [
     ../../modules/home/defaults.nix
-    ./home/aider-wrapper.nix
-    ./home/aichat.nix
     # ../../lib/cosmic-config.nix
   ];
 
   # Cosmic Testing
   # programs.cosmic-themes-base16 = {
-  # enable = true;
+  #   enable = true;
   #   theme = {
   #     mode = "dark"; # or "light"
   #     base00 = "#181818"; # Background
@@ -44,12 +33,6 @@
   #   };
   # };
 
-  ## Custom Cosmic Module (Just for testing for now)
-  # cosmicTerm = {
-  #   enable = true;
-  #   fontSize = 16;
-  # };
-
   # direnv #TODO: move out of here
   programs.direnv = {
     enable = true;
@@ -65,14 +48,12 @@
     distrobox
     sioyek
     anytype
-    # helix-gpt
     sops
     anydesk
-    claude-code
-    aider-chat
     adwaita-fonts
-    lmstudio
-    aichat
+    zola
+    gnome-boxes
+    mission-center
   ];
 
   # Additional syiokey keybindings
