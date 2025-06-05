@@ -5,6 +5,7 @@
 {
   pkgs,
   userConfig,
+  lib,
   ...
 }:
 
@@ -70,6 +71,7 @@
     git
     podman-compose
     nil
+    home-manager
   ];
 
   # System fonts

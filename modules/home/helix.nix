@@ -6,9 +6,6 @@
   ...
 }:
 {
-  imports = [
-    ./colors.nix # requires colors for custom theme
-  ];
   home.sessionVariables = {
     EDITOR = "hx";
   };
@@ -29,9 +26,9 @@
           skip-levels = 0;
         };
       };
-      # theme = "base16_custom";
+      theme = "base16_custom";
       # theme = "nord";
-      theme = "catppuccin_latte";
+      # theme = "catppuccin_latte";
     };
     languages = {
       # Language Config
@@ -347,7 +344,6 @@
         };
 
         "palette" = {
-
           bg0 = "#${config.colorScheme.palette.base00}"; # main background
           bg0_s = "#${config.colorScheme.palette.base01}";
           bg1 = "#${config.colorScheme.palette.base01}";

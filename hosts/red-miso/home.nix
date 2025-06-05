@@ -6,32 +6,9 @@
 {
   imports = [
     ../../modules/home/defaults.nix
-    # ../../lib/cosmic-config.nix
+    ./home/cosmic-config.nix
+    ./home/dark-light-toggle.nix
   ];
-
-  # Cosmic Testing
-  # programs.cosmic-themes-base16 = {
-  #   enable = true;
-  #   theme = {
-  #     mode = "dark"; # or "light"
-  #     base00 = "#181818"; # Background
-  #     base01 = "#282828"; # Lighter background
-  #     base02 = "#383838"; # Selection background
-  #     base03 = "#585858"; # Comments, invisibles
-  #     base04 = "#b8b8b8"; # Dark foreground
-  #     base05 = "#d8d8d8"; # Default foreground
-  #     base06 = "#e8e8e8"; # Light foreground
-  #     base07 = "#f8f8f8"; # Light background
-  #     base08 = "#ab4642"; # Red
-  #     base09 = "#dc9656"; # Orange
-  #     base0A = "#f7ca88"; # Yellow
-  #     base0B = "#a1b56c"; # Green
-  #     base0C = "#86c1b9"; # Cyan
-  #     base0D = "#7cafc2"; # Blue
-  #     base0E = "#ba8baf"; # Purple
-  #     base0F = "#a16946"; # Brown
-  #   };
-  # };
 
   # direnv #TODO: move out of here
   programs.direnv = {

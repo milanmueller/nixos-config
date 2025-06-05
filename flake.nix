@@ -17,10 +17,6 @@
       url = "git+https://codeberg.org/kampka/nix-flake-crowdsec.git";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    cosmic-themes-base16 = {
-      url = "github:milanmueller/cosmic-themes-base16";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs =
@@ -31,7 +27,6 @@
       sops-nix,
       secrets,
       crowdsec,
-      cosmic-themes-base16,
       ...
     }:
     let
@@ -47,7 +42,6 @@
           extraModules = [ ];
           extraInputs = { inherit nix-colors; };
           hmModules = [
-            cosmic-themes-base16.homeManagerModules.default
           ];
           hmExtraSpecialArgs = {
           };
@@ -84,7 +78,6 @@
           system = "aarch64-linux";
           extraModules = [
             crowdsec.nixosModules.crowdsec
-            # disko.nixosModules.disko
           ];
           extraInputs = {
             inherit nix-colors;
