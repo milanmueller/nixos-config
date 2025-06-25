@@ -77,13 +77,17 @@
   # System fonts
   fonts.packages = with pkgs; [
     nerd-fonts.jetbrains-mono
+    ubuntu_font_family
   ];
 
   # User Programs
   programs.firefox.enable = true;
 
   # Cosmic DE
-  services.desktopManager.cosmic.enable = true;
+  services.desktopManager.cosmic = {
+    enable = true;
+    xwayland.enable = true;
+  };
   services.displayManager.cosmic-greeter.enable = true;
 
   # Services

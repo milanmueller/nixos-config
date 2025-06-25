@@ -27,10 +27,13 @@
     anytype
     sops
     anydesk
-    adwaita-fonts
     zola
     gnome-boxes
     mission-center
+    mpv
+    papers
+    blanket
+    gnome-solanum
   ];
 
   # Additional syiokey keybindings
