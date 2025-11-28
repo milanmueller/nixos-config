@@ -3,6 +3,9 @@
   pkgs,
   ...
 }:
+let
+  proton-authenticator = pkgs.callPackage ../../overlays/proton-authenticator.nix { };
+in
 {
   imports = [
     ../../modules/home/defaults.nix
@@ -27,13 +30,16 @@
     anytype
     sops
     anydesk
-    zola
-    gnome-boxes
     mission-center
     mpv
     papers
-    blanket
-    gnome-solanum
+    gemini-cli
+    lsp-ai
+    ollama
+    proton-authenticator
+    wl-clipboard-x11
+    zoom-us
+    delta
   ];
 
   # Additional syiokey keybindings
@@ -49,12 +55,6 @@
       "should_launch_new_window" = "1";
     };
   };
-
-  # Configure helix-gpt using copilot api key from sops secrets (set in configuration.nix)
-  # programs.helix.languages = {
-  #   language-server.gpt = (import ./home/helix-gpt-wrapper.nix { inherit pkgs; }).helix_lsp;
-  #   language = helixLanguages;
-  # };
 
   # Set default applications
   xdg.mimeApps = {

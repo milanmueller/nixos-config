@@ -21,25 +21,17 @@
     }
     {
       name = "python";
-      language-servers = [
-        "pylsp"
-        "ruff"
+      roots = [
+        "pyproject.toml"
+        ".git"
       ];
-      formatter = {
-        command = "ruff";
-        args = [
-          "format"
-          "-"
-        ];
-        auto-format = true;
-      };
     }
   ];
   language-server = {
-    pylsp.config.pylsp.plugins.pylsp_mypy = {
-      enabled = true;
-      live_mode = true;
-      strict = true;
+    haskell-language-server = {
+      config = {
+        formattingProvider = "fourmolu";
+      };
     };
   };
 }

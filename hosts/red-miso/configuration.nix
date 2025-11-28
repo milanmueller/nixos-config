@@ -31,12 +31,15 @@
     pulse.enable = true;
   };
 
+  services.flatpak.enable = true;
+
   # Video encoding
   hardware.graphics = {
     enable = true;
     extraPackages = with pkgs; [
-      intel-media-driver
-      libvdpau-va-gl
+      # intel-media-driver
+      # libvdpau-va-gl
+      vpl-gpu-rt
     ];
   };
   environment.sessionVariables = {
@@ -72,12 +75,13 @@
     podman-compose
     nil
     home-manager
+    intel-compute-runtime
   ];
 
   # System fonts
   fonts.packages = with pkgs; [
     nerd-fonts.jetbrains-mono
-    ubuntu_font_family
+    ubuntu-classic
   ];
 
   # User Programs

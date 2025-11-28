@@ -26,9 +26,10 @@
           skip-levels = 0;
         };
       };
-      theme = "base16_custom";
+      # theme = "base16_custom";
       # theme = "nord";
-      # theme = "catppuccin_latte";
+      theme = "catppuccin_latte";
+      # theme = "catppuccin_mocha";
     };
     languages = {
       # Language Config
