@@ -42,7 +42,7 @@
     };
   };
 
-  # Enable fail2ban for gestaltzerfall, since it is publicly reachable
+  # Enable fail2ban since cafo is publicly reachable
   services.fail2ban.enable = true;
 
   # Enable Podman

@@ -1,11 +1,7 @@
 {
-  lib,
   pkgs,
   ...
 }:
-let
-  proton-authenticator = pkgs.callPackage ../../overlays/proton-authenticator.nix { };
-in
 {
   imports = [
     ../../modules/home/defaults.nix
@@ -13,10 +9,16 @@ in
     ./home/dark-light-toggle.nix
   ];
 
+  programs.ssh = {
+    extraConfig = "
+      SendEnv COLORTERM
+    ";
+  };
+
   # direnv #TODO: move out of here
   programs.direnv = {
     enable = true;
-    enableNushellIntegration = true;
+    enableZshIntegration = true;
     nix-direnv.enable = true;
   };
 
@@ -27,20 +29,50 @@ in
     thunderbird
     distrobox
     sioyek
-    anytype
     sops
     anydesk
     mission-center
     mpv
     papers
-    gemini-cli
-    lsp-ai
-    ollama
-    proton-authenticator
     wl-clipboard-x11
     zoom-us
     delta
+    remmina
+    signal-desktop
+    telegram-desktop
+    zed-editor
+    claude-code
+    nixd
   ];
+
+  # Configure zed editor
+  programs.zed-editor = {
+    enable = true;
+    extensions = [
+      "nix"
+      "helix_mode"
+      "codebook"
+    ];
+    userSettings = {
+      theme = {
+        mode = "system";
+        dark = "Catppuccin Mocha";
+        light = "Catppuccin Latte";
+      };
+      helix_mode = true;
+      terminal = {
+        font_family = "JetBrainsMono Nerd Font Mono";
+        shell = "system";
+      };
+      relative_line_numbers = true;
+      buffer_font_family = "JetBrainsMono Nerd Font Mono";
+    };
+  };
+
+  # Set environnment variables
+  home.sessionVariables = {
+    ISABELLE_HOME = "/home/milan/.isabelle";
+  };
 
   # Additional syiokey keybindings
   programs.sioyek.bindings = {

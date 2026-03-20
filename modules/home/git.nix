@@ -6,7 +6,7 @@
     settings = {
       user = {
         name = "Milan Müller";
-        mail = "development@milanmueller.de";
+        email = "development@milanmueller.de";
       };
       core.pager = "delta";
 

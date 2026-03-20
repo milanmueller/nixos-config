@@ -54,25 +54,6 @@
           hmModules = [ ];
           hmExtraSpecialArgs = { };
         };
-        odessa = {
-          inherit userConfig;
-          system = "aarch64-linux";
-          extraModules = [ ];
-          extraInputs = { inherit nix-colors; };
-          hmModules = [ ];
-          hmExtraSpecialArgs = { };
-        };
-        gestaltzerfall = {
-          inherit userConfig;
-          system = "x86_64-linux";
-          extraModules = [ crowdsec.nixosModules.crowdsec ];
-          extraInputs = {
-            inherit nix-colors;
-            webParams = import hosts/gestaltzerfall/web/parameters.nix;
-          };
-          hmModules = [ ];
-          hmExtraSpecialArgs = { };
-        };
         cafo = {
           inherit userConfig;
           system = "aarch64-linux";
@@ -111,15 +92,19 @@
               home-manager.users.${userConfig.username}.imports = [
                 hosts/${name}/home.nix
                 nix-colors.homeManagerModules.default
-              ] ++ hmModules;
+              ]
+              ++ hmModules;
               home-manager.extraSpecialArgs = {
                 inherit nix-colors userConfig;
-              } // hmExtraSpecialArgs;
+              }
+              // hmExtraSpecialArgs;
             }
-          ] ++ extraModules;
+          ]
+          ++ extraModules;
           specialArgs = {
             inherit userConfig;
-          } // extraInputs;
+          }
+          // extraInputs;
         };
       supportedSystems = [
         "x86_64-linux"
@@ -131,6 +116,7 @@
           system:
           f {
             pkgs = import nixpkgs {
+              config.allowUnfree = true;
               inherit system;
             };
           }
@@ -141,13 +127,10 @@
       devShells = forEachSupportedSystem (
         { pkgs }:
         {
-          default = pkgs.mkShell {
-            buildInput = [
-              pkgs.nushell
-            ];
+          default = pkgs.mkShellNoCC {
+            # packages = with pkgs; [
+            # ];
             shellHook = ''
-              export SHELL=${pkgs.nushell}/bin/nu
-
               # Welcome message
               echo "Welcome to the NixOS config environment"
             '';

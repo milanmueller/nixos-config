@@ -9,7 +9,7 @@
     colorScheme = lib.mkForce nix-colors.colorSchemes.dracula;
   };
   home.packages = with pkgs; [
-    (hiPrio (writeShellApplication {
+    (lib.hiPrio (writeShellApplication {
       name = "toggle-theme";
       runtimeInputs = with pkgs; [
         home-manager

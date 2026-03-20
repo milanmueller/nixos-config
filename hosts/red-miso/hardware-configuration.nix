@@ -4,7 +4,7 @@
 {
   config,
   lib,
-  pkgs,
+  # pkgs,
   modulesPath,
   ...
 }:
@@ -30,7 +30,8 @@
     fsType = "ext4";
   };
 
-  boot.initrd.luks.devices."luks-f1cca18e-753b-4273-b084-902dd5c821bc".device = "/dev/disk/by-uuid/f1cca18e-753b-4273-b084-902dd5c821bc";
+  boot.initrd.luks.devices."luks-f1cca18e-753b-4273-b084-902dd5c821bc".device =
+    "/dev/disk/by-uuid/f1cca18e-753b-4273-b084-902dd5c821bc";
 
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/0724-B668";
