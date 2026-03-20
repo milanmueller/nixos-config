@@ -28,8 +28,8 @@
       };
       # theme = "base16_custom";
       # theme = "nord";
-      theme = "catppuccin_latte";
-      # theme = "catppuccin_mocha";
+      # theme = "catppuccin_latte";
+      theme = "catppuccin_mocha";
     };
     languages = {
       # Language Config

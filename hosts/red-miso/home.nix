@@ -5,8 +5,8 @@
 {
   imports = [
     ../../modules/home/defaults.nix
-    ./home/cosmic-config.nix
     ./home/dark-light-toggle.nix
+    ./home/cosmic-config.nix
   ];
 
   programs.ssh = {

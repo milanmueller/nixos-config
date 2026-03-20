@@ -1,24 +1,47 @@
 {
   pkgs,
-  lib,
-  nix-colors,
+  config,
   ...
 }:
+let
+  # State file location
+  stateFile = "${config.home.homeDirectory}/.config/theme-mode";
+in
 {
-  specialisation.dark-theme.configuration = {
-    colorScheme = lib.mkForce nix-colors.colorSchemes.dracula;
-  };
+  # Toggle script to switch between themes
   home.packages = with pkgs; [
-    (lib.hiPrio (writeShellApplication {
+    (writeShellApplication {
       name = "toggle-theme";
-      runtimeInputs = with pkgs; [
-        home-manager
-        coreutils
-        ripgrep
-      ];
+      runtimeInputs = [ coreutils ];
       text = ''
-        "$(home-manager generations | head -2 | tail -1 | rg -o '/[^ ]*')"/activate
+        STATE_FILE="${stateFile}"
+
+        # Create config dir if it doesn't exist
+        mkdir -p "$(dirname "$STATE_FILE")"
+
+        # Read current theme or default to light
+        if [ -f "$STATE_FILE" ]; then
+          CURRENT=$(cat "$STATE_FILE" | tr -d '[:space:]')
+        else
+          CURRENT="light"
+        fi
+
+        # Toggle theme
+        if [ "$CURRENT" = "light" ]; then
+          NEW_MODE="dark"
+          echo "Switching to dark theme..."
+        else
+          NEW_MODE="light"
+          echo "Switching to light theme..."
+        fi
+
+        # Write new mode to state file (no newline, just the mode)
+        echo -n "$NEW_MODE" > "$STATE_FILE"
+
+        # Rebuild NixOS configuration
+        echo "Rebuilding system configuration..."
+        sudo nixos-rebuild switch
       '';
-    }))
+    })
   ];
 }

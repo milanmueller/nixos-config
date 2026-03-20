@@ -1,6 +1,7 @@
 {
   description = "NixOS configuration";
   inputs = {
+    self.submodules = true;
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     flatpaks.url = "github:gmodena/nix-flatpak/?ref=v0.4.1";
     nix-colors.url = "github:misterio77/nix-colors";
@@ -39,9 +40,22 @@
         red-miso = {
           inherit userConfig;
           system = "x86_64-linux";
-          extraModules = [ ];
+          extraModules = [
+            # Apply cosmic-themes-base16 overlay
+            (
+              { config, pkgs, ... }:
+              {
+                nixpkgs.overlays = [
+                  (final: prev: {
+                    cosmic-themes-base16 = prev.callPackage ./overlays/cosmic-themes-base16 { };
+                  })
+                ];
+              }
+            )
+          ];
           extraInputs = { inherit nix-colors; };
           hmModules = [
+            ./overlays/cosmic-themes-base16/home-manager-module.nix
           ];
           hmExtraSpecialArgs = {
           };
