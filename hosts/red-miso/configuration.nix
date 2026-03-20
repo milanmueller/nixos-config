@@ -26,9 +26,6 @@
     }
   ];
 
-  # Enable Tailscale
-  services.tailscale.enable = true;
-
   # Thunderbolt
   services.hardware.bolt.enable = true;
 

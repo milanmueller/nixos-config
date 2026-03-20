@@ -1,5 +1,4 @@
 {
-  config,
   pkgs,
   userConfig,
   ...
@@ -7,14 +6,15 @@
 {
   imports = [
     ./i18n.nix
-    # ./zerotier.nix
-    ./network/wireguard.nix
     ./home-manager.nix
     ./nix-settings.nix
     # ./sshd.nix
   ];
   # Networking
   networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
+
+  # Enable Tailscale to connect devices
+  services.tailscale.enable = true;
 
   # Sudo configuration
   security.sudo.extraConfig = ''
