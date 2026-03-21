@@ -1,19 +1,43 @@
 {
-  lib,
   pkgs,
+  config,
+  lib,
+  nix-colors,
+  colorParams,
   ...
 }:
+let
+  # Get current mode from colorParams (flake-accessible)
+  currentMode = colorParams.currentMode;
+
+  # Get the active color scheme based on current mode
+  activeScheme =
+    if currentMode == "dark"
+    then nix-colors.colorSchemes.${colorParams.darkModeScheme}
+    else nix-colors.colorSchemes.${colorParams.lightModeScheme};
+
+in
 {
   imports = [
     ../../modules/home/defaults.nix
-    ./home/cosmic-config.nix
+    ../../modules/home/zed.nix
     ./home/dark-light-toggle.nix
+    ./home/cosmic-config.nix
   ];
+
+  # Override the default colorScheme with our dynamic one
+  colorScheme = lib.mkForce activeScheme;
+
+  programs.ssh = {
+    extraConfig = "
+      SendEnv COLORTERM
+    ";
+  };
 
   # direnv #TODO: move out of here
   programs.direnv = {
     enable = true;
-    enableNushellIntegration = true;
+    enableZshIntegration = true;
     nix-direnv.enable = true;
   };
 
@@ -24,14 +48,25 @@
     thunderbird
     distrobox
     sioyek
-    anytype
     sops
     anydesk
-    adwaita-fonts
-    zola
-    gnome-boxes
     mission-center
+    mpv
+    papers
+    wl-clipboard-x11
+    zoom-us
+    delta
+    remmina
+    signal-desktop
+    telegram-desktop
+    claude-code
+    nixd
   ];
+
+  # Set environnment variables
+  home.sessionVariables = {
+    ISABELLE_HOME = "/home/milan/.isabelle";
+  };
 
   # Additional syiokey keybindings
   programs.sioyek.bindings = {
@@ -46,12 +81,6 @@
       "should_launch_new_window" = "1";
     };
   };
-
-  # Configure helix-gpt using copilot api key from sops secrets (set in configuration.nix)
-  # programs.helix.languages = {
-  #   language-server.gpt = (import ./home/helix-gpt-wrapper.nix { inherit pkgs; }).helix_lsp;
-  #   language = helixLanguages;
-  # };
 
   # Set default applications
   xdg.mimeApps = {

@@ -32,6 +32,11 @@ in
     isSystemUser = true;
     group = webParams.webdataSysGroup;
   };
+
+  # Create /etc/authelia directory for config files
+  systemd.tmpfiles.rules = [
+    "d /etc/authelia 0750 ${autheliaSysUser} ${webParams.webdataSysGroup} -"
+  ];
   # Authelia Container
   virtualisation.oci-containers.containers."authelia" = {
     image = "authelia/authelia:latest";

@@ -27,8 +27,6 @@
         };
       };
       theme = "base16_custom";
-      # theme = "nord";
-      # theme = "catppuccin_latte";
     };
     languages = {
       # Language Config
@@ -351,11 +349,11 @@
           bg3 = "#${config.colorScheme.palette.base03}";
           bg4 = "#${config.colorScheme.palette.base03}";
           fg0 = "#${config.colorScheme.palette.base07}";
-          fg1 = "#${config.colorScheme.palette.base06}"; # main foreground
+          fg1 = "#${config.colorScheme.palette.base05}"; # main foreground (base16 standard)
           fg2 = "#${config.colorScheme.palette.base05}";
           fg3 = "#${config.colorScheme.palette.base04}";
-          fg4 = "#${config.colorScheme.palette.base04}";
-          gray = "#${config.colorScheme.palette.base04}";
+          fg4 = "#${config.colorScheme.palette.base03}";
+          gray = "#${config.colorScheme.palette.base03}"; # comments/secondary text
           red0 = "#${config.colorScheme.palette.base08}"; # neutral
           red1 = "#${config.colorScheme.palette.base08}"; # bright
           green0 = "#${config.colorScheme.palette.base0B}";

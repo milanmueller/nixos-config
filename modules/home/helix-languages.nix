@@ -4,7 +4,7 @@
     {
       name = "nix";
       auto-format = true;
-      formatter.command = lib.getExe pkgs.nixfmt-rfc-style;
+      formatter.command = lib.getExe pkgs.nixfmt;
       language-servers = [ "nil" ];
     }
     {
@@ -21,25 +21,22 @@
     }
     {
       name = "python";
-      language-servers = [
-        "pylsp"
-        "ruff"
+      roots = [
+        "pyproject.toml"
+        ".git"
       ];
-      formatter = {
-        command = "ruff";
-        args = [
-          "format"
-          "-"
-        ];
-        auto-format = true;
-      };
+    }
+    {
+      name = "typst";
+      auto-format = true;
+      formatter.command = "typstyle";
     }
   ];
   language-server = {
-    pylsp.config.pylsp.plugins.pylsp_mypy = {
-      enabled = true;
-      live_mode = true;
-      strict = true;
+    haskell-language-server = {
+      config = {
+        formattingProvider = "fourmolu";
+      };
     };
   };
 }

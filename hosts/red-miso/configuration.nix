@@ -5,7 +5,7 @@
 {
   pkgs,
   userConfig,
-  lib,
+  # lib,
   ...
 }:
 
@@ -18,8 +18,19 @@
     ../../modules/sshd.nix
   ];
 
+  # Create Sawpfile
+  swapDevices = [
+    {
+      device = "/swapfile";
+      size = 16 * 1024; # 16GB
+    }
+  ];
+
   # Thunderbolt
   services.hardware.bolt.enable = true;
+
+  # FW-Update
+  services.fwupd.enable = true;
 
   # Audio
   services.pulseaudio.enable = false;
@@ -31,16 +42,15 @@
     pulse.enable = true;
   };
 
+  services.flatpak.enable = true;
+
   # Video encoding
   hardware.graphics = {
     enable = true;
     extraPackages = with pkgs; [
-      intel-media-driver
-      libvdpau-va-gl
+      # vaapiIntel
+      vpl-gpu-rt
     ];
-  };
-  environment.sessionVariables = {
-    LIBVA_DRIVER_NAME = "iHD";
   };
 
   # Bootloader.
@@ -54,6 +64,7 @@
     "networkmanager"
     "wheel"
     "docker"
+    "libvirtd"
   ];
 
   # Enable Bluetooth
@@ -72,18 +83,23 @@
     podman-compose
     nil
     home-manager
+    input-remapper
   ];
 
   # System fonts
   fonts.packages = with pkgs; [
     nerd-fonts.jetbrains-mono
+    ubuntu-classic
   ];
 
   # User Programs
   programs.firefox.enable = true;
 
   # Cosmic DE
-  services.desktopManager.cosmic.enable = true;
+  services.desktopManager.cosmic = {
+    enable = true;
+    xwayland.enable = true;
+  };
   services.displayManager.cosmic-greeter.enable = true;
 
   # Services
@@ -105,16 +121,13 @@
     };
   };
 
-  ## Sops secrets for AI Api Keys
-  # Read Copilot API Key from sops secrets and set it to environment variable
-  # sops.secrets."ai_stuff/helix_gpt_copilot_key" = {
-  #   mode = "0400";
-  #   owner = userConfig.username;
-  # };
-  # Read Copilot API Key from sops secrets and set it to environment variable
-  sops.secrets."ai_stuff/openrouter_api_key" = {
-    mode = "0400";
-    owner = userConfig.username;
+  # Enable libvirt
+  virtualisation.libvirtd = {
+    enable = true;
+    qemu = {
+      package = pkgs.qemu_kvm;
+      runAsRoot = true;
+    };
   };
 
   # DO NOT CHANGE

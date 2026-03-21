@@ -8,7 +8,7 @@
       AllowUsers = [ "milan" ];
       UseDns = true;
       PermitRootLogin = "no";
-      AcceptEnv = "LANG LC_* COLORTERM";
+      # AcceptEnv = "LANG LC_* COLORTERM";
     };
   };
 }

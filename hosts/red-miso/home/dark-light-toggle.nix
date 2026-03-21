@@ -1,24 +1,49 @@
 {
   pkgs,
-  lib,
-  nix-colors,
+  config,
+  colorParams,
   ...
 }:
+let
+  # State file location from colorParams
+  stateFile = "${config.home.homeDirectory}/${colorParams.stateFile}";
+  # Color parameters file in the flake
+  colorParamsFile = "/home/milan/nixos-config/hosts/red-miso/color-parameters.nix";
+in
 {
-  specialisation.dark-theme.configuration = {
-    colorScheme = lib.mkForce nix-colors.colorSchemes.dracula;
-  };
+  # Toggle script to switch between themes
   home.packages = with pkgs; [
-    (hiPrio (writeShellApplication {
+    (writeShellApplication {
       name = "toggle-theme";
-      runtimeInputs = with pkgs; [
-        home-manager
-        coreutils
-        ripgrep
-      ];
+      runtimeInputs = [ coreutils gnused ];
       text = ''
-        "$(home-manager generations | head -2 | tail -1 | rg -o '/[^ ]*')"/activate
+        COLOR_PARAMS_FILE="${colorParamsFile}"
+        STATE_FILE="${stateFile}"
+
+        # Read current mode from color-parameters.nix
+        CURRENT="${colorParams.currentMode}"
+
+        # Toggle theme
+        if [ "$CURRENT" = "light" ]; then
+          NEW_MODE="dark"
+          echo "Switching to dark theme..."
+        else
+          NEW_MODE="light"
+          echo "Switching to light theme..."
+        fi
+
+        # Update the color-parameters.nix file
+        echo "Updating $COLOR_PARAMS_FILE..."
+        sed -i "s/currentMode = \"$CURRENT\";/currentMode = \"$NEW_MODE\";/" "$COLOR_PARAMS_FILE"
+
+        # Also write to state file for reference
+        mkdir -p "$(dirname "$STATE_FILE")"
+        echo -n "$NEW_MODE" > "$STATE_FILE"
+
+        # Rebuild NixOS configuration
+        echo "Rebuilding system configuration..."
+        sudo nixos-rebuild switch
       '';
-    }))
+    })
   ];
 }

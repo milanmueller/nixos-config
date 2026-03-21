@@ -17,6 +17,10 @@
       url = "git+https://codeberg.org/kampka/nix-flake-crowdsec.git";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    cosmic-themes-base16 = {
+      url = "github:milanmueller/cosmic-themes-base16";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -27,6 +31,7 @@
       sops-nix,
       secrets,
       crowdsec,
+      cosmic-themes-base16,
       ...
     }:
     let
@@ -39,11 +44,27 @@
         red-miso = {
           inherit userConfig;
           system = "x86_64-linux";
-          extraModules = [ ];
-          extraInputs = { inherit nix-colors; };
+          extraModules = [
+            # Apply cosmic-themes-base16 overlay
+            (
+              { config, pkgs, ... }:
+              {
+                nixpkgs.overlays = [
+                  (final: prev: {
+                    cosmic-themes-base16 = cosmic-themes-base16.packages.${prev.system}.default;
+                  })
+                ];
+              }
+            )
+          ];
+          extraInputs = {
+            inherit nix-colors;
+          };
           hmModules = [
+            cosmic-themes-base16.homeManagerModules.default
           ];
           hmExtraSpecialArgs = {
+            colorParams = import ./hosts/red-miso/color-parameters.nix;
           };
         };
         monomyth = {
@@ -54,30 +75,11 @@
           hmModules = [ ];
           hmExtraSpecialArgs = { };
         };
-        odessa = {
-          inherit userConfig;
-          system = "aarch64-linux";
-          extraModules = [ ];
-          extraInputs = { inherit nix-colors; };
-          hmModules = [ ];
-          hmExtraSpecialArgs = { };
-        };
-        gestaltzerfall = {
-          inherit userConfig;
-          system = "x86_64-linux";
-          extraModules = [ crowdsec.nixosModules.crowdsec ];
-          extraInputs = {
-            inherit nix-colors;
-            webParams = import hosts/gestaltzerfall/web/parameters.nix;
-          };
-          hmModules = [ ];
-          hmExtraSpecialArgs = { };
-        };
         cafo = {
           inherit userConfig;
           system = "aarch64-linux";
           extraModules = [
-            crowdsec.nixosModules.crowdsec
+            # crowdsec.nixosModules.crowdsec
           ];
           extraInputs = {
             inherit nix-colors;
@@ -111,15 +113,19 @@
               home-manager.users.${userConfig.username}.imports = [
                 hosts/${name}/home.nix
                 nix-colors.homeManagerModules.default
-              ] ++ hmModules;
+              ]
+              ++ hmModules;
               home-manager.extraSpecialArgs = {
                 inherit nix-colors userConfig;
-              } // hmExtraSpecialArgs;
+              }
+              // hmExtraSpecialArgs;
             }
-          ] ++ extraModules;
+          ]
+          ++ extraModules;
           specialArgs = {
             inherit userConfig;
-          } // extraInputs;
+          }
+          // extraInputs;
         };
       supportedSystems = [
         "x86_64-linux"
@@ -131,6 +137,7 @@
           system:
           f {
             pkgs = import nixpkgs {
+              config.allowUnfree = true;
               inherit system;
             };
           }
@@ -141,13 +148,10 @@
       devShells = forEachSupportedSystem (
         { pkgs }:
         {
-          default = pkgs.mkShell {
-            buildInput = [
-              pkgs.nushell
-            ];
+          default = pkgs.mkShellNoCC {
+            # packages = with pkgs; [
+            # ];
             shellHook = ''
-              export SHELL=${pkgs.nushell}/bin/nu
-
               # Welcome message
               echo "Welcome to the NixOS config environment"
             '';
