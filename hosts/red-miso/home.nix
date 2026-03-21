@@ -1,13 +1,32 @@
 {
   pkgs,
+  config,
+  lib,
+  nix-colors,
+  colorParams,
   ...
 }:
+let
+  # Get current mode from colorParams (flake-accessible)
+  currentMode = colorParams.currentMode;
+
+  # Get the active color scheme based on current mode
+  activeScheme =
+    if currentMode == "dark"
+    then nix-colors.colorSchemes.${colorParams.darkModeScheme}
+    else nix-colors.colorSchemes.${colorParams.lightModeScheme};
+
+in
 {
   imports = [
     ../../modules/home/defaults.nix
+    ../../modules/home/zed.nix
     ./home/dark-light-toggle.nix
     ./home/cosmic-config.nix
   ];
+
+  # Override the default colorScheme with our dynamic one
+  colorScheme = lib.mkForce activeScheme;
 
   programs.ssh = {
     extraConfig = "
@@ -40,34 +59,9 @@
     remmina
     signal-desktop
     telegram-desktop
-    zed-editor
     claude-code
     nixd
   ];
-
-  # Configure zed editor
-  programs.zed-editor = {
-    enable = true;
-    extensions = [
-      "nix"
-      "helix_mode"
-      "codebook"
-    ];
-    userSettings = {
-      theme = {
-        mode = "system";
-        dark = "Catppuccin Mocha";
-        light = "Catppuccin Latte";
-      };
-      helix_mode = true;
-      terminal = {
-        font_family = "JetBrainsMono Nerd Font Mono";
-        shell = "system";
-      };
-      relative_line_numbers = true;
-      buffer_font_family = "JetBrainsMono Nerd Font Mono";
-    };
-  };
 
   # Set environnment variables
   home.sessionVariables = {

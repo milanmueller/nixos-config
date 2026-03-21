@@ -1,30 +1,27 @@
 {
   pkgs,
   config,
+  colorParams,
   ...
 }:
 let
-  # State file location
-  stateFile = "${config.home.homeDirectory}/.config/theme-mode";
+  # State file location from colorParams
+  stateFile = "${config.home.homeDirectory}/${colorParams.stateFile}";
+  # Color parameters file in the flake
+  colorParamsFile = "/home/milan/nixos-config/hosts/red-miso/color-parameters.nix";
 in
 {
   # Toggle script to switch between themes
   home.packages = with pkgs; [
     (writeShellApplication {
       name = "toggle-theme";
-      runtimeInputs = [ coreutils ];
+      runtimeInputs = [ coreutils gnused ];
       text = ''
+        COLOR_PARAMS_FILE="${colorParamsFile}"
         STATE_FILE="${stateFile}"
 
-        # Create config dir if it doesn't exist
-        mkdir -p "$(dirname "$STATE_FILE")"
-
-        # Read current theme or default to light
-        if [ -f "$STATE_FILE" ]; then
-          CURRENT=$(cat "$STATE_FILE" | tr -d '[:space:]')
-        else
-          CURRENT="light"
-        fi
+        # Read current mode from color-parameters.nix
+        CURRENT="${colorParams.currentMode}"
 
         # Toggle theme
         if [ "$CURRENT" = "light" ]; then
@@ -35,7 +32,12 @@ in
           echo "Switching to light theme..."
         fi
 
-        # Write new mode to state file (no newline, just the mode)
+        # Update the color-parameters.nix file
+        echo "Updating $COLOR_PARAMS_FILE..."
+        sed -i "s/currentMode = \"$CURRENT\";/currentMode = \"$NEW_MODE\";/" "$COLOR_PARAMS_FILE"
+
+        # Also write to state file for reference
+        mkdir -p "$(dirname "$STATE_FILE")"
         echo -n "$NEW_MODE" > "$STATE_FILE"
 
         # Rebuild NixOS configuration

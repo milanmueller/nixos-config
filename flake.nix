@@ -53,11 +53,14 @@
               }
             )
           ];
-          extraInputs = { inherit nix-colors; };
+          extraInputs = {
+            inherit nix-colors;
+          };
           hmModules = [
             ./overlays/cosmic-themes-base16/home-manager-module.nix
           ];
           hmExtraSpecialArgs = {
+            colorParams = import ./hosts/red-miso/color-parameters.nix;
           };
         };
         monomyth = {

@@ -3,15 +3,16 @@
   lib,
   pkgs,
   nix-colors,
+  colorParams,
   ...
 }:
 let
-  # State file location
-  stateFile = "${config.home.homeDirectory}/.config/theme-mode";
+  # State file location from colorParams
+  stateFile = "${config.home.homeDirectory}/${colorParams.stateFile}";
 
-  # Define color schemes
-  lightScheme = nix-colors.colorSchemes.catppuccin-latte;
-  darkScheme = nix-colors.colorSchemes.dracula;
+  # Get color schemes from colorParams
+  lightScheme = nix-colors.colorSchemes.${colorParams.lightModeScheme};
+  darkScheme = nix-colors.colorSchemes.${colorParams.darkModeScheme};
 
 in
 {
