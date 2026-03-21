@@ -16,6 +16,26 @@
         "type": "github"
       }
     },
+    "cosmic-themes-base16": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1774088937,
+        "narHash": "sha256-J4S7Vb4hS4fSawxjKrdE0K9eR9ha7qzrqYRdu3x4qLY=",
+        "owner": "milanmueller",
+        "repo": "cosmic-themes-base16",
+        "rev": "cdb4f3b231c07bcc31e9579d3147242a3097a02c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "milanmueller",
+        "repo": "cosmic-themes-base16",
+        "type": "github"
+      }
+    },
     "crowdsec": {
       "inputs": {
         "flake-utils": "flake-utils",
@@ -142,6 +162,7 @@
     },
     "root": {
       "inputs": {
+        "cosmic-themes-base16": "cosmic-themes-base16",
         "crowdsec": "crowdsec",
         "flatpaks": "flatpaks",
         "home-manager": "home-manager",

@@ -1,7 +1,6 @@
 {
   description = "NixOS configuration";
   inputs = {
-    # self.submodules = true;
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     flatpaks.url = "github:gmodena/nix-flatpak/?ref=v0.4.1";
     nix-colors.url = "github:misterio77/nix-colors";
@@ -18,6 +17,10 @@
       url = "git+https://codeberg.org/kampka/nix-flake-crowdsec.git";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    cosmic-themes-base16 = {
+      url = "github:milanmueller/cosmic-themes-base16";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -28,6 +31,7 @@
       sops-nix,
       secrets,
       crowdsec,
+      cosmic-themes-base16,
       ...
     }:
     let
@@ -47,7 +51,7 @@
               {
                 nixpkgs.overlays = [
                   (final: prev: {
-                    cosmic-themes-base16 = prev.callPackage ./overlays/cosmic-themes-base16 { };
+                    cosmic-themes-base16 = cosmic-themes-base16.packages.${prev.system}.default;
                   })
                 ];
               }
@@ -57,7 +61,7 @@
             inherit nix-colors;
           };
           hmModules = [
-            ./overlays/cosmic-themes-base16/home-manager-module.nix
+            cosmic-themes-base16.homeManagerModules.default
           ];
           hmExtraSpecialArgs = {
             colorParams = import ./hosts/red-miso/color-parameters.nix;
