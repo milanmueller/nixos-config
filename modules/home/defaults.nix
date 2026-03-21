@@ -23,5 +23,6 @@
   # Install uutils coreutils (Rust reimplementation of GNU coreutils)
   home.packages = with pkgs; [
     uutils-coreutils-noprefix
+    delta
   ];
 }

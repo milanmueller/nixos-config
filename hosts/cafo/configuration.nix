@@ -15,7 +15,8 @@
     # ./disko.nix
     ../../modules/defaults.nix
     ../../modules/autopull.nix
-    # ./web
+    ../../modules/sshd.nix
+    ./web
   ];
 
   # Use the systemd-boot EFI boot loader.
@@ -31,16 +32,7 @@
   # networking.interfaces.ensp1s0.useDHCP = true;
 
   # Configuration of sshd (enable remote connections)
-  services.openssh = {
-    enable = true;
-    settings = {
-      PasswordAuthentication = false;
-      AllowUsers = [ "milan" ];
-      UseDns = true;
-      PermitRootLogin = "no";
-      AcceptEnv = "LANG LC_* COLORTERM";
-    };
-  };
+  services.openssh.settings.PasswordAuthentication = lib.mkForce false;
 
   # Enable fail2ban since cafo is publicly reachable
   services.fail2ban.enable = true;
@@ -63,31 +55,6 @@
   boot.initrd.postDeviceCommands = lib.mkAfter ''
     zfs rollback -r zpool01/nixos/empty@start
   '';
-
-  # Apparently, Public IPv6 address needs to be set manually on hetzner servers
-  # networking.interfaces.enp1s0 = {
-  #   ipv4.addresses = [
-  #     {
-  #       address = "142.132.225.102";
-  #       prefixLength = 32;
-  #     }
-  #   ];
-  #   ipv6.addresses = [
-  #     {
-  #       address = "2a01:4f8:c012:d3ef::1";
-  #       prefixLength = 64;
-  #     }
-  #   ];
-  # };
-  # networking.defaultGateway = "172.31.1.1";
-  # networking.nameservers = [
-  #   "185.12.64.2"
-  #   "185.12.64.1"
-  # ];
-  # networking.defaultGateway6 = {
-  #   address = "fe80::1";
-  #   interface = "enp1s0";
-  # };
 
   # DO NOT CHANGE For more information, see `man configuration.nix` or
   # https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .

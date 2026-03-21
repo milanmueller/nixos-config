@@ -1,9 +1,9 @@
 { pkgs, lib, ... }:
 {
-  services.crowdsec = {
-    enable = true;
-    settings = {
-      api_key = "asdf";
-    };
-  };
+  # services.crowdsec = {
+  #   enable = true;
+  #   settings = {
+  #     api_key = "asdf";
+  #   };
+  # };
 }

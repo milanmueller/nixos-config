@@ -1,7 +1,7 @@
 {
   description = "NixOS configuration";
   inputs = {
-    self.submodules = true;
+    # self.submodules = true;
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     flatpaks.url = "github:gmodena/nix-flatpak/?ref=v0.4.1";
     nix-colors.url = "github:misterio77/nix-colors";
@@ -75,7 +75,7 @@
           inherit userConfig;
           system = "aarch64-linux";
           extraModules = [
-            crowdsec.nixosModules.crowdsec
+            # crowdsec.nixosModules.crowdsec
           ];
           extraInputs = {
             inherit nix-colors;

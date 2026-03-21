@@ -44,7 +44,7 @@
       http = {
         routers = {
           ttyd = {
-            rule = "Host(`gestaltzerfall.milanmueller.de`)";
+            rule = "Host(`cafo.milanmueller.de`)";
             service = "ttyd";
             entryPoints = [ "websecure" ];
             tls.certResolver = "letsencrypt";
