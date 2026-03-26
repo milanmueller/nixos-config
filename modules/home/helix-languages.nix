@@ -30,9 +30,33 @@
       name = "typst";
       auto-format = true;
       formatter.command = "typstyle";
+      language-servers = [
+        "tinymist"
+        "codebook"
+      ];
+    }
+    {
+      name = "latex";
+      auto-format = true;
+      formatter = {
+        command = "tex-fmt";
+        args = [ "--stdin" ];
+      };
+      language-servers = [
+        "texlab"
+        "codebook"
+      ];
+    }
+    {
+      name = "markdown";
+      language-servers = [ "codebook" ];
     }
   ];
   language-server = {
+    codebook = {
+      command = "codebook-lsp";
+      args = [ "serve" ];
+    };
     haskell-language-server = {
       config = {
         formattingProvider = "fourmolu";

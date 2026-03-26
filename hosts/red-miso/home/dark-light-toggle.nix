@@ -43,6 +43,9 @@ in
         # Rebuild NixOS configuration
         echo "Rebuilding system configuration..."
         sudo nixos-rebuild switch
+
+        echo "✓ Theme switched to $NEW_MODE"
+        echo "Note: Firefox will use system theme automatically"
       '';
     })
   ];

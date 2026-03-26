@@ -173,12 +173,110 @@ userConfig = {
 
 This is passed to all modules via `specialArgs`.
 
-### Color Scheme Management
+### Color Scheme Management (nix-colors)
 
-Uses `nix-colors` for centralized theme management:
-- Default: `catppuccin-latte` (set in `modules/home/defaults.nix`)
-- Override per-host by setting `colorScheme` in `home.nix`
-- Helix editor uses custom `base16_custom` theme mapped to color scheme
+This configuration uses the `nix-colors` flake input for centralized, declarative theming across all applications.
+
+**Architecture:**
+- `nix-colors` provides base16 color schemes as Nix attribute sets
+- Default scheme: `catppuccin-latte` (light theme, set in `modules/home/defaults.nix`)
+- Per-host override: Set `colorScheme = inputs.nix-colors.colorSchemes.<scheme-name>` in `home.nix`
+- Color palette accessible via `config.colorScheme.palette` in all Home Manager modules
+
+**Base16 Color Mapping:**
+The `config.colorScheme.palette` attribute set provides 16 colors:
+- `base00` - Default background
+- `base01` - Lighter background (status bars, line numbers)
+- `base02` - Selection background
+- `base03` - Comments, invisibles, line highlighting
+- `base04` - Dark foreground (status bars)
+- `base05` - Default foreground
+- `base06` - Light foreground (rare)
+- `base07` - Light background (rare)
+- `base08` - Red (variables, errors, deletes)
+- `base09` - Orange (integers, booleans, constants)
+- `base0A` - Yellow (classes, types, warnings)
+- `base0B` - Green (strings, success, additions)
+- `base0C` - Cyan (operators, escapes, support)
+- `base0D` - Blue (functions, keywords, links)
+- `base0E` - Magenta (keywords, storage, selectors)
+- `base0F` - Brown (deprecated, embedded, special)
+
+**Themed Applications:**
+
+All themed modules are in `modules/home/` and follow the same pattern:
+
+1. **Helix** (`modules/home/helix.nix`):
+   - Custom theme: `base16_custom`
+   - Maps base16 colors to Helix's syntax highlighting and UI elements
+   - Includes comprehensive palette definition for all editor UI components
+
+2. **Zed** (`modules/home/zed.nix`):
+   - Most complex theming implementation
+   - Generates full Zed theme JSON with ~400+ UI element mappings
+   - Detects light/dark theme automatically from scheme name
+   - Writes to `~/.config/zed/themes/base16-custom.json`
+   - Covers: editor, UI, syntax, terminal colors, collaboration cursors
+
+3. **Zsh/Starship** (`modules/home/zsh.nix`):
+   - Starship prompt uses base16 colors for:
+     - Username/hostname (base0D)
+     - Directory paths (base0B)
+     - Git branch (base0E)
+     - Git status (base0A)
+     - Nix shell indicator (base0C)
+     - Success/error symbols (base0B/base08)
+   - ZSH syntax highlighting colors (currently commented out)
+
+4. **Firefox** (`modules/home/firefox.nix`):
+   - Uses `userChrome.css` for UI theming
+   - Uses `userContent.css` for Firefox internal pages (`about:*`)
+   - Requires `toolkit.legacyUserProfileCustomizations.stylesheets = true`
+   - Themes: tabs, toolbars, URL bar, menus, scrollbars, popups
+
+**Adding Theming to New Applications:**
+
+When adding a new themed module, follow this pattern:
+
+```nix
+{ config, lib, pkgs, ... }:
+
+let
+  inherit (config.colorScheme) palette;
+in
+{
+  programs.myapp = {
+    enable = true;
+    # Map base16 colors to app-specific format
+    theme = {
+      background = "#${palette.base00}";
+      foreground = "#${palette.base05}";
+      accent = "#${palette.base0D}";
+      # ... etc
+    };
+  };
+}
+```
+
+**Light/Dark Detection:**
+
+Some apps need to know if the theme is light or dark. Use this pattern:
+
+```nix
+isLightTheme =
+  let
+    schemeName = lib.toLower (config.colorScheme.slug or config.colorScheme.name or "");
+  in
+  lib.hasInfix "latte" schemeName
+  || lib.hasInfix "light" schemeName;
+```
+
+**Finding Available Schemes:**
+
+All available color schemes are in the `nix-colors` repository:
+- Browse: https://github.com/tinted-theming/schemes
+- Use in config: `inputs.nix-colors.colorSchemes.<scheme-slug>`
+- Common schemes: `catppuccin-latte`, `catppuccin-mocha`, `gruvbox-dark-hard`, `nord`, `dracula`
 
 ### State Versions
 

@@ -1,6 +1,6 @@
 {
   # Light mode color scheme name
-  lightModeScheme = "gruvbox-light-hard";
+  lightModeScheme = "catppuccin-latte";
 
   # Dark mode color scheme name
   darkModeScheme = "gruvbox-dark-hard";

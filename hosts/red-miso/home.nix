@@ -12,15 +12,17 @@ let
 
   # Get the active color scheme based on current mode
   activeScheme =
-    if currentMode == "dark"
-    then nix-colors.colorSchemes.${colorParams.darkModeScheme}
-    else nix-colors.colorSchemes.${colorParams.lightModeScheme};
+    if currentMode == "dark" then
+      nix-colors.colorSchemes.${colorParams.darkModeScheme}
+    else
+      nix-colors.colorSchemes.${colorParams.lightModeScheme};
 
 in
 {
   imports = [
     ../../modules/home/defaults.nix
     ../../modules/home/zed.nix
+    ../../modules/home/firefox.nix
     ./home/dark-light-toggle.nix
     ./home/cosmic-config.nix
   ];
@@ -60,6 +62,7 @@ in
     signal-desktop
     telegram-desktop
     claude-code
+    codebook
     nixd
   ];
 
