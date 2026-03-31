@@ -21,6 +21,7 @@
       url = "github:milanmueller/cosmic-themes-base16";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nur.url = "github:nix-community/NUR";
   };
 
   outputs =
@@ -32,6 +33,7 @@
       secrets,
       crowdsec,
       cosmic-themes-base16,
+      nur,
       ...
     }:
     let
@@ -110,6 +112,11 @@
             secrets.nixosModules.default
             {
               networking.hostName = "${name}";
+              # Add NUR overlay
+              nixpkgs.overlays = [
+                nur.overlays.default
+              ];
+              home-manager.useGlobalPkgs = true;
               home-manager.users.${userConfig.username}.imports = [
                 hosts/${name}/home.nix
                 nix-colors.homeManagerModules.default

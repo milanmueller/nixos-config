@@ -284,12 +284,12 @@
           bg = "bg2";
         };
         "ui.statusline" = {
-          fg = "fg1";
-          bg = "bg2";
+          fg = "bg0";
+          bg = "aqua1";
         };
         "ui.statusline.inactive" = {
-          fg = "fg4";
-          bg = "bg2";
+          fg = "fg1";
+          bg = "bg1";
         };
         "ui.statusline.insert" = {
           fg = "bg1";

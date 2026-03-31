@@ -18,6 +18,10 @@ in
       name = "default";
       isDefault = true;
 
+      extensions.packages = with pkgs.nur.repos.rycee.firefox-addons; [
+        ublock-origin
+      ];
+
       settings = {
         # Required for userChrome.css theming
         "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
@@ -36,6 +40,11 @@ in
         # GNOME theme recommended settings
         "browser.uidensity" = 0; # Normal density
         "browser.tabs.inTitlebar" = 1;
+
+        # Disable password storage
+        "signon.rememberSignons" = false;
+        "signon.autofillForms" = false;
+        "signon.generation.enabled" = false;
       };
 
       # Import firefox-gnome-theme userChrome

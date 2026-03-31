@@ -64,6 +64,7 @@ in
     claude-code
     codebook
     nixd
+    xpipe
   ];
 
   # Set environnment variables
