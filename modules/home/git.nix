@@ -3,6 +3,7 @@
   # programs.git.settings.user.name
   programs.git = {
     enable = true;
+    signing.format = "openpgp";
     settings = {
       user = {
         name = "Milan Müller";

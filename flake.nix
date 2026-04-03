@@ -2,7 +2,6 @@
   description = "NixOS configuration";
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    flatpaks.url = "github:gmodena/nix-flatpak/?ref=v0.4.1";
     nix-colors.url = "github:misterio77/nix-colors";
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -21,6 +20,10 @@
       url = "github:milanmueller/cosmic-themes-base16";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    claude-code = {
+      url = "github:sadjow/claude-code-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nur.url = "github:nix-community/NUR";
   };
 
@@ -33,6 +36,7 @@
       secrets,
       crowdsec,
       cosmic-themes-base16,
+      claude-code,
       nur,
       ...
     }:
@@ -53,7 +57,8 @@
               {
                 nixpkgs.overlays = [
                   (final: prev: {
-                    cosmic-themes-base16 = cosmic-themes-base16.packages.${prev.system}.default;
+                    cosmic-themes-base16 = cosmic-themes-base16.packages.${prev.stdenv.hostPlatform.system}.default;
+                    claude-code = claude-code.packages.${prev.stdenv.hostPlatform.system}.default;
                   })
                 ];
               }
@@ -103,13 +108,13 @@
         }:
         # "Template for host config"
         nixpkgs.lib.nixosSystem {
-          inherit system;
           modules = [
             # common modules
             hosts/${name}/configuration.nix
             home-manager.nixosModules.home-manager
             sops-nix.nixosModules.sops
             secrets.nixosModules.default
+            { nixpkgs.hostPlatform = system; }
             {
               networking.hostName = "${name}";
               # Add NUR overlay
@@ -145,7 +150,7 @@
           f {
             pkgs = import nixpkgs {
               config.allowUnfree = true;
-              inherit system;
+              localSystem = system;
             };
           }
         );
