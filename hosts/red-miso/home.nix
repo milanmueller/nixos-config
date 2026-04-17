@@ -58,13 +58,14 @@ in
     wl-clipboard-x11
     zoom-us
     delta
-    remmina
     signal-desktop
     telegram-desktop
     claude-code
+    mistral-vibe
     codebook
     nixd
     xpipe
+    zk
   ];
 
   # Set environnment variables
