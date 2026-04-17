@@ -4,6 +4,11 @@
 }:
 let
   inherit (config.colorScheme) palette;
+
+  # Convert 6-char hex to r/g/b format for OSC terminal escape sequences
+  toRGB =
+    hex:
+    "${builtins.substring 0 2 hex}/${builtins.substring 2 2 hex}/${builtins.substring 4 2 hex}";
 in
 {
   programs.zsh = {
@@ -32,6 +37,35 @@ in
 
     # Set base16 colors for various zsh components
     initContent = ''
+      # Apply base16 color scheme to terminal via OSC escape sequences
+      if [[ -t 1 && "$TERM" != "dumb" ]]; then
+        printf '\033]4;0;rgb:${toRGB palette.base00}\033\\'
+        printf '\033]4;1;rgb:${toRGB palette.base08}\033\\'
+        printf '\033]4;2;rgb:${toRGB palette.base0B}\033\\'
+        printf '\033]4;3;rgb:${toRGB palette.base0A}\033\\'
+        printf '\033]4;4;rgb:${toRGB palette.base0D}\033\\'
+        printf '\033]4;5;rgb:${toRGB palette.base0E}\033\\'
+        printf '\033]4;6;rgb:${toRGB palette.base0C}\033\\'
+        printf '\033]4;7;rgb:${toRGB palette.base05}\033\\'
+        printf '\033]4;8;rgb:${toRGB palette.base03}\033\\'
+        printf '\033]4;9;rgb:${toRGB palette.base08}\033\\'
+        printf '\033]4;10;rgb:${toRGB palette.base0B}\033\\'
+        printf '\033]4;11;rgb:${toRGB palette.base0A}\033\\'
+        printf '\033]4;12;rgb:${toRGB palette.base0D}\033\\'
+        printf '\033]4;13;rgb:${toRGB palette.base0E}\033\\'
+        printf '\033]4;14;rgb:${toRGB palette.base0C}\033\\'
+        printf '\033]4;15;rgb:${toRGB palette.base07}\033\\'
+        printf '\033]4;16;rgb:${toRGB palette.base09}\033\\'
+        printf '\033]4;17;rgb:${toRGB palette.base0F}\033\\'
+        printf '\033]4;18;rgb:${toRGB palette.base01}\033\\'
+        printf '\033]4;19;rgb:${toRGB palette.base02}\033\\'
+        printf '\033]4;20;rgb:${toRGB palette.base04}\033\\'
+        printf '\033]4;21;rgb:${toRGB palette.base06}\033\\'
+        printf '\033]10;rgb:${toRGB palette.base05}\033\\'
+        printf '\033]11;rgb:${toRGB palette.base00}\033\\'
+        printf '\033]12;rgb:${toRGB palette.base05}\033\\'
+      fi
+
       # # Syntax highlighting colors (zsh-syntax-highlighting)
       # typeset -uA ZSH_HIGHLIGHT_STYLES
       # ZSH_HIGHLIGHT_STYLES[default]='fg=#${palette.base0A}'

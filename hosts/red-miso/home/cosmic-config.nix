@@ -87,7 +87,7 @@ in
     MODE_CONFIG_PATH="${config.home.homeDirectory}/.config/cosmic/com.system76.CosmicTheme.Mode/v1"
 
     # Generate the COSMIC theme
-    COSMIC_CMD="${pkgs.cosmic-themes-base16}/bin/cosmic-themes-base16 $THEME_MODE $THEME_PATH #$BASE00 #$BASE01 #$BASE02 #$BASE03 #$BASE04 #$BASE05 #$BASE06 #$BASE07 #$BASE08 #$BASE09 #$BASE0A #$BASE0B #$BASE0C #$BASE0D #$BASE0E #$BASE0F"
+    COSMIC_CMD="${pkgs.cosmic-themes-base16}/bin/cosmic-themes-base16 $THEME_MODE $THEME_PATH #$BASE00 #$BASE01 #$BASE02 #$BASE03 #$BASE04 #$BASE05 #$BASE06 #$BASE07 #$BASE08 #$BASE09 #$BASE0A #$BASE0B #$BASE0C #$BASE0D #$BASE0E #$BASE0F --wallpaper ${./wallpaper.png}"
     echo "[$(date '+%Y-%m-%d %H:%M:%S')] Running: $COSMIC_CMD" >> "$LOG_FILE"
     run $COSMIC_CMD >> "$LOG_FILE" 2>&1
     echo "[$(date '+%Y-%m-%d %H:%M:%S')] Theme generation completed" >> "$LOG_FILE"

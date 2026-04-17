@@ -44,11 +44,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1774088937,
-        "narHash": "sha256-J4S7Vb4hS4fSawxjKrdE0K9eR9ha7qzrqYRdu3x4qLY=",
+        "lastModified": 1775223712,
+        "narHash": "sha256-wp8SdPLbSUt8ztkzJxsU/3rDiS5w0WuKRWPWp3S71r8=",
         "owner": "milanmueller",
         "repo": "cosmic-themes-base16",
-        "rev": "cdb4f3b231c07bcc31e9579d3147242a3097a02c",
+        "rev": "1cdd2bb9fe20522f1e44dd30a66efa2dd2faeedc",
         "type": "github"
       },
       "original": {
