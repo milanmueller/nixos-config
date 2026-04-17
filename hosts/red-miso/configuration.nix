@@ -29,6 +29,9 @@
   # Thunderbolt
   services.hardware.bolt.enable = true;
 
+  # Logitech stuff
+  hardware.logitech.wireless.enable = true;
+
   # FW-Update
   services.fwupd.enable = true;
 
@@ -65,6 +68,7 @@
     "wheel"
     "docker"
     "libvirtd"
+    "input"
   ];
 
   # Enable Bluetooth
@@ -83,7 +87,6 @@
     podman-compose
     nil
     home-manager
-    input-remapper
   ];
 
   # System fonts
@@ -94,6 +97,18 @@
 
   # User Programs
   programs.firefox.enable = true;
+
+  # Mouse side button remapping (G305: BTN_SIDE → Ctrl, BTN_EXTRA → Alt)
+  services.evremap = {
+    enable = true;
+    settings = {
+      device_name = "Logitech G305";
+      remap = [
+        { input = [ "BTN_SIDE" ]; output = [ "KEY_LEFTCTRL" ]; }
+        { input = [ "BTN_EXTRA" ]; output = [ "KEY_LEFTALT" ]; }
+      ];
+    };
+  };
 
   # Cosmic DE
   services.desktopManager.cosmic = {
