@@ -24,6 +24,10 @@
       url = "github:sadjow/claude-code-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    mistral-vibe = {
+      url = "github:mistralai/mistral-vibe";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nur.url = "github:nix-community/NUR";
   };
 
@@ -37,6 +41,7 @@
       crowdsec,
       cosmic-themes-base16,
       claude-code,
+      mistral-vibe,
       nur,
       ...
     }:
@@ -59,6 +64,7 @@
                   (final: prev: {
                     cosmic-themes-base16 = cosmic-themes-base16.packages.${prev.stdenv.hostPlatform.system}.default;
                     claude-code = claude-code.packages.${prev.stdenv.hostPlatform.system}.default;
+                    mistral-vibe = mistral-vibe.packages.${prev.stdenv.hostPlatform.system}.default;
                   })
                 ];
               }
