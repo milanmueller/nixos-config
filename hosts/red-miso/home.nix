@@ -45,26 +45,6 @@ in
 
   home.stateVersion = "24.05";
 
-  home.file.".codex/config.toml" = {
-    force = true;
-    text = ''
-      approval_policy = "untrusted"
-      sandbox_mode = "read-only"
-
-      [projects."/home/milan/nixos-config"]
-      trust_level = "trusted"
-
-      [projects."/home/milan"]
-      trust_level = "trusted"
-
-      [tui]
-      theme = "gruvbox-dark"
-
-      [tui.model_availability_nux]
-      "gpt-5.5" = 4
-    '';
-  };
-
   # Install Packages
   home.packages = with pkgs; [
     thunderbird
