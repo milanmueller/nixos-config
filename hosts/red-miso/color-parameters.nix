@@ -3,7 +3,7 @@
   lightModeScheme = "gruvbox-light-hard";
 
   # Dark mode color scheme name
-  darkModeScheme = "gruvbox-dark-hard";
+  darkModeScheme = "gruvbox-dark-soft";
 
   # Current mode - this will be updated by toggle-theme script
   currentMode = "light";

@@ -45,6 +45,8 @@
     pulse.enable = true;
   };
 
+  programs.steam.enable = true;
+
   services.flatpak.enable = true;
 
   # Video encoding
@@ -104,8 +106,14 @@
     settings = {
       device_name = "Logitech G305";
       remap = [
-        { input = [ "BTN_SIDE" ]; output = [ "KEY_LEFTCTRL" ]; }
-        { input = [ "BTN_EXTRA" ]; output = [ "KEY_LEFTALT" ]; }
+        {
+          input = [ "BTN_SIDE" ];
+          output = [ "KEY_LEFTCTRL" ];
+        }
+        {
+          input = [ "BTN_EXTRA" ];
+          output = [ "KEY_LEFTALT" ];
+        }
       ];
     };
   };

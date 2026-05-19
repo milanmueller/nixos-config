@@ -11,6 +11,7 @@
     ./zsh.nix
     ./git.nix
     ./helix.nix
+    ./alacritty.nix
   ];
   home.sessionVariables = {
     EDITOR = "hx";
