@@ -1,9 +1,9 @@
 {
   # Light mode color scheme name
-  lightModeScheme = "gruvbox-light-hard";
+  lightModeScheme = "catppuccin-latte";
 
   # Dark mode color scheme name
-  darkModeScheme = "gruvbox-dark-soft";
+  darkModeScheme = "catppuccin-mocha";
 
   # Current mode - this will be updated by toggle-theme script
   currentMode = "light";

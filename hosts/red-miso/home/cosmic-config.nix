@@ -44,7 +44,7 @@ in
     if [ "$THEME_MODE" = "dark" ]; then
       THEME_NAME="Dark"
       IS_DARK="true"
-      # Dracula colors (without # prefix)
+      # Dark mode colors (without # prefix)
       BASE00="${darkScheme.palette.base00}"
       BASE01="${darkScheme.palette.base01}"
       BASE02="${darkScheme.palette.base02}"
