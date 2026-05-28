@@ -14,9 +14,14 @@ in
   programs.zsh = {
     enable = true;
 
-    # Enable completion with caching for faster startup
+    # Enable completion with a validated cache. Avoid `compinit -C` here:
+    # it skips cache checks and can leave Tab completion using stale metadata.
     enableCompletion = true;
-    completionInit = "autoload -Uz compinit && compinit -C";
+    completionInit = ''
+      autoload -Uz compinit
+      mkdir -p "''${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
+      compinit -d "''${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump-$ZSH_VERSION"
+    '';
 
     # Enable autosuggestions (like nushell's preview feature)
     autosuggestion.enable = true;

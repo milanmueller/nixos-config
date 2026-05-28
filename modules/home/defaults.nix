@@ -25,5 +25,6 @@
   home.packages = with pkgs; [
     uutils-coreutils-noprefix
     delta
+    ripgrep
   ];
 }
