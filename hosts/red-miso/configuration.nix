@@ -43,6 +43,22 @@
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
+    wireplumber.extraConfig."10-alsa-soft-mixer" = {
+      "monitor.alsa.rules" = [
+        {
+          matches = [
+            {
+              "device.name" = "~alsa_card.*";
+            }
+          ];
+          actions.update-props = {
+            # Lenovo Yoga Pro 7 14IRH8 / ALC287 exposes broken hardware volume
+            # control for the internal speakers; let PipeWire attenuate in software.
+            "api.alsa.soft-mixer" = true;
+          };
+        }
+      ];
+    };
   };
 
   programs.steam.enable = true;
@@ -54,9 +70,15 @@
     enable = true;
     extraPackages = with pkgs; [
       # vaapiIntel
+      intel-media-driver
       vpl-gpu-rt
     ];
   };
+
+  environment.sessionVariables.LIBVA_DRIVER_NAME = "iHD";
+
+  # Work around internal eDP panel flicker on Intel i915 by disabling Panel Self Refresh.
+  # boot.kernelParams = [ "i915.enable_psr=0" ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
