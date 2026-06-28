@@ -110,6 +110,18 @@
   # User Programs
   programs.firefox.enable = true;
 
+  # Key remapping (kernel-level, works on Wayland)
+  services.keyd = {
+    enable = true;
+    keyboards.default = {
+      ids = [ "*" ];
+      settings.main = {
+        capslock = "escape";
+        escape = "grave";
+      };
+    };
+  };
+
   # Services
   services.printing.enable = true;
 
