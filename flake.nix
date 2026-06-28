@@ -107,6 +107,29 @@
           hmModules = [ ];
           hmExtraSpecialArgs = { };
         };
+        backpfeifengesicht = {
+          inherit userConfig;
+          system = "x86_64-linux";
+          extraModules = [
+            (
+              { pkgs, ... }:
+              {
+                nixpkgs.overlays = [
+                  (final: prev: {
+                    claude-code = claude-code.packages.${prev.stdenv.hostPlatform.system}.default;
+                    codex = codex-cli-nix.packages.${prev.stdenv.hostPlatform.system}.default;
+                    mistral-vibe = mistral-vibe.packages.${prev.stdenv.hostPlatform.system}.default;
+                  })
+                ];
+              }
+            )
+          ];
+          extraInputs = {
+            inherit nix-colors;
+          };
+          hmModules = [ ];
+          hmExtraSpecialArgs = { };
+        };
       };
       mkHost =
         name:
