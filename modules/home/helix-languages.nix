@@ -10,6 +10,13 @@
     {
       name = "rust";
       auto-format = true;
+      formatter = {
+        command = "rustfmt";
+        args = [
+          "--edition"
+          "2021"
+        ];
+      };
       language-servers = [ "rust-analyzer" ];
     }
     {
