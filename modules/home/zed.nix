@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 let
   # Generate base16 theme from nix-colors with comprehensive Gruvbox-style mapping
@@ -41,16 +46,16 @@ let
 
       # Text colors
       text = "#${config.colorScheme.palette.base05}";
-      "text.muted" = "#${config.colorScheme.palette.base04}";
-      "text.placeholder" = "#${config.colorScheme.palette.base03}";
-      "text.disabled" = "#${config.colorScheme.palette.base03}";
+      "text.muted" = "#${config.colorScheme.palette.base05}";
+      "text.placeholder" = "#${config.colorScheme.palette.base04}";
+      "text.disabled" = "#${config.colorScheme.palette.base04}";
       "text.accent" = "#${config.colorScheme.palette.base0C}";
 
       # Icon colors
       icon = "#${config.colorScheme.palette.base05}";
-      "icon.muted" = "#${config.colorScheme.palette.base03}";
-      "icon.disabled" = "#${config.colorScheme.palette.base03}";
-      "icon.placeholder" = "#${config.colorScheme.palette.base03}";
+      "icon.muted" = "#${config.colorScheme.palette.base04}";
+      "icon.disabled" = "#${config.colorScheme.palette.base04}";
+      "icon.placeholder" = "#${config.colorScheme.palette.base04}";
       "icon.accent" = "#${config.colorScheme.palette.base0C}";
 
       # UI elements
@@ -216,7 +221,7 @@ let
           font_weight = null;
         };
         comment = {
-          color = "#${config.colorScheme.palette.base03}";
+          color = "#${config.colorScheme.palette.base04}";
           font_style = "italic";
           font_weight = null;
         };
@@ -451,13 +456,17 @@ let
     || lib.hasInfix "light" schemeName
     || schemeName == "catppuccin-latte";
 
-in {
+in
+{
   programs.zed-editor = {
     enable = true;
     extensions = [
       "nix"
       "helix_mode"
       "codebook"
+      "toml"
+      "dockerfile"
+      "gleam"
     ];
 
     userSettings = {
@@ -479,10 +488,13 @@ in {
     name = "Base16 Custom";
     author = "Generated from nix-colors";
     themes = [
-      (base16Theme // {
-        name = "Base16 Custom";
-        appearance = if isLightTheme then "light" else "dark";
-      })
+      (
+        base16Theme
+        // {
+          name = "Base16 Custom";
+          appearance = if isLightTheme then "light" else "dark";
+        }
+      )
     ];
   };
 }
