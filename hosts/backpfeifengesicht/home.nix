@@ -6,6 +6,7 @@
 {
   imports = [
     ../../modules/home/defaults.nix
+    ../../modules/home/ghostty.nix
     ../../modules/home/zed.nix
     ../../modules/home/firefox.nix
   ];
@@ -43,8 +44,7 @@
     nixd
     xpipe
     zk
-    ghostty
-    gnomeExtensions.tiling-shell
+    gnomeExtensions.appindicator
     google-chrome
   ];
 
@@ -69,6 +69,8 @@
     defaultApplications = {
       "text/html" = "firefox.desktop";
       "x-scheme-handler/http" = "firefox.desktop";
+      "x-scheme-handler/https" = "firefox.desktop";
+      "application/xhtml+xml" = "firefox.desktop";
     };
   };
 
@@ -116,7 +118,10 @@
       ];
     };
     "org/gnome/shell" = {
-      enabled-extensions = [ "tilingshell@ferrarodomenico.com" ];
+      enabled-extensions = [
+        "tilingshell@ferrarodomenico.com"
+        "appindicatorsupport@rgcjonas.gmail.com"
+      ];
     };
     "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
       name = "Launch Terminal";

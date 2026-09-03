@@ -54,6 +54,12 @@
   services.xserver.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
   services.displayManager.gdm.enable = true;
+  services.displayManager.autoLogin.enable = false;
+  services.gnome.gnome-remote-desktop.enable = true;
+  systemd.services.gnome-remote-desktop = {
+    wantedBy = [ "graphical.target" ];
+  };
+  networking.firewall.allowedTCPPorts = [ 3389 ];
 
   # Steam + gaming
   programs.steam = {
@@ -67,6 +73,9 @@
   };
   programs.gamemode.enable = true;
   hardware.steam-hardware.enable = true;
+
+  # Flatpak
+  services.flatpak.enable = true;
 
   # Bootloader
   boot.loader.systemd-boot.enable = true;
@@ -117,7 +126,7 @@
       ids = [ "*" ];
       settings.main = {
         capslock = "escape";
-        escape = "grave";
+        # escape = "grave";
       };
     };
   };
