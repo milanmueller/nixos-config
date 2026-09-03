@@ -46,6 +46,7 @@
     zk
     gnomeExtensions.appindicator
     google-chrome
+    blanket
   ];
 
   home.sessionVariables = {
