@@ -16,6 +16,7 @@
     # Include global modules (shared between machines)
     ../../modules/defaults.nix
     ../../modules/sshd.nix
+    ../../modules/local-dns.nix
   ];
 
   # Create Sawpfile
@@ -85,6 +86,11 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   nixpkgs.config.allowUnfree = true;
+
+  # Allow running dynamically linked binaries not built for NixOS (e.g. the
+  # Claude Code binary Zed's agent fetches via npx) by providing a
+  # compatible dynamic loader. https://nix.dev/permalink/stub-ld
+  programs.nix-ld.enable = true;
 
   # Default User
   users.users.${userConfig.username}.extraGroups = [
