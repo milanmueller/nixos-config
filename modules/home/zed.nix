@@ -35,10 +35,14 @@ let
       "element.disabled" = "#${config.colorScheme.palette.base03}d3";
 
       # Ghost element colors
+      # Popups/pickers (e.g. command palette, file finder) render on
+      # elevated_surface.background (base01), so these must be a step
+      # darker/lighter than that to stay visible - matching it makes the
+      # keyboard-selected row invisible.
       "ghost_element.background" = null;
-      "ghost_element.hover" = "#${config.colorScheme.palette.base01}";
-      "ghost_element.active" = "#${config.colorScheme.palette.base01}";
-      "ghost_element.selected" = "#${config.colorScheme.palette.base01}";
+      "ghost_element.hover" = "#${config.colorScheme.palette.base02}";
+      "ghost_element.active" = "#${config.colorScheme.palette.base02}";
+      "ghost_element.selected" = "#${config.colorScheme.palette.base02}";
       "ghost_element.disabled" = "#${config.colorScheme.palette.base03}d3";
 
       # Drop target
@@ -456,6 +460,37 @@ let
     || lib.hasInfix "light" schemeName
     || schemeName == "catppuccin-latte";
 
+  # Themes bundled with Zed itself (no extension install required). Zed only
+  # ships a handful of these compared to Helix's ~150, so coverage is limited
+  # to this list; everything else falls back to our generated Base16 Custom
+  # theme.
+  zedBuiltinThemes = [
+    "One Dark"
+    "One Light"
+    "Gruvbox Dark"
+    "Gruvbox Dark Hard"
+    "Gruvbox Dark Soft"
+    "Gruvbox Light"
+    "Gruvbox Light Hard"
+    "Gruvbox Light Soft"
+    "Ayu Dark"
+    "Ayu Light"
+    "Ayu Mirage"
+    "Andromeda"
+  ];
+
+  # nix-colors slugs are dash-separated lowercase words (e.g. "gruvbox-dark-hard",
+  # "ayu-light"); Zed's built-in theme names are the same words, space-separated
+  # and title-cased (e.g. "Gruvbox Dark Hard", "Ayu Light"). Convert and match.
+  schemeSlug = config.colorScheme.slug or "";
+  titleCaseWord =
+    word: lib.toUpper (builtins.substring 0 1 word) + builtins.substring 1 (builtins.stringLength word) word;
+  schemeSlugTitleCased = builtins.concatStringsSep " " (
+    map titleCaseWord (lib.splitString "-" schemeSlug)
+  );
+  matchedZedTheme = lib.findFirst (t: t == schemeSlugTitleCased) null zedBuiltinThemes;
+  zedThemeName = if schemeSlug != "" && matchedZedTheme != null then matchedZedTheme else "Base16 Custom";
+
 in
 {
   programs.zed-editor = {
@@ -470,7 +505,7 @@ in
     ];
 
     userSettings = {
-      theme = "Base16 Custom";
+      theme = zedThemeName;
 
       helix_mode = true;
       terminal = {

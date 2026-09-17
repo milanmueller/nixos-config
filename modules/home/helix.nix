@@ -5,6 +5,198 @@
   nix-colors,
   ...
 }:
+let
+  # Themes bundled with Helix (helix-editor/helix runtime/themes/*.toml) whose
+  # names happen to line up with a nix-colors scheme slug. Used to prefer
+  # Helix's own hand-tuned theme over our generated base16_custom one when the
+  # selected color scheme has a native Helix equivalent.
+  helixBuiltinThemes = [
+    "acme"
+    "adwaita-dark"
+    "adwaita-light"
+    "amberwood"
+    "ao"
+    "ashen"
+    "ataraxia"
+    "autumn"
+    "autumn_night"
+    "ayu_dark"
+    "ayu_evolve"
+    "ayu_light"
+    "ayu_mirage"
+    "base16_default_dark"
+    "base16_default_light"
+    "base16_terminal"
+    "base16_transparent"
+    "beans"
+    "bogster"
+    "bogster_light"
+    "boo_berry"
+    "carbon"
+    "carbonfox"
+    "catppuccin_frappe"
+    "catppuccin_latte"
+    "catppuccin_macchiato"
+    "catppuccin_mocha"
+    "curzon"
+    "cyan_light"
+    "darcula"
+    "darcula-solid"
+    "dark_high_contrast"
+    "dark_plus"
+    "dark-synthwave"
+    "doom_acario_dark"
+    "doom-one"
+    "dracula"
+    "dracula_at_night"
+    "earl_grey"
+    "eiffel"
+    "emacs"
+    "everblush"
+    "everforest_dark"
+    "everforest_light"
+    "ferra"
+    "flatwhite"
+    "fleet_dark"
+    "flexoki_dark"
+    "flexoki_light"
+    "focus_nova"
+    "github_dark"
+    "github_dark_colorblind"
+    "github_dark_dimmed"
+    "github_dark_high_contrast"
+    "github_dark_tritanopia"
+    "github_light"
+    "github_light_colorblind"
+    "github_light_high_contrast"
+    "github_light_tritanopia"
+    "gruber-darker"
+    "gruvbox"
+    "gruvbox_dark_hard"
+    "gruvbox_dark_soft"
+    "gruvbox_light"
+    "gruvbox_light_hard"
+    "gruvbox_light_soft"
+    "gruvbox-material"
+    "heisenberg"
+    "hex_lavender"
+    "hex_poison"
+    "hex_steel"
+    "hex_toxic"
+    "horizon-dark"
+    "iceberg-dark"
+    "iceberg-light"
+    "ingrid"
+    "iroaseta"
+    "jellybeans"
+    "jetbrains_dark"
+    "kanagawa"
+    "kanagawa-dragon"
+    "kaolin-dark"
+    "kaolin-light"
+    "kaolin-valley-dark"
+    "kinda_nvim"
+    "kinda_nvim_light"
+    "lapis_aquamarine"
+    "material_darker"
+    "material_deep_ocean"
+    "material_oceanic"
+    "material_palenight"
+    "meliora"
+    "mellow"
+    "merionette"
+    "modus_operandi"
+    "modus_operandi_deuteranopia"
+    "modus_operandi_tinted"
+    "modus_operandi_tritanopia"
+    "modus_vivendi"
+    "modus_vivendi_deuteranopia"
+    "modus_vivendi_tinted"
+    "modus_vivendi_tritanopia"
+    "molokai"
+    "monokai"
+    "monokai_aqua"
+    "monokai_pro"
+    "monokai_pro_machine"
+    "monokai_pro_octagon"
+    "monokai_pro_ristretto"
+    "monokai_pro_spectrum"
+    "monokai_soda"
+    "naysayer"
+    "new_moon"
+    "nightfox"
+    "night_owl"
+    "noctis"
+    "noctis_bordo"
+    "nord"
+    "nord_light"
+    "nord-night"
+    "nyxvamp-obsidian"
+    "nyxvamp-radiance"
+    "nyxvamp-veil"
+    "onedark"
+    "onedarker"
+    "onelight"
+    "papercolor-dark"
+    "papercolor-light"
+    "peachpuff"
+    "penumbra+"
+    "poimandres"
+    "poimandres_storm"
+    "pop-dark"
+    "rasmus"
+    "rose_pine"
+    "rose_pine_dawn"
+    "rose_pine_moon"
+    "seoul256-dark"
+    "seoul256-dark-hard"
+    "seoul256-dark-soft"
+    "seoul256-light"
+    "seoul256-light-hard"
+    "seoul256-light-soft"
+    "serika-dark"
+    "serika-light"
+    "sidra"
+    "snazzy"
+    "solarized_dark"
+    "solarized_light"
+    "sonokai"
+    "spacebones_light"
+    "starlight"
+    "sunset"
+    "term16_dark"
+    "term16_light"
+    "tokyonight"
+    "tokyonight_day"
+    "tokyonight_moon"
+    "tokyonight_storm"
+    "ttox"
+    "varua"
+    "vesper"
+    "vim_dark_high_contrast"
+    "vintage"
+    "voxed"
+    "yellowed"
+    "yo"
+    "yo_berry"
+    "yo_light"
+    "zed_onedark"
+    "zed_onelight"
+    "zenburn"
+  ];
+
+  # nix-colors schemes are always slugged with dashes (e.g. "gruvbox-dark-hard",
+  # "ayu-light"), but Helix's bundled theme files spell some of those with
+  # underscores instead (e.g. "gruvbox_dark_hard", "catppuccin_latte") and
+  # others with the same dashes (e.g. "nord-night", "papercolor-dark"). Try
+  # both spellings against the current scheme slug before giving up.
+  schemeSlug = config.colorScheme.slug or "";
+  schemeSlugUnderscored = lib.replaceStrings [ "-" ] [ "_" ] schemeSlug;
+  matchedHelixTheme = lib.findFirst (
+    t: t == schemeSlug || t == schemeSlugUnderscored
+  ) null helixBuiltinThemes;
+  helixTheme = if schemeSlug != "" && matchedHelixTheme != null then matchedHelixTheme else "base16_custom";
+in
 {
   home.sessionVariables = {
     EDITOR = "hx";
@@ -27,7 +219,7 @@
           skip-levels = 0;
         };
       };
-      theme = "base16_custom";
+      theme = helixTheme;
     };
     languages = {
       # Language Config
@@ -220,7 +412,7 @@
           bg = "gray";
         };
         "ui.cursor.select" = {
-          fg = "bg1";
+          fg = "bg2";
           bg = "orange0";
         };
         "ui.cursor.match" = {
@@ -279,10 +471,10 @@
           underline.style = "line";
         };
         "ui.selection" = {
-          bg = "bg1";
+          bg = "bg2";
         };
         "ui.selection.primary" = {
-          bg = "bg2";
+          bg = "bg3";
         };
         "ui.statusline" = {
           fg = "bg0";
