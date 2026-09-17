@@ -48,7 +48,6 @@ in
   # Install Packages
   home.packages = with pkgs; [
     thunderbird
-    distrobox
     sioyek
     sops
     anydesk
@@ -56,20 +55,16 @@ in
     mpv
     papers
     wl-clipboard-x11
-    zoom-us
     delta
     signal-desktop
     telegram-desktop
     claude-code
-    codex
-    mistral-vibe
     codebook
     nixd
     xpipe
     zk
-    fractal
-    element-desktop
     alacritty
+    ghostty
   ];
 
   # Set environnment variables
