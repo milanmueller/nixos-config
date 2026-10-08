@@ -512,8 +512,9 @@ in
         font_family = "JetBrainsMono Nerd Font Mono";
         shell = "system";
       };
-      relative_line_numbers = true;
+      relative_line_numbers = "wrapped";
       buffer_font_family = "JetBrainsMono Nerd Font Mono";
+      soft_wrap = "editor_width";
     };
   };
 

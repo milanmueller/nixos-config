@@ -5,13 +5,14 @@ let
   firefox-gnome-theme = pkgs.fetchFromGitHub {
     owner = "rafaelmardojai";
     repo = "firefox-gnome-theme";
-    rev = "v143";
-    sha256 = "sha256-0E3TqvXAy81qeM/jZXWWOTZ14Hs1RT7o78UyZM+Jbr4=";
+    rev = "v157";
+    sha256 = "sha256-FEr8AziQBAgXGOHkXjbNMZ5zB06AwiOZCrbyoulC1eo=";
   };
 in
 {
   programs.firefox = {
     enable = true;
+    configPath = "${config.xdg.configHome}/mozilla/firefox";
 
     profiles.default = {
       id = 0;
