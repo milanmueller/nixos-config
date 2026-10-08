@@ -65,6 +65,7 @@ in
     zk
     alacritty
     ghostty
+    zen-browser
   ];
 
   # Set environnment variables
