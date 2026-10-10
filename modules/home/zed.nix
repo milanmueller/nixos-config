@@ -515,6 +515,27 @@ in
       relative_line_numbers = "wrapped";
       buffer_font_family = "JetBrainsMono Nerd Font Mono";
       soft_wrap = "editor_width";
+
+      lsp = {
+        # clangd builds its own cc1 command line from the compiler arguments in
+        # compile_commands.json instead of executing the compiler named there.
+        # On NixOS that loses the libc headers: the Nix cc wrapper adds
+        # -isystem <glibc-dev>/include through its wrapper script and
+        # NIX_CFLAGS_COMPILE, neither of which clangd reproduces, and the paths
+        # it does search (/usr/include, /usr/local/include, /include) hold no
+        # glibc. Every <stdio.h>/<time.h> then fails to resolve, surfacing as
+        # follow-on errors such as "use of undeclared identifier
+        # 'CLOCK_MONOTONIC'". Starting Zed inside an FHS env does not help --
+        # that /usr/include carries no libc headers either.
+        #
+        # --query-driver whitelists drivers clangd may run with -v -E to
+        # extract their real system include paths. The globs must match the
+        # driver as spelled in compile_commands.json, which for a Nix build is
+        # the absolute store path of the wrapper.
+        clangd.binary.arguments = [
+          "--query-driver=/nix/store/*/bin/clang,/nix/store/*/bin/clang++,/nix/store/*/bin/gcc,/nix/store/*/bin/g++"
+        ];
+      };
     };
   };
 

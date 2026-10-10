@@ -10,6 +10,7 @@
     ./hardware-configuration.nix
     ../../modules/defaults.nix
     ../../modules/sshd.nix
+    ../../modules/nix-ld.nix
   ];
 
   swapDevices = [

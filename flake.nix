@@ -111,6 +111,7 @@
                 nixpkgs.overlays = [
                   (final: prev: {
                     claude-code = claude-code.packages.${prev.stdenv.hostPlatform.system}.default;
+                    zen-browser = zen-browser.packages.${prev.stdenv.hostPlatform.system}.default;
                   })
                 ];
               }
