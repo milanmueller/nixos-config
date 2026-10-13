@@ -91,8 +91,17 @@ in
   xdg.mimeApps = {
     enable = true;
     defaultApplications = {
-      "text/html" = "firefox.desktop";
-      "x-scheme-handler/http" = "firefox.desktop";
+      "text/html" = "zen.desktop";
+      "x-scheme-handler/http" = "zen.desktop";
+      "x-scheme-handler/https" = "zen.desktop";
+      "application/xhtml+xml" = "zen.desktop";
+      "x-scheme-handler/mailto" = "thunderbird.desktop";
+      "message/rfc822" = "thunderbird.desktop";
+      "x-scheme-handler/mid" = "thunderbird.desktop";
+      "text/calendar" = "thunderbird.desktop";
+      "application/ics" = "thunderbird.desktop";
+      "x-scheme-handler/webcal" = "thunderbird.desktop";
+      "x-scheme-handler/webcals" = "thunderbird.desktop";
     };
   };
 }
