@@ -66,6 +66,7 @@ in
     alacritty
     ghostty
     zen-browser
+    proton-authenticator
   ];
 
   # Set environnment variables
