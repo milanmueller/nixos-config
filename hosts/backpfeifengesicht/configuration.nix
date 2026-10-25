@@ -54,19 +54,16 @@
     enable32Bit = true; # required for Steam / Proton
   };
 
-  # GNOME Desktop Environment
-  services.xserver.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
-  services.displayManager.gdm.enable = true;
+  # Cosmic DE
+  services.desktopManager.cosmic = {
+    enable = true;
+    xwayland.enable = true;
+  };
+  services.displayManager.cosmic-greeter.enable = true;
   services.displayManager.autoLogin = {
     enable = true;
     user = userConfig.username;
   };
-  services.gnome.gnome-remote-desktop.enable = true;
-  systemd.services.gnome-remote-desktop = {
-    wantedBy = [ "graphical.target" ];
-  };
-  networking.firewall.allowedTCPPorts = [ 3389 ];
 
   # Steam + gaming
   programs.steam = {

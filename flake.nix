@@ -110,6 +110,7 @@
               {
                 nixpkgs.overlays = [
                   (final: prev: {
+                    cosmic-themes-base16 = cosmic-themes-base16.packages.${prev.stdenv.hostPlatform.system}.default;
                     claude-code = claude-code.packages.${prev.stdenv.hostPlatform.system}.default;
                     zen-browser = zen-browser.packages.${prev.stdenv.hostPlatform.system}.default;
                   })
@@ -120,8 +121,12 @@
           extraInputs = {
             inherit nix-colors;
           };
-          hmModules = [ ];
-          hmExtraSpecialArgs = { };
+          hmModules = [
+            cosmic-themes-base16.homeManagerModules.default
+          ];
+          hmExtraSpecialArgs = {
+            colorParams = import ./hosts/backpfeifengesicht/color-parameters.nix;
+          };
         };
       };
       mkHost =

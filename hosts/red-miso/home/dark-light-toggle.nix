@@ -1,14 +1,15 @@
 {
   pkgs,
   config,
+  osConfig,
   colorParams,
   ...
 }:
 let
   # State file location from colorParams
   stateFile = "${config.home.homeDirectory}/${colorParams.stateFile}";
-  # Color parameters file in the flake
-  colorParamsFile = "/home/milan/nixos-config/hosts/red-miso/color-parameters.nix";
+  # Per-host color parameters file in the flake
+  colorParamsFile = "/home/milan/nixos-config/hosts/${osConfig.networking.hostName}/color-parameters.nix";
 in
 {
   # Toggle script to switch between themes

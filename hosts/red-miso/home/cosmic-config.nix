@@ -43,6 +43,7 @@ in
     # Set palette and paths based on mode
     if [ "$THEME_MODE" = "dark" ]; then
       THEME_NAME="Dark"
+      WALLPAPER="${./wallpaper-dark.jpg}"
       IS_DARK="true"
       # Dark mode colors (without # prefix)
       BASE00="${darkScheme.palette.base00}"
@@ -63,6 +64,7 @@ in
       BASE0F="${darkScheme.palette.base0F}"
     else
       THEME_NAME="Light"
+      WALLPAPER="${./wallpaper-light.jpg}"
       IS_DARK="false"
       # Catppuccin Latte colors (without # prefix)
       BASE00="${lightScheme.palette.base00}"
@@ -87,7 +89,7 @@ in
     MODE_CONFIG_PATH="${config.home.homeDirectory}/.config/cosmic/com.system76.CosmicTheme.Mode/v1"
 
     # Generate the COSMIC theme
-    COSMIC_CMD="${pkgs.cosmic-themes-base16}/bin/cosmic-themes-base16 $THEME_MODE $THEME_PATH #$BASE00 #$BASE01 #$BASE02 #$BASE03 #$BASE04 #$BASE05 #$BASE06 #$BASE07 #$BASE08 #$BASE09 #$BASE0A #$BASE0B #$BASE0C #$BASE0D #$BASE0E #$BASE0F --wallpaper ${./wallpaper.png}"
+    COSMIC_CMD="${pkgs.cosmic-themes-base16}/bin/cosmic-themes-base16 $THEME_MODE $THEME_PATH #$BASE00 #$BASE01 #$BASE02 #$BASE03 #$BASE04 #$BASE05 #$BASE06 #$BASE07 #$BASE08 #$BASE09 #$BASE0A #$BASE0B #$BASE0C #$BASE0D #$BASE0E #$BASE0F"
     echo "[$(date '+%Y-%m-%d %H:%M:%S')] Running: $COSMIC_CMD" >> "$LOG_FILE"
     run $COSMIC_CMD >> "$LOG_FILE" 2>&1
     echo "[$(date '+%Y-%m-%d %H:%M:%S')] Theme generation completed" >> "$LOG_FILE"
@@ -101,6 +103,23 @@ in
 
     echo "[$(date '+%Y-%m-%d %H:%M:%S')] Disabling auto_switch" >> "$LOG_FILE"
     run echo -n "false" > "$MODE_CONFIG_PATH/auto_switch" 2>> "$LOG_FILE"
+
+    # Point the COSMIC background at the wallpaper variant for this mode
+    BG_PATH="${config.home.homeDirectory}/.config/cosmic/com.system76.CosmicBackground/v1"
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] Setting wallpaper to $WALLPAPER" >> "$LOG_FILE"
+    run mkdir -p "$BG_PATH" >> "$LOG_FILE" 2>&1
+    run echo -n "true" > "$BG_PATH/same-on-all" 2>> "$LOG_FILE"
+    run cat > "$BG_PATH/all" <<BGEOF
+(
+    output: "all",
+    source: Path("$WALLPAPER"),
+    filter_by_theme: false,
+    rotation_frequency: 3600,
+    filter_method: Lanczos,
+    scaling_mode: Zoom,
+    sampling_method: Alphanumeric,
+)
+BGEOF
 
     echo "[$(date '+%Y-%m-%d %H:%M:%S')] COSMIC theme configuration completed" >> "$LOG_FILE"
   '';
