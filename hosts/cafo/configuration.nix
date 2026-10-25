@@ -31,6 +31,21 @@
   networking.hostId = "8425e349"; # required for zfs
   # networking.interfaces.ensp1s0.useDHCP = true;
 
+  # Hetzner Cloud only provides IPv4 via DHCP, IPv6 has to be configured statically
+  networking.networkmanager.ensureProfiles.profiles.enp1s0 = {
+    connection = {
+      id = "enp1s0";
+      type = "ethernet";
+      interface-name = "enp1s0";
+    };
+    ipv4.method = "auto";
+    ipv6 = {
+      method = "manual";
+      address1 = "2a01:4f8:c012:d3ef::1/64";
+      gateway = "fe80::1";
+    };
+  };
+
   # Configuration of sshd (enable remote connections)
   services.openssh.settings.PasswordAuthentication = lib.mkForce false;
 
