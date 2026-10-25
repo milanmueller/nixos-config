@@ -31,7 +31,8 @@
       "wheel"
     ];
     openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN7kzswyDXmBSUT/jwDXXGT+ZWnouuqvauXDIxQxcRhT development@milanmueller.de"
+      # backpfeifengesicht
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ6rv4EpRjBsTp0bFdVFH9XkMldp9tIJQovJ0+neSl34 mail@milanmueller.de"
     ];
     shell = pkgs.zsh;
   };
