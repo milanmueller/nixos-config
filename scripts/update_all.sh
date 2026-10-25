@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Update all hosts in the NixOS configuration via WireGuard network
+# Update all hosts in the NixOS configuration via Tailscale (MagicDNS hostnames)
 
 set -euo pipefail
 
@@ -12,41 +12,19 @@ RESET='\033[0m'
 # Get the directory where this script is located
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CONFIG_DIR="$(dirname "$SCRIPT_DIR")"
-HOSTS_FILE="$CONFIG_DIR/modules/network/hosts.nix"
 
 # Get current hostname
 CURRENT_HOSTNAME=$(hostname)
 
-# Function to parse hosts.nix and extract hostname->IP mappings
-parse_hosts() {
-    # Parse the hosts.nix file to extract hostname and wireguardIp
-    # Format: hostname = { ... wireguardIp = "10.0.0.X"; ... };
-    awk '
-        /^  [a-z-]+ = {/ {
-            # Extract hostname (remove " = {")
-            hostname = $1
-            in_host = 1
-            ip = ""
-        }
-        in_host && /wireguardIp = / {
-            # Extract IP (remove quotes and semicolon)
-            gsub(/[";]/, "", $3)
-            ip = $3
-        }
-        in_host && /^  };/ {
-            # End of host block
-            if (ip != "") {
-                print hostname " " ip
-            }
-            in_host = 0
-        }
-    ' "$HOSTS_FILE"
+# List all hosts defined in the flake
+list_hosts() {
+    nix eval --raw "$CONFIG_DIR#nixosConfigurations" \
+        --apply 'hosts: builtins.concatStringsSep "\n" (builtins.attrNames hosts)'
 }
 
 # Function to update a single host
 update_host() {
     local hostname=$1
-    local ip=$2
 
     if [[ "$hostname" == "$CURRENT_HOSTNAME" ]]; then
         echo -e "${CYAN}Running locally on $hostname...${RESET}"
@@ -58,8 +36,8 @@ update_host() {
             return 1
         fi
     else
-        echo -e "${CYAN}Connecting to $hostname at $ip...${RESET}"
-        if ssh -t "milan@$ip" "cd ~/nixos-config && git pull && sudo nixos-rebuild switch"; then
+        echo -e "${CYAN}Connecting to $hostname via Tailscale...${RESET}"
+        if ssh -t "milan@$hostname" "cd ~/nixos-config && git pull && sudo nixos-rebuild switch"; then
             echo -e "${GREEN}Finished updating $hostname${RESET}\n"
             return 0
         else
@@ -71,16 +49,17 @@ update_host() {
 
 # Main logic
 main() {
-    # Check if hosts file exists
-    if [[ ! -f "$HOSTS_FILE" ]]; then
-        echo -e "${RED}Error: hosts.nix not found at $HOSTS_FILE${RESET}"
+    local failed=()
+
+    # Update each host, continuing past failures (e.g. offline hosts)
+    while read -r hostname; do
+        update_host "$hostname" </dev/tty || failed+=("$hostname")
+    done < <(list_hosts)
+
+    if [[ ${#failed[@]} -gt 0 ]]; then
+        echo -e "${RED}Failed hosts: ${failed[*]}${RESET}"
         exit 1
     fi
-
-    # Parse hosts and update each one
-    while read -r hostname ip; do
-        update_host "$hostname" "$ip"
-    done < <(parse_hosts)
 }
 
 main "$@"

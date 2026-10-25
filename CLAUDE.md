@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Overview
 
-This is a multi-host NixOS configuration managed with Nix Flakes. It configures five different systems (x86_64 and aarch64) with shared modules, centralized secrets management via SOPS, and a WireGuard VPN mesh topology.
+This is a multi-host NixOS configuration managed with Nix Flakes. It configures four systems (x86_64 and aarch64) with shared modules and centralized secrets management via SOPS. Hosts are connected via Tailscale.
 
 **Key architectural pattern:** The `flake.nix` defines a `mkHost` function that templates NixOS system configurations. Each host imports shared modules from `modules/` and can selectively override or extend with host-specific configurations.
 
@@ -31,15 +31,15 @@ nix flake update <input-name>
 
 ### Multi-Host Deployment
 
-Update all hosts via WireGuard network (requires WireGuard connectivity):
+Update all hosts via Tailscale (requires Tailscale connectivity):
 ```bash
 cd ~/nixos-config/scripts && ./update_all.sh
 ```
 
 This Bash script:
-- Parses `modules/network/hosts.nix` to extract WireGuard IPs
+- Lists hosts from `nixosConfigurations` in the flake
 - For local host: runs `git pull && sudo nixos-rebuild switch`
-- For remote hosts: SSH to WireGuard IP and runs same commands
+- For remote hosts: SSH to the host's Tailscale (MagicDNS) hostname and runs same commands
 
 ### Development Environment
 
@@ -88,7 +88,6 @@ configuration.nix
 ├── hardware-configuration.nix (generated)
 ├── modules/defaults.nix (all hosts)
 │   ├── modules/i18n.nix
-│   ├── modules/network/wireguard.nix
 │   ├── modules/home-manager.nix
 │   └── modules/nix-settings.nix
 └── [host-specific modules]
@@ -110,19 +109,13 @@ home.nix
 | Host | Architecture | Role | Key Features |
 |------|-------------|------|--------------|
 | **red-miso** | x86_64-linux | Desktop workstation | Cosmic DE, Docker/Podman, Tailscale, development tools |
-| **gestaltzerfall** | x86_64-linux | Web server | Traefik, Authelia (2FA), ttyd, CrowdSec, public-facing |
-| **cafo** | aarch64-linux | VPN hub + web services | WireGuard central node (port 51821), same web stack as gestaltzerfall |
-| **monomyth** | aarch64-linux | Lightweight server | Minimal config, WireGuard client |
-| **odessa** | aarch64-linux | Lightweight server | Minimal config, WireGuard client |
+| **backpfeifengesicht** | x86_64-linux | Workstation | GNOME, GNOME Remote Desktop, Docker/Podman |
+| **cafo** | aarch64-linux | Web server (public) | Traefik, Authelia (2FA, Podman container), ttyd |
+| **monomyth** | aarch64-linux | Lightweight server | Minimal config |
 
-### WireGuard Network Topology
+### Networking
 
-All hosts connect via WireGuard in a hub-spoke model:
-- **Central node:** `cafo` (10.0.0.5:51821)
-- **Clients:** red-miso, gestaltzerfall, monomyth, odessa
-- **MTU:** 1280 (prevents SSH authentication issues)
-- **Security:** Pre-shared keys (PSK) from SOPS secrets
-- **Configuration:** `modules/network/wireguard.nix` + `modules/network/hosts.nix`
+All hosts run Tailscale (`services.tailscale.enable` in `modules/defaults.nix`) and reach each other via their MagicDNS hostnames.
 
 ### Secrets Management (SOPS)
 
@@ -138,8 +131,6 @@ services.foo.passwordFile = config.sops.secrets."path/to/secret".path;
 ```
 
 **Secret structure:**
-- `wireguard/psk` - Shared pre-shared key
-- `wireguard/<hostname>/private_key` - Per-host WireGuard keys
 - `authelia/*` - Web authentication secrets (JWT, storage, passwords, SMTP, Duo)
 
 ### Web Service Stack (gestaltzerfall & cafo)
@@ -284,14 +275,14 @@ Each host declares `system.stateVersion` (e.g., "24.05", "24.11"). **Never chang
 
 ### File Naming
 
-- Modules: lowercase, descriptive (e.g., `git.nix`, `wireguard.nix`)
-- Hosts: creative names (red-miso, gestaltzerfall, cafo, monomyth, odessa)
+- Modules: lowercase, descriptive (e.g., `git.nix`, `traefik.nix`)
+- Hosts: creative names (red-miso, backpfeifengesicht, cafo, monomyth)
 - Imports: relative paths from repo root (e.g., `../../modules/defaults.nix`)
 
 ### Commented Features
 
 Some modules are commented out in `modules/defaults.nix`:
-- `./zerotier.nix` - Disabled in favor of WireGuard
+- `./zerotier.nix` - Disabled in favor of Tailscale
 - `./sshd.nix` - Imported selectively per-host instead
 
 ## Working with This Codebase
@@ -303,8 +294,7 @@ Some modules are commented out in `modules/defaults.nix`:
 3. Generate `hardware-configuration.nix` with `nixos-generate-config`
 4. Add `home.nix` (import `../../modules/home/defaults.nix`)
 5. Add host entry to `flake.nix` hosts attribute set
-6. Add WireGuard config to `modules/network/hosts.nix`
-7. Generate WireGuard keys and add to secrets repository
+6. Join the host to the tailnet (`sudo tailscale up`)
 
 ### Adding a New Module
 
@@ -371,9 +361,9 @@ home-manager.users.${userConfig.username}.imports = [
 
 `scripts/update_all.sh`:
 - Written in Bash
-- Parses `modules/network/hosts.nix` for WireGuard IPs
-- SSH to each host and run `git pull && sudo nixos-rebuild switch`
-- Handles failures gracefully with colored output
+- Lists hosts from the flake's `nixosConfigurations`
+- SSH to each host via its Tailscale hostname and run `git pull && sudo nixos-rebuild switch`
+- Continues past failed/offline hosts and reports them at the end
 
 ## Current Work
 
@@ -388,4 +378,4 @@ Recent focus areas (from commit history):
 - Cosmic DE customization and configuration
 - Consolidating web services
 - Cleaning up experimental configurations
-- Disabling Zerotier in favor of WireGuard
+- Replacing Zerotier/WireGuard with Tailscale
