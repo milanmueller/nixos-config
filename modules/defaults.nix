@@ -21,6 +21,9 @@
     Defaults pwfeedback
   '';
 
+  # Terminfo for ghostty, so SSH sessions from ghostty (TERM=xterm-ghostty) work
+  environment.systemPackages = [ pkgs.ghostty.terminfo ];
+
   # Install zsh
   programs.zsh.enable = true;
   # Define a user account. Don't forget to set a password with ‘passwd’.
