@@ -45,6 +45,7 @@
     xpipe
     zk
     gnomeExtensions.appindicator
+    gnomeExtensions.no-overview
     google-chrome
     zen-browser
     blanket
@@ -130,6 +131,7 @@
       enabled-extensions = [
         "tilingshell@ferrarodomenico.com"
         "appindicatorsupport@rgcjonas.gmail.com"
+        "no-overview@fthx"
       ];
     };
     "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
