@@ -88,10 +88,16 @@ in
     };
   };
 
+  # Default terminal (xdg-terminal-exec spec) -> COSMIC Terminal
+  xdg.configFile."xdg-terminals.list".text = ''
+    com.system76.CosmicTerm.desktop
+  '';
+
   # Set default applications
   xdg.mimeApps = {
     enable = true;
     defaultApplications = {
+      "x-scheme-handler/terminal" = "com.system76.CosmicTerm.desktop";
       "text/html" = "zen.desktop";
       "x-scheme-handler/http" = "zen.desktop";
       "x-scheme-handler/https" = "zen.desktop";
