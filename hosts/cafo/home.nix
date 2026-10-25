@@ -10,6 +10,7 @@
   # Install Packages
   home.packages = with pkgs; [
     claude-code
+    zellij
   ];
   home.stateVersion = "24.05";
 }
