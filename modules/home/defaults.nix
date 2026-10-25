@@ -13,6 +13,7 @@
     ./helix.nix
     ./alacritty.nix
     ./welcome.nix
+    ./zellij.nix
   ];
   home.sessionVariables = {
     EDITOR = "hx";

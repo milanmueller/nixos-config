@@ -115,7 +115,6 @@
     podman-compose
     nil
     home-manager
-    zellij
   ];
 
   # System fonts
