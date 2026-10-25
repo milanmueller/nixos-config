@@ -28,27 +28,18 @@
   # Install Packages
   home.packages = with pkgs; [
     thunderbird
-    distrobox
-    sioyek
     sops
     mission-center
-    mpv
-    papers
     wl-clipboard-x11
-    zoom-us
-    delta
     claude-code
-    codex
-    mistral-vibe
     codebook
     nixd
-    xpipe
     zk
     gnomeExtensions.appindicator
     gnomeExtensions.no-overview
     google-chrome
     zen-browser
-    blanket
+    proton-authenticator
   ];
 
   home.sessionVariables = {
