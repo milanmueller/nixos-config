@@ -29,18 +29,6 @@ nix flake update
 nix flake update <input-name>
 ```
 
-### Multi-Host Deployment
-
-Update all hosts via Tailscale (requires Tailscale connectivity):
-```bash
-cd ~/nixos-config/scripts && ./update_all.sh
-```
-
-This Bash script:
-- Lists hosts from `nixosConfigurations` in the flake
-- For local host: runs `git pull && sudo nixos-rebuild switch`
-- For remote hosts: SSH to the host's Tailscale (MagicDNS) hostname and runs same commands
-
 ### Development Environment
 
 ```bash
@@ -331,7 +319,7 @@ sudo nixos-rebuild switch
 For multi-host changes:
 1. Test on one host first
 2. Commit and push changes
-3. Run `nix run .#update-all` to deploy to all hosts
+3. On each other host: `git pull && sudo nixos-rebuild switch`
 
 ## Home Manager Integration
 
@@ -356,14 +344,6 @@ home-manager.users.${userConfig.username}.imports = [
 - Systemd timer runs daily at 02:00
 - Pulls latest changes from git
 - Does NOT automatically rebuild (manual intervention required)
-
-### Multi-host Update Script
-
-`scripts/update_all.sh`:
-- Written in Bash
-- Lists hosts from the flake's `nixosConfigurations`
-- SSH to each host via its Tailscale hostname and run `git pull && sudo nixos-rebuild switch`
-- Continues past failed/offline hosts and reports them at the end
 
 ## Current Work
 
