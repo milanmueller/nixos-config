@@ -23,6 +23,9 @@
   # Logitech stuff
   hardware.logitech.wireless.enable = true;
 
+  # USB Wi-Fi (mt7921u): power saving can add latency spikes
+  networking.networkmanager.wifi.powersave = false;
+
   # FW-Update
   services.fwupd.enable = true;
 
@@ -55,7 +58,10 @@
   services.xserver.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
   services.displayManager.gdm.enable = true;
-  services.displayManager.autoLogin.enable = false;
+  services.displayManager.autoLogin = {
+    enable = true;
+    user = userConfig.username;
+  };
   services.gnome.gnome-remote-desktop.enable = true;
   systemd.services.gnome-remote-desktop = {
     wantedBy = [ "graphical.target" ];
@@ -127,7 +133,7 @@
       ids = [ "*" ];
       settings.main = {
         capslock = "escape";
-        # escape = "grave";
+        escape = "grave";
       };
     };
   };
