@@ -10,6 +10,7 @@ in
     ../../../modules/web/traefik.nix
     ../../../modules/web/authelia.nix
     ../../../modules/web/ttyd.nix
+    ../../../modules/web/mealie.nix
     # ../../../modules/web/crowdsec.nix
   ];
 

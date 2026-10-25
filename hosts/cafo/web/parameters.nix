@@ -4,5 +4,6 @@
   internalPorts = {
     ttyd = 1080;
     authelia = 2080;
+    mealie = 3080;
   };
 }

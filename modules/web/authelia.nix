@@ -19,6 +19,19 @@ in
     owner = autheliaSysUser;
     mode = "0400";
   };
+  sops.secrets."authelia/oidc/hmac_secret" = {
+    owner = autheliaSysUser;
+    mode = "0400";
+  };
+  # NOTE: flat key, sops-nix cannot extract from list entries (the old jwks[0].key layout)
+  sops.secrets."authelia/oidc/jwks_key" = {
+    owner = autheliaSysUser;
+    mode = "0400";
+  };
+  sops.secrets."authelia/oidc/mealie_client_secret_hash" = {
+    owner = autheliaSysUser;
+    mode = "0400";
+  };
   sops.secrets."authelia/admin_pw" = { };
   sops.secrets."authelia/milan_pw" = { };
   sops.secrets."authelia/smtp/address" = { };
@@ -52,10 +65,16 @@ in
       "/etc/authelia/:/config"
       "${config.sops.secrets."authelia/jwt_secret".path}:/secrets/JWT_SECRET:ro"
       "${config.sops.secrets."authelia/storage_secret".path}:/secrets/STORAGE_SECRET:ro"
+      "${config.sops.secrets."authelia/oidc/hmac_secret".path}:/secrets/OIDC_HMAC_SECRET:ro"
+      "${config.sops.secrets."authelia/oidc/jwks_key".path}:/secrets/OIDC_JWKS_KEY:ro"
+      "${config.sops.secrets."authelia/oidc/mealie_client_secret_hash".path}:/secrets/OIDC_MEALIE_CLIENT_SECRET_HASH:ro"
     ];
     environment = {
       "AUTHELIA_IDENTITY_VALIDATION_RESET_PASSWORD_JWT_SECRET_FILE" = "/secrets/JWT_SECRET";
       "AUTHELIA_STORAGE_ENCRYPTION_KEY_FILE" = "/secrets/STORAGE_SECRET";
+      "AUTHELIA_IDENTITY_PROVIDERS_OIDC_HMAC_SECRET_FILE" = "/secrets/OIDC_HMAC_SECRET";
+      # enables {{ secret "..." }} templating in configuration.yml
+      "X_AUTHELIA_CONFIG_FILTERS" = "template";
     };
   };
 
@@ -150,7 +169,30 @@ in
               hostname: '$DUO_HOSTNAME'
               integration_key: '$DUO_INTEGRATION_KEY'
               secret_key: '$DUO_SECRET_KEY'
-              enable_self_enrollment: false                  
+              enable_self_enrollment: false
+            identity_providers:
+              oidc:
+                jwks:
+                  - algorithm: 'RS256'
+                    use: 'sig'
+                    key: {{ secret "/secrets/OIDC_JWKS_KEY" | mindent 10 "|" | msquote }}
+                claims_policies:
+                  mealie:
+                    id_token: ['email', 'email_verified', 'alt_emails', 'preferred_username', 'name', 'groups']
+                clients:
+                  - client_id: 'mealie'
+                    client_name: 'Mealie'
+                    client_secret: {{ secret "/secrets/OIDC_MEALIE_CLIENT_SECRET_HASH" | squote }}
+                    public: false
+                    authorization_policy: 'two_factor'
+                    require_pkce: false
+                    claims_policy: 'mealie'
+                    redirect_uris:
+                      - 'https://nomnom.milanmueller.de/login'
+                    scopes: ['openid', 'profile', 'email', 'groups']
+                    response_types: ['code']
+                    grant_types: ['authorization_code']
+                    token_endpoint_auth_method: 'client_secret_basic'
             EOF
             chmod 0400 /etc/authelia/configuration.yml
             chown ${autheliaSysUser}:${webParams.webdataSysGroup} /etc/authelia/configuration.yml

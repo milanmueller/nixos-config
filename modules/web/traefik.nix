@@ -50,6 +50,12 @@
             tls.certResolver = "letsencrypt";
             middlewares = [ "authelia" ];
           };
+          mealie = {
+            rule = "Host(`nomnom.milanmueller.de`)";
+            service = "mealie";
+            entryPoints = [ "websecure" ];
+            tls.certResolver = "letsencrypt";
+          };
           authelia = {
             rule = "Host(`auth.milanmueller.de`)";
             service = "authelia";
@@ -67,6 +73,9 @@
         services = {
           ttyd = {
             loadBalancer.servers = [ { url = "http://localhost:${toString webParams.internalPorts.ttyd}"; } ];
+          };
+          mealie = {
+            loadBalancer.servers = [ { url = "http://localhost:${toString webParams.internalPorts.mealie}"; } ];
           };
           authelia = {
             loadBalancer.servers = [
