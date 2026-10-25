@@ -16,6 +16,7 @@
     ../../modules/defaults.nix
     ../../modules/autopull.nix
     ../../modules/sshd.nix
+    ../../modules/container-autoupdate.nix
     ./web
   ];
 
