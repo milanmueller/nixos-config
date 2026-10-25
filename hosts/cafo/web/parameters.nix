@@ -1,5 +1,5 @@
 {
-  webdata = "/zroot/webdata";
+  webdata = "/persist/webdata"; # must be on a persistent dataset, / is rolled back on boot
   webdataSysGroup = "webdata";
   internalPorts = {
     ttyd = 1080;

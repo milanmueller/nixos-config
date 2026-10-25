@@ -33,9 +33,12 @@ in
     group = webParams.webdataSysGroup;
   };
 
-  # Create /etc/authelia directory for config files
+  # Create /etc/authelia directory for config files and the persistent data directory
   systemd.tmpfiles.rules = [
     "d /etc/authelia 0750 ${autheliaSysUser} ${webParams.webdataSysGroup} -"
+    "d ${webParams.webdata} 0755 root root -"
+    "d ${webParams.webdata}/authelia 0750 ${autheliaSysUser} ${webParams.webdataSysGroup} -"
+    "d ${webParams.webdata}/authelia/data 0750 ${autheliaSysUser} ${webParams.webdataSysGroup} -"
   ];
   # Authelia Container
   virtualisation.oci-containers.containers."authelia" = {
@@ -130,10 +133,10 @@ in
                 path: '/data/db.sqlite3'
             notifier:
               smtp:
-                address: 'submissions://$SMTP_SERVER:465'
+                address: 'submission://$SMTP_SERVER:587' # outbound 465 is blocked on cafo, use STARTTLS on 587
                 username: '$SMTP_USER'
                 password: '$SMTP_PASSWORD'
-                sender: 'Authelia <mail@milanmueller.de>'
+                sender: 'Authelia <cafo@milanmueller.de>'
                 subject: '[Authelia] {title}'
             session:
               cookies:
