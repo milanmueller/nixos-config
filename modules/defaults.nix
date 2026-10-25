@@ -33,6 +33,8 @@
     openssh.authorizedKeys.keys = [
       # backpfeifengesicht
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ6rv4EpRjBsTp0bFdVFH9XkMldp9tIJQovJ0+neSl34 mail@milanmueller.de"
+      # red-miso
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPa/zAzWTWo8wKuUnjMkUFk/W0e01a5JBdgREd8TMNTn mail@milanmueller.de"
     ];
     shell = pkgs.zsh;
   };
