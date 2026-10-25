@@ -504,6 +504,20 @@ in
       "gleam"
     ];
 
+    # Helix lets a count be typed after the goto prefix: `g12g` jumps to line
+    # 12. Zed has no binding for `g <digit>`, so bind each digit under `g` to
+    # vim::Number. That seeds the count; further digits append through Zed's
+    # normal count handling, and the closing `g g` (vim::StartOfDocument)
+    # honours it. `0` is left out because a count never starts with 0.
+    userKeymaps = [
+      {
+        context = "vim_mode == helix_normal || vim_mode == helix_select";
+        bindings = lib.listToAttrs (
+          map (n: lib.nameValuePair "g ${toString n}" [ "vim::Number" n ]) (lib.range 1 9)
+        );
+      }
+    ];
+
     userSettings = {
       theme = zedThemeName;
 
