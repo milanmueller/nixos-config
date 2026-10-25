@@ -52,6 +52,10 @@
 
   # Rollback to initial root snapshot, based on https://grahamc.com/blog/erase-your-darlings/
   # and https://notthebe.ee/blog/nixos-ephemeral-zfs-root/ (ephemeral root)
+  # postDeviceCommands is only supported by the scripted stage 1, and
+  # nixpkgs now defaults to the systemd one. Keep scripted until this is
+  # ported to boot.initrd.systemd.services.
+  boot.initrd.systemd.enable = false;
   boot.initrd.postDeviceCommands = lib.mkAfter ''
     zfs rollback -r zpool01/nixos/empty@start
   '';
