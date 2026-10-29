@@ -49,7 +49,8 @@ in
     codebook
     nixd
     zk
-    google-chrome
+    # Autologin never unlocks the keyring, so keep Chrome from asking for it
+    (google-chrome.override { commandLineArgs = "--password-store=basic"; })
     zen-browser
     proton-authenticator
   ];
