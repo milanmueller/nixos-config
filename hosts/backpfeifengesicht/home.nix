@@ -50,7 +50,15 @@ in
     nixd
     zk
     # Autologin never unlocks the keyring, so keep Chrome from asking for it
-    (google-chrome.override { commandLineArgs = "--password-store=basic"; })
+    # Black video on Netflix with the proprietary Nvidia driver (Pascal) on Wayland:
+    # disable GPU video decode so frames are rendered via the software path,
+    # and run via XWayland instead of native Wayland
+    (google-chrome.override {
+      commandLineArgs = lib.concatStringsSep " " [
+        "--password-store=basic"
+        "--ozone-platform=x11"
+      ];
+    })
     zen-browser
     proton-authenticator
   ];
