@@ -53,6 +53,13 @@
   # Enable fail2ban since cafo is publicly reachable
   services.fail2ban.enable = true;
 
+  # Swap in compressed RAM (swapfiles are not supported on ZFS), capped at 4G
+  zramSwap = {
+    enable = true;
+    memoryPercent = 100;
+    memoryMax = 4 * 1024 * 1024 * 1024;
+  };
+
   # Enable Podman
   virtualisation = {
     containers.enable = true;
