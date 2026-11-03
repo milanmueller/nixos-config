@@ -484,12 +484,14 @@ let
   # and title-cased (e.g. "Gruvbox Dark Hard", "Ayu Light"). Convert and match.
   schemeSlug = config.colorScheme.slug or "";
   titleCaseWord =
-    word: lib.toUpper (builtins.substring 0 1 word) + builtins.substring 1 (builtins.stringLength word) word;
+    word:
+    lib.toUpper (builtins.substring 0 1 word) + builtins.substring 1 (builtins.stringLength word) word;
   schemeSlugTitleCased = builtins.concatStringsSep " " (
     map titleCaseWord (lib.splitString "-" schemeSlug)
   );
   matchedZedTheme = lib.findFirst (t: t == schemeSlugTitleCased) null zedBuiltinThemes;
-  zedThemeName = if schemeSlug != "" && matchedZedTheme != null then matchedZedTheme else "Base16 Custom";
+  zedThemeName =
+    if schemeSlug != "" && matchedZedTheme != null then matchedZedTheme else "Base16 Custom";
 
 in
 {
@@ -502,6 +504,11 @@ in
       "toml"
       "dockerfile"
       "gleam"
+      "catppuccin"
+      "haskell"
+      "html"
+      "lean4"
+      "make"
     ];
 
     # Helix lets a count be typed after the goto prefix: `g12g` jumps to line
@@ -513,7 +520,13 @@ in
       {
         context = "vim_mode == helix_normal || vim_mode == helix_select";
         bindings = lib.listToAttrs (
-          map (n: lib.nameValuePair "g ${toString n}" [ "vim::Number" n ]) (lib.range 1 9)
+          map (
+            n:
+            lib.nameValuePair "g ${toString n}" [
+              "vim::Number"
+              n
+            ]
+          ) (lib.range 1 9)
         );
       }
     ];
@@ -529,6 +542,17 @@ in
       relative_line_numbers = "wrapped";
       buffer_font_family = "JetBrainsMono Nerd Font Mono";
       soft_wrap = "editor_width";
+
+      outline_panel.dock = "right";
+      git_panel.dock = "right";
+      project_panel.dock = "right";
+
+      telemetry = {
+        metrics = false;
+        diagnostics = false;
+        anonymous = true;
+        enabled = false;
+      };
 
       lsp = {
         # clangd builds its own cc1 command line from the compiler arguments in
