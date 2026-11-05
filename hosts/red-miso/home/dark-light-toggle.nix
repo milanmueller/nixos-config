@@ -1,52 +1,28 @@
 {
   pkgs,
-  config,
   osConfig,
-  colorParams,
   ...
 }:
-let
-  # State file location from colorParams
-  stateFile = "${config.home.homeDirectory}/${colorParams.stateFile}";
-  # Per-host color parameters file in the flake
-  colorParamsFile = "/home/milan/nixos-config/hosts/${osConfig.networking.hostName}/color-parameters.nix";
-in
 {
-  # Toggle script to switch between themes
+  # Toggle script to switch between themes. The two modes are NixOS
+  # specialisations (modules/theme-mode.nix), so this is a runtime switch of
+  # the active generation: no repo edit and no rebuild.
   home.packages = with pkgs; [
     (writeShellApplication {
       name = "toggle-theme";
-      runtimeInputs = [ coreutils gnused ];
       text = ''
-        COLOR_PARAMS_FILE="${colorParamsFile}"
-        STATE_FILE="${stateFile}"
+        CURRENT="${osConfig.theme.mode}"
 
-        # Read current mode from color-parameters.nix
-        CURRENT="${colorParams.currentMode}"
-
-        # Toggle theme
         if [ "$CURRENT" = "light" ]; then
           NEW_MODE="dark"
-          echo "Switching to dark theme..."
         else
           NEW_MODE="light"
-          echo "Switching to light theme..."
         fi
 
-        # Update the color-parameters.nix file
-        echo "Updating $COLOR_PARAMS_FILE..."
-        sed -i "s/currentMode = \"$CURRENT\";/currentMode = \"$NEW_MODE\";/" "$COLOR_PARAMS_FILE"
-
-        # Also write to state file for reference
-        mkdir -p "$(dirname "$STATE_FILE")"
-        echo -n "$NEW_MODE" > "$STATE_FILE"
-
-        # Rebuild NixOS configuration
-        echo "Rebuilding system configuration..."
-        sudo nixos-rebuild switch
+        echo "Switching to $NEW_MODE theme..."
+        sudo /nix/var/nix/profiles/system/specialisation/"$NEW_MODE"/bin/switch-to-configuration switch
 
         echo "✓ Theme switched to $NEW_MODE"
-        echo "Note: Firefox will use system theme automatically"
       '';
     })
   ];

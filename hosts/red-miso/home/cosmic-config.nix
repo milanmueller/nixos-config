@@ -4,12 +4,10 @@
   pkgs,
   nix-colors,
   colorParams,
+  osConfig,
   ...
 }:
 let
-  # State file location from colorParams
-  stateFile = "${config.home.homeDirectory}/${colorParams.stateFile}";
-
   # Get color schemes from colorParams
   lightScheme = nix-colors.colorSchemes.${colorParams.lightModeScheme};
   darkScheme = nix-colors.colorSchemes.${colorParams.darkModeScheme};
@@ -23,7 +21,7 @@ in
   home.packages = [ pkgs.cosmic-themes-base16 ];
 
   # Note: colorScheme is set in modules/home/defaults.nix
-  # COSMIC theme is changed dynamically at activation time based on state file
+  # COSMIC theme follows osConfig.theme.mode (NixOS specialisation)
 
   # Custom activation script that reads theme mode at runtime
   home.activation.generateCosmicTheme = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
@@ -31,12 +29,8 @@ in
 
     echo "[$(date '+%Y-%m-%d %H:%M:%S')] Starting COSMIC theme generation" >> "$LOG_FILE"
 
-    # Read theme mode from state file at activation time
-    if [ -f "${stateFile}" ]; then
-      THEME_MODE=$(cat "${stateFile}" | tr -d '[:space:]')
-    else
-      THEME_MODE="light"
-    fi
+    # Theme mode is fixed by the active NixOS specialisation
+    THEME_MODE="${osConfig.theme.mode}"
 
     echo "[$(date '+%Y-%m-%d %H:%M:%S')] Detected theme mode: $THEME_MODE" >> "$LOG_FILE"
 

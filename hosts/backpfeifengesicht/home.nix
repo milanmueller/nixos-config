@@ -3,11 +3,12 @@
   lib,
   nix-colors,
   colorParams,
+  osConfig,
   ...
 }:
 let
   activeScheme =
-    if colorParams.currentMode == "dark" then
+    if osConfig.theme.mode == "dark" then
       nix-colors.colorSchemes.${colorParams.darkModeScheme}
     else
       nix-colors.colorSchemes.${colorParams.lightModeScheme};

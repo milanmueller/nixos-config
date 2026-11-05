@@ -11,6 +11,7 @@
     ../../modules/defaults.nix
     ../../modules/sshd.nix
     ../../modules/nix-ld.nix
+    ../../modules/theme-mode.nix
   ];
 
   swapDevices = [

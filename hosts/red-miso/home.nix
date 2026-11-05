@@ -4,11 +4,12 @@
   lib,
   nix-colors,
   colorParams,
+  osConfig,
   ...
 }:
 let
-  # Get current mode from colorParams (flake-accessible)
-  currentMode = colorParams.currentMode;
+  # Active mode comes from the NixOS specialisation (modules/theme-mode.nix)
+  currentMode = osConfig.theme.mode;
 
   # Get the active color scheme based on current mode
   activeScheme =

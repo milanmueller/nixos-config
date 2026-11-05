@@ -17,6 +17,7 @@
     ../../modules/defaults.nix
     ../../modules/sshd.nix
     ../../modules/local-dns.nix
+    ../../modules/theme-mode.nix
   ];
 
   # Create Sawpfile
