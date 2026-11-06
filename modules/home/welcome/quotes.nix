@@ -52,4 +52,22 @@
     "Kunst ist schön, macht aber viel Arbeit."
     "Heute ist die gute alte Zeit von morgen."
   ];
+  "Helmut Schmidt" = [
+    "Wer Visionen hat, sollte zum Arzt gehen."
+  ];
+  "Helmut Kohl" = [
+    "Entscheidend ist, was hinten rauskommt."
+  ];
+  "Angela Merkel" = [
+    "Das Internet ist für uns alle Neuland."
+  ];
+  "Joschka Fischer" = [
+    "Mit Verlaub, Herr Präsident, Sie sind ein Arschloch."
+  ];
+  "Franz Müntefering" = [
+    "Opposition ist Mist."
+  ];
+  "Edmund Stoiber" = [
+    "…wenn Sie vom Hauptbahnhof in München…"
+  ];
 }
