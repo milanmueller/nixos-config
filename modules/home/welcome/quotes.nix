@@ -47,4 +47,9 @@
     "Das nächste Spiel ist immer das schwerste."
     "Ein Spiel dauert 90 Minuten."
   ];
+  "Karl Valentin" = [
+    "Es ist schon alles gesagt, nur noch nicht von allen."
+    "Kunst ist schön, macht aber viel Arbeit."
+    "Heute ist die gute alte Zeit von morgen."
+  ];
 }
