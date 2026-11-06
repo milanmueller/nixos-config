@@ -1,7 +1,22 @@
 # Welcome banner for interactive shells (SSH login and new terminals):
-# hostname in ASCII art plus a loud warning if ~/nixos-config is dirty or out of sync.
-{ pkgs, userConfig, ... }:
+# hostname in ASCII art, a quote of the day (see welcome/quotes.nix) and a loud
+# warning if ~/nixos-config is dirty or out of sync.
+{
+  lib,
+  pkgs,
+  userConfig,
+  ...
+}:
 let
+  # One "quote<TAB>author" per line.
+  quotesFile = pkgs.writeText "welcome-quotes.tsv" (
+    lib.concatStrings (
+      lib.mapAttrsToList (
+        author: quotes: lib.concatMapStrings (q: "${q}\t${author}\n") quotes
+      ) (import ./welcome/quotes.nix)
+    )
+  );
+
   welcome = pkgs.writeShellApplication {
     name = "welcome";
     runtimeInputs = with pkgs; [
@@ -10,6 +25,7 @@ let
       openssh
       coreutils
       hostname
+      ncurses
     ];
     text = ''
       repo="${userConfig.homeDir}/nixos-config"
@@ -17,7 +33,19 @@ let
       cyan=$'\e[36m'
       reset=$'\e[0m'
 
+      dim=$'\e[2;3m'
       printf '%s%s%s\n' "$cyan" "$(figlet -t -f standard "$(hostname)")" "$reset"
+
+      # Quote of the day: same quote all day, picked by a hash of the date.
+      mapfile -t quotes < ${quotesFile}
+      if [ "''${#quotes[@]}" -gt 0 ]; then
+        seed=$(date +%F | cksum | cut -d' ' -f1)
+        IFS=$'\t' read -r quote author <<<"''${quotes[seed % ''${#quotes[@]}]}"
+        cols=$(tput cols 2>/dev/null || echo 80)
+        printf '%s' "$dim"
+        printf '„%s“\n' "$quote" | fold -s -w $((cols > 80 ? 78 : cols - 2))
+        printf '    — %s%s\n\n' "$author" "$reset"
+      fi
 
       [ -d "$repo/.git" ] || exit 0
 
