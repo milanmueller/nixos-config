@@ -29,4 +29,22 @@
     "Aus so krummem Holze, als woraus der Mensch gemacht ist, kann nichts ganz Gerades gezimmert werden."
     "Zwei Dinge erfüllen das Gemüt mit immer neuer und zunehmender Bewunderung und Ehrfurcht: der bestirnte Himmel über mir und das moralische Gesetz in mir."
   ];
+  "Andreas Möller" = [
+    "Mailand oder Madrid – Hauptsache Italien!"
+    "Vom Feeling her hab ich ein gutes Gefühl."
+  ];
+  "Giovanni Trapattoni" = [
+    "Ich habe fertig."
+    "Was erlauben Strunz?"
+    "Spieler waren schwach wie eine Flasche leer!"
+  ];
+  "Franz Beckenbauer" = [
+    "Schau'n mer mal."
+    "Geht's raus und spielt's Fußball!"
+  ];
+  "Sepp Herberger" = [
+    "Der Ball ist rund."
+    "Das nächste Spiel ist immer das schwerste."
+    "Ein Spiel dauert 90 Minuten."
+  ];
 }
