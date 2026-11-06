@@ -1,5 +1,5 @@
 # `parb` (pull and rebuild): cd ~/nixos-config, git pull, sudo nixos-rebuild
-# switch, with a Tux-hammering-the-NixOS-logo animation and a 3-line log tail.
+# switch, with a spinning ASCII NixOS snowflake, a dancing Tux and a 5-line log tail.
 { pkgs, ... }:
 {
   home.packages = [
@@ -11,7 +11,7 @@
         gnused
         ncurses
       ];
-      text = builtins.readFile ./parb/parb.sh;
+      text = "SNOW_FILE=${./parb/frames.txt}\nTUX_FILE=${./parb/tux.txt}\n" + builtins.readFile ./parb/parb.sh;
     })
   ];
 }
