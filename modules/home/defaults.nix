@@ -14,6 +14,7 @@
     ./alacritty.nix
     ./welcome.nix
     ./zellij.nix
+    ./parb.nix
   ];
   home.sessionVariables = {
     EDITOR = "hx";
