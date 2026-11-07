@@ -45,7 +45,9 @@ in
       # Apply base24 color scheme to terminal via OSC escape sequences.
       # Skipped in ghostty: it has its own light/dark theme (ghostty.nix), and
       # these overrides would pin the colors so tt can't change them.
-      if [[ -t 1 && "$TERM" != "dumb" && "$TERM_PROGRAM" != "ghostty" ]]; then
+      # TERM_PROGRAM isn't forwarded over ssh, but TERM=xterm-ghostty is, so
+      # check both (otherwise remote shells repaint the local terminal).
+      if [[ -t 1 && "$TERM" != "dumb" && "$TERM" != "xterm-ghostty" && "$TERM_PROGRAM" != "ghostty" ]]; then
         printf '\033]4;0;rgb:${toRGB palette.base00}\033\\'
         printf '\033]4;1;rgb:${toRGB palette.base08}\033\\'
         printf '\033]4;2;rgb:${toRGB palette.base0B}\033\\'

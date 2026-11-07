@@ -15,7 +15,7 @@ if [[ -r /etc/theme-mode ]]; then
   SPEC=(--specialisation "$(cat /etc/theme-mode)")
 fi
 
-(git pull && sudo nixos-rebuild switch "${SPEC[@]}" "$@") >"$LOG" 2>&1 &
+(git pull && nixos-rebuild switch --sudo "${SPEC[@]}" "$@") >"$LOG" 2>&1 &
 PID=$!
 
 # --- frames -------------------------------------------------------------------

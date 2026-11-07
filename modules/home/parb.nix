@@ -1,4 +1,4 @@
-# `parb` (pull and rebuild): cd ~/nixos-config, git pull, sudo nixos-rebuild
+# `parb` (pull and rebuild): cd ~/nixos-config, git pull, nixos-rebuild --sudo
 # switch, with a spinning ASCII NixOS snowflake, a dancing Tux and a 5-line log tail.
 { pkgs, ... }:
 {
