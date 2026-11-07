@@ -58,34 +58,21 @@ in
     papers
     wl-clipboard-x11
     delta
-    signal-desktop
-    telegram-desktop
     claude-code
     codebook
     nixd
-    xpipe
-    zk
-    alacritty
     zen-browser
     proton-authenticator
   ];
 
-  # Set environnment variables
-  home.sessionVariables = {
-    ISABELLE_HOME = "/home/milan/.isabelle";
-  };
-
-  # Additional syiokey keybindings
-  programs.sioyek.bindings = {
-    "next_page" = "J";
-    "previous_page" = "K";
-  };
-
-  # Install and configure programs
   programs.sioyek = {
     enable = true;
     config = {
       "should_launch_new_window" = "1";
+    };
+    bindings = {
+      "next_page" = "J";
+      "previous_page" = "K";
     };
   };
 
