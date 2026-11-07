@@ -60,7 +60,6 @@ nix build --system aarch64-linux .#nixosConfigurations.cafo.config.system.build.
 - `secrets` (private SSH repo) - SOPS-encrypted secrets
 - `nix-colors` - Color scheme management (default: Catppuccin Latte)
 - `crowdsec` - DDoS/bot protection (gestaltzerfall, cafo only)
-- `flatpaks` - Flatpak integration (red-miso only)
 
 **Outputs:**
 - `nixosConfigurations.<hostname>` - System configurations for each host

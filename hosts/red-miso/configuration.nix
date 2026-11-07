@@ -63,8 +63,6 @@
     };
   };
 
-  services.flatpak.enable = true;
-
   # Video encoding
   hardware.graphics = {
     enable = true;
