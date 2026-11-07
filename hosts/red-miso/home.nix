@@ -2,7 +2,7 @@
   pkgs,
   config,
   lib,
-  nix-colors,
+  mkScheme,
   colorParams,
   osConfig,
   ...
@@ -14,9 +14,9 @@ let
   # Get the active color scheme based on current mode
   activeScheme =
     if currentMode == "dark" then
-      nix-colors.colorSchemes.${colorParams.darkModeScheme}
+      mkScheme colorParams.darkModeScheme
     else
-      nix-colors.colorSchemes.${colorParams.lightModeScheme};
+      mkScheme colorParams.lightModeScheme;
 
 in
 {
@@ -25,6 +25,7 @@ in
     ../../modules/home/ghostty.nix
     ../../modules/home/zed.nix
     ../../modules/home/firefox.nix
+    ../../modules/home/zen.nix
     ./home/dark-light-toggle.nix
     ./home/cosmic-config.nix
   ];

@@ -3,6 +3,11 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nix-colors.url = "github:misterio77/nix-colors";
+    # base16 + base24 schemes (nix-colors only bundles base16)
+    tinted-schemes = {
+      url = "github:tinted-theming/schemes";
+      flake = false;
+    };
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -36,6 +41,7 @@
       nixpkgs,
       home-manager,
       nix-colors,
+      tinted-schemes,
       sops-nix,
       secrets,
       crowdsec,
@@ -46,6 +52,13 @@
       ...
     }:
     let
+      # slug -> scheme (base24 when available, else base16 + derived base10-17)
+      # Light/dark scheme slugs, shared by all hosts
+      colorParams = import ./color-parameters.nix;
+      mkScheme = import ./lib/mk-scheme.nix {
+        inherit (nixpkgs) lib;
+        inherit tinted-schemes;
+      };
       userConfig = {
         username = "milan";
         homeDir = "/home/milan";
@@ -76,9 +89,7 @@
           hmModules = [
             cosmic-themes-base16.homeManagerModules.default
           ];
-          hmExtraSpecialArgs = {
-            colorParams = import ./hosts/red-miso/color-parameters.nix;
-          };
+          hmExtraSpecialArgs = { };
         };
         cafo = {
           inherit userConfig;
@@ -116,9 +127,7 @@
           hmModules = [
             cosmic-themes-base16.homeManagerModules.default
           ];
-          hmExtraSpecialArgs = {
-            colorParams = import ./hosts/backpfeifengesicht/color-parameters.nix;
-          };
+          hmExtraSpecialArgs = { };
         };
       };
       mkHost =
@@ -153,7 +162,7 @@
               ]
               ++ hmModules;
               home-manager.extraSpecialArgs = {
-                inherit nix-colors userConfig;
+                inherit nix-colors userConfig mkScheme colorParams;
               }
               // hmExtraSpecialArgs;
             }

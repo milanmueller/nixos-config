@@ -42,7 +42,7 @@ in
 
     # Set base16 colors for various zsh components
     initContent = ''
-      # Apply base16 color scheme to terminal via OSC escape sequences.
+      # Apply base24 color scheme to terminal via OSC escape sequences.
       # Skipped in ghostty: it has its own light/dark theme (ghostty.nix), and
       # these overrides would pin the colors so tt can't change them.
       if [[ -t 1 && "$TERM" != "dumb" && "$TERM_PROGRAM" != "ghostty" ]]; then
@@ -55,12 +55,12 @@ in
         printf '\033]4;6;rgb:${toRGB palette.base0C}\033\\'
         printf '\033]4;7;rgb:${toRGB palette.base05}\033\\'
         printf '\033]4;8;rgb:${toRGB palette.base03}\033\\'
-        printf '\033]4;9;rgb:${toRGB palette.base08}\033\\'
-        printf '\033]4;10;rgb:${toRGB palette.base0B}\033\\'
-        printf '\033]4;11;rgb:${toRGB palette.base0A}\033\\'
-        printf '\033]4;12;rgb:${toRGB palette.base0D}\033\\'
-        printf '\033]4;13;rgb:${toRGB palette.base0E}\033\\'
-        printf '\033]4;14;rgb:${toRGB palette.base0C}\033\\'
+        printf '\033]4;9;rgb:${toRGB palette.base12}\033\\'
+        printf '\033]4;10;rgb:${toRGB palette.base14}\033\\'
+        printf '\033]4;11;rgb:${toRGB palette.base13}\033\\'
+        printf '\033]4;12;rgb:${toRGB palette.base16}\033\\'
+        printf '\033]4;13;rgb:${toRGB palette.base17}\033\\'
+        printf '\033]4;14;rgb:${toRGB palette.base15}\033\\'
         printf '\033]4;15;rgb:${toRGB palette.base07}\033\\'
         printf '\033]4;16;rgb:${toRGB palette.base09}\033\\'
         printf '\033]4;17;rgb:${toRGB palette.base0F}\033\\'

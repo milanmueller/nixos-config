@@ -232,6 +232,7 @@
         "nur": "nur",
         "secrets": "secrets",
         "sops-nix": "sops-nix",
+        "tinted-schemes": "tinted-schemes",
         "zen-browser": "zen-browser"
       }
     },
@@ -297,6 +298,22 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
+        "type": "github"
+      }
+    },
+    "tinted-schemes": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1793656444,
+        "narHash": "sha256-/Rjae6dw19RDcjnDAMZ6TUPgMmXTW7o3AiCViBzwIt0=",
+        "owner": "tinted-theming",
+        "repo": "schemes",
+        "rev": "05e6e6f7e53a2745345ba3658b0172831ff54e9b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tinted-theming",
+        "repo": "schemes",
         "type": "github"
       }
     },

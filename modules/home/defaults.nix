@@ -1,7 +1,7 @@
 # Default home config for all hosts
 {
   pkgs,
-  nix-colors,
+  mkScheme,
   ...
 }:
 {
@@ -19,7 +19,7 @@
     EDITOR = "hx";
   };
   # Default light color scheme
-  colorScheme = nix-colors.colorSchemes.catppuccin-latte;
+  colorScheme = mkScheme "catppuccin-latte";
   # Let home Manager install and manage itself
   programs.home-manager.enable = true;
 

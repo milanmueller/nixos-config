@@ -1,22 +1,22 @@
 {
   userConfig,
-  nix-colors,
+  mkScheme,
   colorParams,
   ...
 }:
 let
-  # Ghostty theme from a base16 scheme (standard base16 terminal mapping)
+  # Ghostty theme from a base24 scheme (bright ANSI colors from base12-17)
   mkTheme =
     scheme:
     let
       p = scheme.palette;
     in
     {
-      background = p.base00;
-      foreground = p.base05;
-      cursor-color = p.base05;
-      selection-background = p.base02;
-      selection-foreground = p.base05;
+      background = "#${p.base00}";
+      foreground = "#${p.base05}";
+      cursor-color = "#${p.base05}";
+      selection-background = "#${p.base02}";
+      selection-foreground = "#${p.base05}";
       palette = [
         "0=#${p.base00}"
         "1=#${p.base08}"
@@ -27,14 +27,14 @@ let
         "6=#${p.base0C}"
         "7=#${p.base05}"
         "8=#${p.base03}"
-        "9=#${p.base08}"
-        "10=#${p.base0B}"
-        "11=#${p.base0A}"
-        "12=#${p.base0D}"
-        "13=#${p.base0E}"
-        "14=#${p.base0C}"
+        "9=#${p.base12}"
+        "10=#${p.base14}"
+        "11=#${p.base13}"
+        "12=#${p.base16}"
+        "13=#${p.base17}"
+        "14=#${p.base15}"
         "15=#${p.base07}"
-        # base16 extras, as set via OSC in zsh.nix for other terminals
+        # base16 extras (orange, brown, ...), as set via OSC in zsh.nix for other terminals
         "16=#${p.base09}"
         "17=#${p.base0F}"
         "18=#${p.base01}"
@@ -52,8 +52,8 @@ in
     # light/dark preference, which tt flips via COSMIC's is_dark.
     # That way running windows follow the toggle without a reload.
     themes = {
-      base16-light = mkTheme nix-colors.colorSchemes.${colorParams.lightModeScheme};
-      base16-dark = mkTheme nix-colors.colorSchemes.${colorParams.darkModeScheme};
+      base16-light = mkTheme (mkScheme colorParams.lightModeScheme);
+      base16-dark = mkTheme (mkScheme colorParams.darkModeScheme);
     };
     settings = {
       theme = "light:base16-light,dark:base16-dark";

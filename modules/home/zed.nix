@@ -2,7 +2,7 @@
   config,
   pkgs,
   lib,
-  nix-colors,
+  mkScheme,
   colorParams,
   ...
 }:
@@ -505,8 +505,8 @@ let
   # Both modes are always configured; Zed follows the system appearance, so
   # settings.json is identical across the light/dark specialisations and Zed
   # switches live without a settings reload.
-  lightScheme = nix-colors.colorSchemes.${colorParams.lightModeScheme};
-  darkScheme = nix-colors.colorSchemes.${colorParams.darkModeScheme};
+  lightScheme = mkScheme colorParams.lightModeScheme;
+  darkScheme = mkScheme colorParams.darkModeScheme;
 in
 {
   programs.zed-editor = {

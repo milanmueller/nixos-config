@@ -2,15 +2,15 @@
   config,
   lib,
   pkgs,
-  nix-colors,
+  mkScheme,
   colorParams,
   osConfig,
   ...
 }:
 let
   # Get color schemes from colorParams
-  lightScheme = nix-colors.colorSchemes.${colorParams.lightModeScheme};
-  darkScheme = nix-colors.colorSchemes.${colorParams.darkModeScheme};
+  lightScheme = mkScheme colorParams.lightModeScheme;
+  darkScheme = mkScheme colorParams.darkModeScheme;
 
 in
 {

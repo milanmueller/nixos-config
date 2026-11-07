@@ -1,7 +1,7 @@
 {
   pkgs,
   lib,
-  nix-colors,
+  mkScheme,
   colorParams,
   osConfig,
   ...
@@ -9,9 +9,9 @@
 let
   activeScheme =
     if osConfig.theme.mode == "dark" then
-      nix-colors.colorSchemes.${colorParams.darkModeScheme}
+      mkScheme colorParams.darkModeScheme
     else
-      nix-colors.colorSchemes.${colorParams.lightModeScheme};
+      mkScheme colorParams.lightModeScheme;
 in
 {
   imports = [
@@ -19,6 +19,7 @@ in
     ../../modules/home/ghostty.nix
     ../../modules/home/zed.nix
     ../../modules/home/firefox.nix
+    ../../modules/home/zen.nix
     # Cosmic theme generation from base16 (shared with red-miso)
     ../red-miso/home/cosmic-config.nix
     ../red-miso/home/dark-light-toggle.nix
