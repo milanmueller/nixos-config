@@ -22,6 +22,7 @@ in
 {
   imports = [
     ../../modules/home/defaults.nix
+    ../../modules/home/ghostty.nix
     ../../modules/home/zed.nix
     ../../modules/home/firefox.nix
     ./home/dark-light-toggle.nix
@@ -65,7 +66,6 @@ in
     xpipe
     zk
     alacritty
-    ghostty
     zen-browser
     proton-authenticator
   ];

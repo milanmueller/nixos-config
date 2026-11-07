@@ -98,6 +98,12 @@ in
     echo "[$(date '+%Y-%m-%d %H:%M:%S')] Disabling auto_switch" >> "$LOG_FILE"
     run echo -n "false" > "$MODE_CONFIG_PATH/auto_switch" 2>> "$LOG_FILE"
 
+    # Keep "apply theme to GNOME apps" off: COSMIC's gtk.css override stops
+    # libadwaita apps (ghostty, mission-center) from following mode changes
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] Disabling apply_theme_global" >> "$LOG_FILE"
+    run mkdir -p "${config.home.homeDirectory}/.config/cosmic/com.system76.CosmicTk/v1"
+    run echo -n "false" > "${config.home.homeDirectory}/.config/cosmic/com.system76.CosmicTk/v1/apply_theme_global" 2>> "$LOG_FILE"
+
     # Point the COSMIC background at the wallpaper variant for this mode
     BG_PATH="${config.home.homeDirectory}/.config/cosmic/com.system76.CosmicBackground/v1"
     echo "[$(date '+%Y-%m-%d %H:%M:%S')] Setting wallpaper to $WALLPAPER" >> "$LOG_FILE"

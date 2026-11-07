@@ -9,7 +9,7 @@
   # the active generation: no repo edit and no rebuild.
   home.packages = with pkgs; [
     (writeShellApplication {
-      name = "toggle-theme";
+      name = "tt";
       text = ''
         CURRENT="${osConfig.theme.mode}"
 
