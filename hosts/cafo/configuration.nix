@@ -75,13 +75,19 @@
 
   # Rollback to initial root snapshot, based on https://grahamc.com/blog/erase-your-darlings/
   # and https://notthebe.ee/blog/nixos-ephemeral-zfs-root/ (ephemeral root)
-  # postDeviceCommands is only supported by the scripted stage 1, and
-  # nixpkgs now defaults to the systemd one. Keep scripted until this is
-  # ported to boot.initrd.systemd.services.
-  boot.initrd.systemd.enable = false;
-  boot.initrd.postDeviceCommands = lib.mkAfter ''
-    zfs rollback -r zpool01/nixos/empty@start
-  '';
+  # Runs in the systemd initrd: after the pool is imported, before root is mounted.
+  boot.initrd.systemd.services.rollback = {
+    description = "Rollback ZFS root to the empty snapshot";
+    wantedBy = [ "initrd.target" ];
+    after = [ "zfs-import-zpool01.service" ];
+    before = [ "sysroot.mount" ];
+    path = [ config.boot.zfs.package ];
+    unitConfig.DefaultDependencies = "no";
+    serviceConfig.Type = "oneshot";
+    script = ''
+      zfs rollback -r zpool01/nixos/empty@start
+    '';
+  };
 
   # DO NOT CHANGE For more information, see `man configuration.nix` or
   # https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
