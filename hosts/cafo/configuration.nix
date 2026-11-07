@@ -89,6 +89,22 @@
     '';
   };
 
+  # / is rolled back on every boot; keep selected state in /persist.
+  # (/var/lib, /var/log, /home and /etc/nixos are separate datasets already.)
+  fileSystems."/persist".neededForBoot = true;
+  environment.persistence."/persist" = {
+    hideMounts = true;
+    files = [
+      "/etc/machine-id"
+      #"/etc/shadow" # imperatively set user passwords (users.mutableUsers)
+    ];
+  };
+  users.mutableUsers = false;
+  users.users.${userConfig.username}.hashedPasswordFile = "/persist/passwords/milan";
+  services.openssh.hostKeys = [
+    { type = "ed25519"; path = "/persist/ssh/ssh_host_ed25519_key"; }
+  ];
+
   # DO NOT CHANGE For more information, see `man configuration.nix` or
   # https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
   system.stateVersion = "24.11"; # Did you read the comment?

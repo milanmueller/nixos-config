@@ -30,6 +30,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nur.url = "github:nix-community/NUR";
+    impermanence.url = "github:nix-community/impermanence";
     zen-browser = {
       url = "github:youwen5/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -48,6 +49,7 @@
       cosmic-themes-base16,
       claude-code,
       nur,
+      impermanence,
       zen-browser,
       ...
     }:
@@ -96,6 +98,7 @@
           system = "aarch64-linux";
           extraModules = [
             # crowdsec.nixosModules.crowdsec
+            impermanence.nixosModules.impermanence
           ];
           extraInputs = {
             inherit nix-colors;
