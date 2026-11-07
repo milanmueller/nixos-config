@@ -107,6 +107,9 @@
   # / is rolled back on every boot; keep selected state in /persist.
   # (/var/lib, /var/log, /home and /etc/nixos are separate datasets already.)
   fileSystems."/persist".neededForBoot = true;
+  # sops-nix age key lives at /home/milan/.ssh/id_ed25519 (set in the secrets input);
+  # secrets are installed during early activation, so /home must be mounted by then.
+  fileSystems."/home".neededForBoot = true;
   environment.persistence."/persist" = {
     hideMounts = true;
     files = [

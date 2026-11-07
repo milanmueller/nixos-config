@@ -78,11 +78,19 @@ in
     };
   };
 
+  # Don't start the container before its generated config exists, and keep retrying
+  # instead of hitting the start limit if something is still missing at boot.
+  systemd.services.podman-authelia = {
+    requires = [ "authelia-config.service" "authelia-users-db-setup.service" ];
+    after = [ "authelia-config.service" "authelia-users-db-setup.service" ];
+    startLimitIntervalSec = 0;
+    serviceConfig.RestartSec = 5;
+  };
+
   ### Write Authelia admin pw to config file from secrets
   systemd.services.authelia-users-db-setup = {
     description = "Generate Authelia users_database.yml from SOPS secret";
     wantedBy = [ "multi-user.target" ];
-    after = [ "sops-nix-secrets.service" ]; # Ensure SOPS secrets are available
     before = [ "podman-authelia.service" ]; # Run before Authelia container
     serviceConfig = {
       Type = "oneshot";
@@ -120,7 +128,6 @@ in
   systemd.services.authelia-config = {
     description = "Generate Authelia configuration.yml from SOPS secret";
     wantedBy = [ "multi-user.target" ];
-    after = [ "sops-nix-secrets.service" ]; # Ensure SOPS secrets are available
     before = [ "podman-authelia.service" ]; # Run before Authelia container
     serviceConfig = {
       Type = "oneshot";
