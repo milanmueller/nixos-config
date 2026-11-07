@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Overview
 
-This is a multi-host NixOS configuration managed with Nix Flakes. It configures four systems (x86_64 and aarch64) with shared modules and centralized secrets management via SOPS. Hosts are connected via Tailscale.
+This is a multi-host NixOS configuration managed with Nix Flakes. It configures three systems (x86_64 and aarch64) with shared modules and centralized secrets management via SOPS. Hosts are connected via Tailscale.
 
 **Key architectural pattern:** The `flake.nix` defines a `mkHost` function that templates NixOS system configurations. Each host imports shared modules from `modules/` and can selectively override or extend with host-specific configurations.
 
@@ -98,7 +98,6 @@ home.nix
 | **red-miso** | x86_64-linux | Desktop workstation | Cosmic DE, Docker/Podman, Tailscale, development tools |
 | **backpfeifengesicht** | x86_64-linux | Workstation | GNOME, GNOME Remote Desktop, Docker/Podman |
 | **cafo** | aarch64-linux | Web server (public) | Traefik, Authelia (2FA, Podman container), ttyd |
-| **monomyth** | aarch64-linux | Lightweight server | Minimal config |
 
 ### Networking
 
@@ -263,7 +262,7 @@ Each host declares `system.stateVersion` (e.g., "24.05", "24.11"). **Never chang
 ### File Naming
 
 - Modules: lowercase, descriptive (e.g., `git.nix`, `traefik.nix`)
-- Hosts: creative names (red-miso, backpfeifengesicht, cafo, monomyth)
+- Hosts: creative names (red-miso, backpfeifengesicht, cafo)
 - Imports: relative paths from repo root (e.g., `../../modules/defaults.nix`)
 
 ### Commented Features

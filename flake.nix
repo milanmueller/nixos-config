@@ -80,14 +80,6 @@
             colorParams = import ./hosts/red-miso/color-parameters.nix;
           };
         };
-        monomyth = {
-          inherit userConfig;
-          system = "aarch64-linux";
-          extraModules = [ ];
-          extraInputs = { inherit nix-colors; };
-          hmModules = [ ];
-          hmExtraSpecialArgs = { };
-        };
         cafo = {
           inherit userConfig;
           system = "aarch64-linux";
