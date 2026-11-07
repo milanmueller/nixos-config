@@ -11,7 +11,6 @@
     ./zsh.nix
     ./git.nix
     ./helix.nix
-    ./alacritty.nix
     ./welcome.nix
     ./zellij.nix
     ./parb.nix

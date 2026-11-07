@@ -49,7 +49,6 @@ in
     claude-code
     codebook
     nixd
-    zk
     # Autologin never unlocks the keyring, so keep Chrome from asking for it
     # Black video on Netflix with the proprietary Nvidia driver (Pascal) on Wayland:
     # disable GPU video decode so frames are rendered via the software path,

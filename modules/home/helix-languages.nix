@@ -57,16 +57,11 @@
     {
       name = "markdown";
       language-servers = [
-        "zk"
         "codebook"
       ];
     }
   ];
   language-server = {
-    zk = {
-      command = "zk";
-      args = [ "lsp" ];
-    };
     codebook = {
       command = "codebook-lsp";
       args = [ "serve" ];
