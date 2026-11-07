@@ -89,6 +89,21 @@
     '';
   };
 
+  # The empty@start snapshot contains an install-time /etc/shadow with password aging
+  # (expired lastchg, max 7 days). update-users-groups merges with the existing file and
+  # keeps those fields, forcing a password change at login. Drop it so it is regenerated.
+  boot.initrd.systemd.services.reset-shadow = {
+    description = "Remove stale /etc/shadow from the root snapshot";
+    wantedBy = [ "initrd.target" ];
+    after = [ "sysroot.mount" ];
+    before = [ "initrd-nixos-activation.service" ];
+    unitConfig.DefaultDependencies = "no";
+    serviceConfig.Type = "oneshot";
+    script = ''
+      rm -f /sysroot/etc/shadow
+    '';
+  };
+
   # / is rolled back on every boot; keep selected state in /persist.
   # (/var/lib, /var/log, /home and /etc/nixos are separate datasets already.)
   fileSystems."/persist".neededForBoot = true;
