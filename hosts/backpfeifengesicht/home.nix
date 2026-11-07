@@ -80,9 +80,15 @@ in
     };
   };
 
+  # Default terminal (xdg-terminal-exec spec) -> Ghostty
+  xdg.configFile."xdg-terminals.list".text = ''
+    com.mitchellh.ghostty.desktop
+  '';
+
   xdg.mimeApps = {
     enable = true;
     defaultApplications = {
+      "x-scheme-handler/terminal" = "com.mitchellh.ghostty.desktop";
       "text/html" = "zen.desktop";
       "x-scheme-handler/http" = "zen.desktop";
       "x-scheme-handler/mailto" = "thunderbird.desktop";

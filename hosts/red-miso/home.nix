@@ -89,16 +89,16 @@ in
     };
   };
 
-  # Default terminal (xdg-terminal-exec spec) -> COSMIC Terminal
+  # Default terminal (xdg-terminal-exec spec) -> Ghostty
   xdg.configFile."xdg-terminals.list".text = ''
-    com.system76.CosmicTerm.desktop
+    com.mitchellh.ghostty.desktop
   '';
 
   # Set default applications
   xdg.mimeApps = {
     enable = true;
     defaultApplications = {
-      "x-scheme-handler/terminal" = "com.system76.CosmicTerm.desktop";
+      "x-scheme-handler/terminal" = "com.mitchellh.ghostty.desktop";
       "text/html" = "zen.desktop";
       "x-scheme-handler/http" = "zen.desktop";
       "x-scheme-handler/https" = "zen.desktop";
