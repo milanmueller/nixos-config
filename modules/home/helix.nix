@@ -6,6 +6,23 @@
   ...
 }:
 let
+  # Blend two hex colors (no #); t is the weight of b in percent.
+  mixHex =
+    a: b: t:
+    let
+      ch = s: i: lib.fromHexString (builtins.substring i 2 s);
+      hex2 =
+        n:
+        let
+          h = lib.toHexString n;
+        in
+        if builtins.stringLength h == 1 then "0" + h else h;
+      m = i: hex2 ((ch a i * (100 - t) + ch b i * t) / 100);
+    in
+    "#${m 0}${m 2}${m 4}";
+  # Subtle selection tints: between background and base02.
+  selSubtle = mixHex config.colorScheme.palette.base00 config.colorScheme.palette.base02 50;
+  selFainter = mixHex config.colorScheme.palette.base00 config.colorScheme.palette.base02 30;
   # Themes bundled with Helix (helix-editor/helix runtime/themes/*.toml) whose
   # names happen to line up with a nix-colors scheme slug. Used to prefer
   # Helix's own hand-tuned theme over our generated base16_custom one when the
@@ -471,10 +488,10 @@ in
           underline.style = "line";
         };
         "ui.selection" = {
-          bg = "bg2";
+          bg = "sel_faint";
         };
         "ui.selection.primary" = {
-          bg = "bg3";
+          bg = "sel"; # blend of base00/base02; must differ from comments (base03)
         };
         "ui.statusline" = {
           fg = "bg0";
@@ -535,6 +552,8 @@ in
         };
 
         "palette" = {
+          sel = selSubtle;
+          sel_faint = selFainter;
           bg0 = "#${config.colorScheme.palette.base00}"; # main background
           bg0_s = "#${config.colorScheme.palette.base01}";
           bg1 = "#${config.colorScheme.palette.base01}";
