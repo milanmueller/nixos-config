@@ -53,7 +53,15 @@ in
     thunderbird
     sioyek
     sops
-    anydesk
+    # patchelf >=0.19 default section sorting corrupts the non-PIE binary (segfault in ld.so)
+    (anydesk.overrideAttrs (old: {
+      # upstream re-published the 8.1.0 tarball; nixpkgs hash is stale
+      src = pkgs.fetchurl {
+        url = old.src.url;
+        hash = "sha256-zS5P2eyTHZY7cBW8mQ2Q6M0lXcx9VZZTtpG3Bb6u7IQ=";
+      };
+      postFixup = "patchelf() { command patchelf --no-sort \"$@\"; }\n" + old.postFixup;
+    }))
     mission-center
     mpv
     papers
