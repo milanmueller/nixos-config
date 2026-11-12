@@ -4,6 +4,7 @@
   lib,
   mkScheme,
   colorParams,
+  osConfig,
   ...
 }:
 
@@ -487,6 +488,7 @@ let
     word:
     lib.toUpper (builtins.substring 0 1 word) + builtins.substring 1 (builtins.stringLength word) word;
   zedThemeNameFor =
+    isLight:
     scheme:
     let
       schemeSlug = scheme.slug or "";
@@ -497,7 +499,7 @@ let
     in
     if schemeSlug != "" && matchedZedTheme != null then
       matchedZedTheme
-    else if isLightTheme scheme then
+    else if isLight then
       "Base16 Custom Light"
     else
       "Base16 Custom Dark";
@@ -547,9 +549,9 @@ in
 
     userSettings = {
       theme = {
-        mode = "system";
-        light = zedThemeNameFor lightScheme;
-        dark = zedThemeNameFor darkScheme;
+        mode = osConfig.theme.mode;
+        light = zedThemeNameFor true lightScheme;
+        dark = zedThemeNameFor false darkScheme;
       };
 
       helix_mode = true;
