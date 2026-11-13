@@ -60,7 +60,6 @@ nix build --system aarch64-linux .#nixosConfigurations.cafo.config.system.build.
 - `secrets` (private SSH repo) - SOPS-encrypted secrets
 - `nix-colors` - Color scheme management (default: Catppuccin Latte)
 - `tinted-schemes` - tinted-theming/schemes; `lib/mk-scheme.nix` (`mkScheme "slug"`) loads base24 schemes from it, falling back to base16 with base10-17 derived. All home modules get `mkScheme` via extraSpecialArgs
-- `crowdsec` - DDoS/bot protection (gestaltzerfall, cafo only)
 
 **Outputs:**
 - `nixosConfigurations.<hostname>` - System configurations for each host

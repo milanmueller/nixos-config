@@ -17,10 +17,6 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    crowdsec = {
-      url = "git+https://codeberg.org/kampka/nix-flake-crowdsec.git";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     cosmic-themes-base16 = {
       url = "github:milanmueller/cosmic-themes-base16";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -45,7 +41,6 @@
       tinted-schemes,
       sops-nix,
       secrets,
-      crowdsec,
       cosmic-themes-base16,
       claude-code,
       nur,
@@ -97,7 +92,6 @@
           inherit userConfig;
           system = "aarch64-linux";
           extraModules = [
-            # crowdsec.nixosModules.crowdsec
             impermanence.nixosModules.impermanence
           ];
           extraInputs = {
