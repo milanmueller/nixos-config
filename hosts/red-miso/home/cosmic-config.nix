@@ -17,6 +17,14 @@ in
   # Disable the default cosmic-themes-base16 module
   programs.cosmic-themes-base16.enable = false;
 
+  # Super+Return is bound to System(Terminal), which COSMIC resolves via
+  # system_actions and otherwise defaults to cosmic-term.
+  xdg.configFile."cosmic/com.system76.CosmicSettings.Shortcuts/v1/system_actions".text = ''
+    {
+        Terminal: "ghostty",
+    }
+  '';
+
   # Install cosmic-themes-base16 package
   home.packages = [ pkgs.cosmic-themes-base16 ];
 
