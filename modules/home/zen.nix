@@ -4,8 +4,9 @@
   ...
 }:
 let
-  # Zen's profile directory is created by Zen itself (see ~/.config/zen/profiles.ini).
-  profileDir = ".config/zen/te066wt4.Default Profile";
+  # Zen's profile directory is created by Zen itself: it is the one marked
+  # Default=1 in ~/.config/zen/profiles.ini (about:profiles shows it too).
+  profileDir = ".config/zen/c7hh8jlm.Default Profile";
 
   lightScheme = mkScheme colorParams.lightModeScheme;
   darkScheme = mkScheme colorParams.darkModeScheme;
